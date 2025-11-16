@@ -3966,3 +3966,76 @@ section,
   color: var(--heading-color);
 }
 
+/*--------------------------------------------------------------
+# Mockup Scroll Section
+--------------------------------------------------------------*/
+.mockup-scroll {
+  padding: 60px 0; /* උඩ සහ යටින් ඉඩ තබමු */
+}
+
+.scroller-wrapper {
+  overflow: hidden;
+  position: relative;
+  /* වම් සහ දකුණු දාරවල fade-out effect එක */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.scroller-inner {
+  display: flex;
+  gap: 30px; /* Mockups අතර පරතරය */
+  width: max-content;
+  
+  /* Animation එක යෙදීම */
+  animation: scroll-left 40s linear infinite; /* වේගය තත්පර 40කට වෙනස් කළා */
+}
+
+.scroller-inner img {
+  max-height: 350px; /* Mockups වල උස - මේක ඔයාගේ mockups වලට ගැලපෙන විදිහට වෙනස් කරන්න */
+  width: auto;
+  object-fit: contain;
+  border-radius: 10px; /* Mockups වලට පොඩි radius එකක් දෙමු */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* පොඩි shadow එකක් */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover කළාම පොඩ්ඩක් ලොකු කරලා, shadow එක වැඩි කරමු */
+.scroller-inner img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Scroller එක මත mouse එක ගෙන ගිය විට animation එක නතර කරයි 
+.scroller-wrapper:hover .scroller-inner {
+  animation-play-state: paused;
+} */
+
+/* වමට scroll වීමේ animation එක (වෙනසක් නෑ) */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); 
+  }
+}
+
+/* Responsive - Mobile උපාංග සඳහා සැකසුම් */
+@media (max-width: 992px) {
+  .scroller-inner img {
+    max-height: 300px; /* Tablet වලදී උස */
+  }
+}
+
+@media (max-width: 768px) {
+  .mockup-scroll {
+    padding: 40px 0;
+  }
+  .scroller-inner {
+    gap: 25px; /* mobile වලදී පරතරය අඩු කරයි */
+    animation-duration: 30s; /* වේගය මදක් වැඩි කරයි */
+  }
+  .scroller-inner img {
+    max-height: 200px; /* mobile වලදී mockups වල උස */
+  }
+}
