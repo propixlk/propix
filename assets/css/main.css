@@ -4039,3 +4039,67 @@ section,
     max-height: 200px; /* mobile වලදී mockups වල උස */
   }
 }
+
+/*--------------------------------------------------------------
+# Portfolio Masonry Section
+--------------------------------------------------------------*/
+.portfolio-masonry {
+  /* Desktop වලදී තීරු 3ක් පෙන්වයි */
+  column-count: 3;
+  column-gap: 20px; /* තීරු අතර පරතරය */
+}
+
+.portfolio-item {
+  display: inline-block; /* Masonry layout එකට අත්‍යවශ්‍යයි */
+  width: 100%;
+  margin-bottom: 20px; /* images අතර උඩ/යට පරතරය */
+  break-inside: avoid; /* image එකක් තීරු 2ක් අතර කැඩී යාම වළක්වයි */
+}
+
+.portfolio-item img {
+  width: 100%; /* image එකේ පළල 100% කරයි */
+  height: auto; /* උස auto දමයි */
+  border-radius: 10px; /* ලස්සනට- දාර වටකුරු කරයි */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Image එක hover කළ විට */
+.portfolio-item img:hover {
+  transform: scale(1.03); /* මදක් විශාල කර පෙන්වයි */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* View More Button Style */
+.btn-view-more {
+  color: var(--contrast-color);
+  background: var(--accent-color); /* Template එකේ ප්‍රධාන වර්ණය */
+  font-size: 15px;
+  padding: 12px 30px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.btn-view-more:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 15%);
+  color: var(--contrast-color);
+  transform: translateY(-2px); /* පොඩි hover effect එකක් */
+}
+
+
+/* --- Responsive --- */
+/* Tablet (992px ට අඩු තිර) */
+@media (max-width: 992px) {
+  .portfolio-masonry {
+    column-count: 2; /* තීරු 2ක් පෙන්වයි */
+  }
+}
+
+/* Mobile (576px ට අඩු තිර) */
+@media (max-width: 576px) {
+  .portfolio-masonry {
+    column-count: 1; /* තීරු 1ක් පෙන්වයි */
+  }
+}
