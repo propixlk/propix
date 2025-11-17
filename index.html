@@ -150,20 +150,20 @@
             <img src="assets/img/hero/1.webp" alt="Design Mockup 1">
             <img src="assets/img/hero/2.webp" alt="Design Mockup 2">
             <img src="assets/img/hero/3.webp" alt="Design Mockup 3">
-            <img src="assets/img/scroll-design/4.png" alt="Design Mockup 4">
-            <img src="assets/img/scroll-design/5.png" alt="Design Mockup 5">
-            <img src="assets/img/scroll-design/6.png" alt="Design Mockup 6">
-            <img src="assets/img/scroll-design/3.png" alt="Design Mockup 7">
-            <img src="assets/img/scroll-design/3.png" alt="Design Mockup 8">
+            <img src="assets/img/hero/4.webp" alt="Design Mockup 4">
+            <img src="assets/img/hero/5.webp" alt="Design Mockup 5">
+            <img src="assets/img/hero/6.webp" alt="Design Mockup 4">
+            <img src="assets/img/hero/7.webp" alt="Design Mockup 5">
+            <img src="assets/img/hero/8.webp" alt="Design Mockup 8">
             
             <img src="assets/img/hero/1.webp" alt="Design Mockup 1">
             <img src="assets/img/hero/2.webp" alt="Design Mockup 2">
             <img src="assets/img/hero/3.webp" alt="Design Mockup 3">
-            <img src="assets/img/scroll-design/4.png" alt="Design Mockup 4">
-            <img src="assets/img/scroll-design/5.png" alt="Design Mockup 5">
-            <img src="assets/img/scroll-design/6.png" alt="Design Mockup 6">
-            <img src="assets/img/scroll-design/3.png" alt="Design Mockup 7">
-            <img src="assets/img/scroll-design/3.png" alt="Design Mockup 8">
+            <img src="assets/img/hero/4.webp" alt="Design Mockup 4">
+            <img src="assets/img/hero/5.webp" alt="Design Mockup 5">
+            <img src="assets/img/hero/6.webp" alt="Design Mockup 4">
+            <img src="assets/img/hero/7.webp" alt="Design Mockup 5">
+            <img src="assets/img/hero/8.webp" alt="Design Mockup 8">
           </div>
         </div>
       </div>
@@ -1621,6 +1621,7 @@
 
   <div id="preloader">
       <div class="loader"></div> </div>
+  
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -1699,7 +1700,21 @@
       body.appendChild(flake);
     }
   });
+  /* Preloader Fade-out Script */
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        // opacity එක 0 ලෙස සකසන්න (සුමටව මැකී යාම ආරම්භ කරයි)
+        preloader.style.opacity = '0';
+        
+        // CSS transition කාලය (0.6s) අවසන් වූ පසු DOM එකෙන් ඉවත් කරන්න
+        preloader.addEventListener('transitionend', () => {
+            preloader.remove();
+        });
+    }
+});
 </script>
+
 
 </body>
 
