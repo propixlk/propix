@@ -1,11 +1,3 @@
-/**
-* Template Name: Landify
-* Template URL: https://bootstrapmade.com/landify-bootstrap-landing-page-template/
-* Updated: Aug 04 2025 with Bootstrap v5.3.7
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
 /*--------------------------------------------------------------
 # Font & Color Variables
 # Help: https://bootstrapmade.com/color-system/
@@ -21,19 +13,19 @@
 :root { 
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #3b5353; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #193838; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #00a19e; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --heading-color: #000000; /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #09a1ed; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
-  --nav-color: #3b5353;  /* The default color of the main navmenu links */
+  --nav-color: #000000;  /* The default color of the main navmenu links */
   --nav-hover-color: #00a19e; /* Applied to main navmenu links when they are hovered over or active */
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #3b5353; /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-color: #09a1ed; /* Used for navigation links of the dropdown items in the navigation menu. */
   --nav-dropdown-hover-color: #00a19e; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
@@ -4102,4 +4094,161 @@ section,
   .portfolio-masonry {
     column-count: 1; /* තීරු 1ක් පෙන්වයි */
   }
+}
+
+/*--------------------------------------------------------------
+# Portfolio Gallery (New)
+--------------------------------------------------------------*/
+.portfolio-gallery .portfolio-filter-nav {
+  padding: 0;
+  margin: 0 auto 30px auto;
+  list-style: none;
+  text-align: center;
+  background: var(--surface-color);
+  border-radius: 50px;
+  padding: 5px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  display: inline-flex;
+  flex-wrap: wrap; /* කුඩා තිර සඳහා wrap කිරීම */
+  justify-content: center; /* කුඩා තිර සඳහා center කිරීම */
+}
+
+.portfolio-gallery .portfolio-filter-nav .nav-link {
+  padding: 8px 18px;
+  margin: 3px; /* Mobile වලදී ඉඩ තැබීමට */
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--default-color);
+  background: none;
+  border: none;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  white-space: nowrap; /* Button text එක කැඩෙන්නේ නැතිව තබාගැනීමට */
+}
+
+.portfolio-gallery .portfolio-filter-nav .nav-link:hover {
+  color: var(--accent-color);
+}
+
+.portfolio-gallery .portfolio-filter-nav .nav-link.active {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--accent-color), transparent 80%);
+}
+
+/* CSS for Gapless Masonry Layout (ඉඩ නැතිව පෙන්වීමට) */
+.portfolio-masonry-gapless {
+  column-count: 4;
+  column-gap: 0; /* තීරු අතර ඉඩක් නැත */
+}
+
+.portfolio-masonry-gapless .portfolio-item {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 0; /* images අතර උඩ/යට ඉඩක් නැත */
+  break-inside: avoid;
+  vertical-align: top; /* Alignment ගැටළු නිරාකරණයට */
+}
+
+.portfolio-masonry-gapless .portfolio-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 0; /* දාර වටකුරු කිරීමක් නැත */
+  box-shadow: none; /* shadow නැත */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.portfolio-masonry-gapless .portfolio-item img:hover {
+  transform: scale(1.02); /* පොඩි zoom effect එකක් */
+  opacity: 0.8; /* පොඩි fade effect එකක් */
+}
+
+/* Filter කිරීමේදී item සඟවා තැබීමට */
+.portfolio-item.hide {
+  display: none;
+}
+
+/* Responsive adjustments for Gapless Masonry */
+@media (max-width: 1200px) {
+  .portfolio-masonry-gapless {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 992px) {
+  .portfolio-masonry-gapless {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 576px) {
+  .portfolio-masonry-gapless {
+    column-count: 1;
+  }
+
+  .portfolio-gallery .portfolio-filter-nav {
+    /* Mobile වලදී, flex-direction: column කිරීමක් අවශ්‍ය නැත, wrap වීම ප්‍රමාණවත් */
+    border-radius: 10px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Admin Panel (New)
+--------------------------------------------------------------*/
+.admin-panel .admin-guide-box {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+  border-left: 5px solid var(--accent-color);
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 20px; /* form එකෙන් වෙන්වීමට */
+}
+
+.admin-panel .admin-guide-box h3 {
+  color: var(--accent-color);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.admin-panel .admin-guide-box ol {
+  padding-left: 20px;
+}
+
+.admin-panel .admin-guide-box ol li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.admin-panel .admin-panel-form {
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.admin-panel .admin-panel-form .btn-getstarted {
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 16px;
+}
+
+/* Textarea සහ Copy Button සඳහා */
+.admin-panel .admin-panel-form textarea {
+  font-family: monospace;
+  background: #f4f4f4;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.admin-panel .admin-panel-form .input-group .btn {
+  /* Copy button එක textarea එකට ගැලපීමට */
+  border-color: #ddd;
+  background: #f9f9f9;
+}
+
+.admin-panel .admin-panel-form .input-group .btn:hover {
+  background: #e9e9e9;
 }
