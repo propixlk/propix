@@ -8,22 +8,30 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
 
+  <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+  <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-  <link href="assets/css/main.css" rel="stylesheet"> </head>
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet"> <!-- ඔබ ලබාදුන් main.css ගොනුව -->
 
-<body class="portfolio-page"> <header id="header" class="header d-flex align-items-center sticky-top">
+</head>
+
+<body class="portfolio-page"> <!-- Page class වෙනස් කළා -->
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
@@ -34,10 +42,12 @@
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="index.html#about">About</a></li>
-          <li><a href="portfolio.html" class="active">Portfolio</a></li> <li><a href="index.html#services">Services</a></li>
+          <li><a href="portfolio.html" class="active">Portfolio</a></li> <!-- නව පිටුව එකතු කළා -->
+          <li><a href="index.html#services">Services</a></li>
           <li><a href="index.html#pricing">Pricing</a></li>
           <li><a href="index.html#contact">Contact</a></li>
-          <li><a href="portfolio-admin.html">Admin</a></li> </ul>
+          <li><a href="portfolio-admin.html">Admin</a></li> <!-- Admin Panel එකට link එකක් -->
+        </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
@@ -48,6 +58,7 @@
 
   <main class="main">
 
+    <!-- Page Title -->
     <div class="page-title light-background">
       <div class="container">
         <nav class="breadcrumbs">
@@ -58,10 +69,14 @@
         </nav>
         <h1>Portfolio Gallery</h1>
       </div>
-    </div><section id="portfolio-gallery" class="portfolio-gallery section">
+    </div><!-- End Page Title -->
+
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio-gallery" class="portfolio-gallery section">
 
       <div class="container" data-aos="fade-up">
 
+        <!-- Filter Buttons -->
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-center">
             <ul class="portfolio-filter-nav nav nav-pills">
@@ -75,7 +90,7 @@
                 <a class="nav-link" href="#" data-filter="social">Social Media</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" data-filter="thumb">thumb</a>
+                <a class="nav-link" href="#" data-filter="thumb">Thumbnails</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#" data-filter="tute">Tute Covers</a>
@@ -86,14 +101,83 @@
             </ul>
           </div>
         </div>
+        <!-- End Filter Buttons -->
+
+        <!-- Portfolio Masonry Gallery (Gapless) -->
+        <!-- ඔබගේ ඉල්ලීම පරිදි ("without any... spaces") මෙහි images අතර කිසිඳු ඉඩක් නැත -->
+        <!-- main.css ගොනුවේ ඇති .portfolio-masonry-gapless class එක බලන්න -->
         <div class="portfolio-masonry portfolio-masonry-gapless" data-aos="fade-up" data-aos-delay="200">
 
-          </div>
-        </div>
+          <!-- පහත ඇත්තේ උදාහරණ පින්තූර. මේවා වෙනුවට ඔබගේ පින්තූර යොදන්න -->
+          <!-- විවිධ ප්‍රමාණ (actual sizes) පෙන්වීමට placehold.co භාවිතා කර ඇත -->
 
-    </section></main>
+          <!-- Item 1 (Social) -->
+          <div class="portfolio-item social">
+            <img src="assets/img/scroll-design/1.png" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 2 (CV) -->
+          <div class="portfolio-item cv">
+            <img src="assets/" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 3 (Thumbnail) -->
+          <div class="portfolio-item thumb">
+            <img src="https://placehold.co/600x338/BAE6FD/333?text=Thumbnail+1" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 4 (Tute Cover) -->
+          <div class="portfolio-item tute">
+            <img src="https://placehold.co/600x776/FECACA/333?text=Tute+Cover+1" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 5 (Social) -->
+          <div class="portfolio-item social">
+            <img src="https://placehold.co/600x600/E9D5FF/333?text=Social+Post+2" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 6 (Other) -->
+          <div class="portfolio-item other">
+            <img src="https://placehold.co/600x400/FDE68A/333?text=Other+1" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 7 (CV) -->
+          <div class="portfolio-item cv">
+            <img src="https://placehold.co/600x848/A7F3D0/333?text=CV+Design+2" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 8 (Thumbnail) -->
+          <div class="portfolio-item thumb">
+            <img src="https://placehold.co/600x338/BAE6FD/333?text=Thumbnail+2" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 9 (Social) -->
+          <div class="portfolio-item social">
+            <img src="https://placehold.co/600x750/E9D5FF/333?text=Social+Post+3" alt="Portfolio Image">
+          </div>
+
+          <!-- Item 10 (Tute Cover) -->
+          <div class="portfolio-item tute">
+            <img src="https://placehold.co/600x776/FECACA/333?text=Tute+Cover+2" alt="Portfolio Image">
+          </div>
+
+          <!-- Portfolio Item -->
+           <div class="portfolio-item social">
+            <img src="assets/img/about/about-8.webp" alt="name">
+        </div>
+  <!-- End Portfolio Item -->
+
+        </div>
+        <!-- End Portfolio Masonry Gallery -->
+
+      </div>
+
+    </section><!-- /Portfolio Section -->
+
+  </main>
 
   <footer id="footer" class="footer position-relative dark-background">
+    <!-- Footer content (ඔබගේ starter-page.html එකේ තිබූ ආකාරයටම) -->
     <div class="container footer-top">
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-about">
@@ -146,8 +230,10 @@
     </div>
   </footer>
 
+  <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+  <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
@@ -155,97 +241,37 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
 
+  <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
+  <!-- Gallery Filter JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const filterButtons = document.querySelectorAll('.portfolio-filter-nav .nav-link');
+      const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-      // ----------------------------------------------------
-      // පියවර 1: දත්ත ලබා ගැනීම (Fetch Data)
-      // ----------------------------------------------------
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
 
-      // !!! වැදගත් !!!
-      // ඔබගේ Google Apps Script "Web app URL" එක මෙතන paste කරන්න
-      const webAppUrl = "https://script.google.com/macros/s/AKfycbz8bnoWhYXNwYwFfDUCWR2n2xx6Arty9enGFe25AZryml0VytMvcreyZPBiULFeeUlR1A/exec";
+          // Active button style
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
 
-      const galleryContainer = document.querySelector('.portfolio-masonry-gapless');
+          const filter = this.getAttribute('data-filter');
 
-      if (galleryContainer) {
-        // දත්ත load වනතුරු පණිවිඩයක් පෙන්වීම
-        galleryContainer.innerHTML = '<p style="text-align:center; width:100%;">Loading portfolio...</p>';
-
-        fetch(webAppUrl)
-          .then(response => response.json())
-          .then(data => {
-
-            galleryContainer.innerHTML = ''; // Loading පණිවිඩය ඉවත් කිරීම
-
-            if (data.error) {
-              console.error("API Error:", data.error);
-              galleryContainer.innerHTML = `<p style="text-align:center; width:100%; color: red;">Error loading portfolio. Check Apps Script: ${data.error}</p>`;
-              return;
+          portfolioItems.forEach(item => {
+            // 'hide' class එක main.css එකට එකතු කර ඇත
+            item.classList.add('hide'); 
+            
+            if (filter === 'all') {
+              item.classList.remove('hide');
+            } else if (item.classList.contains(filter)) {
+              item.classList.remove('hide');
             }
-
-            if (!data || data.length === 0) {
-              galleryContainer.innerHTML = '<p style="text-align:center; width:100%;">No portfolio items found.</p>';
-              return;
-            }
-
-            // Google Sheet එකෙන් ආ සෑම දත්තයක් සඳහාම HTML සෑදීම
-            data.forEach(item => {
-              // item.imageUrl (https://drive.google.com/uc?id=...)
-              // item.category (cv, social, etc.)
-              const itemHtml = `
-                <div class="portfolio-item ${item.category}">
-                  <img src="${item.imageUrl}" alt="Portfolio Image">
-                </div>
-              `;
-              galleryContainer.innerHTML += itemHtml;
-            });
-
-            // ----------------------------------------------------
-            // පියවර 2: Filter Script එක ක්‍රියාත්මක කිරීම
-            // (දත්ත load වූ පසුව)
-            // ----------------------------------------------------
-            initPortfolioFilter();
-
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-            galleryContainer.innerHTML = '<p style="text-align:center; width:100%; color: red;">Could not load portfolio data. Check API URL and network connection.</p>';
-          });
-      }
-
-      // Filter script එක වෙනම function එකක් තුලට දැමීම
-      function initPortfolioFilter() {
-        const filterButtons = document.querySelectorAll('.portfolio-filter-nav .nav-link');
-        // දත්ත load වූ පසු අලුතින් සෑදූ portfolio-item සියල්ල තෝරාගැනීම
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
-
-        if (portfolioItems.length === 0) return; // Items නැත්නම් filter කරන්න දෙයක් නෑ
-
-        filterButtons.forEach(button => {
-          button.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-
-            const filter = this.getAttribute('data-filter');
-
-            portfolioItems.forEach(item => {
-              item.classList.add('hide'); // main.css එකේ .hide class එක අවශ්‍යයි
-
-              if (filter === 'all') {
-                item.classList.remove('hide');
-              } else if (item.classList.contains(filter)) {
-                item.classList.remove('hide');
-              }
-            });
           });
         });
-      }
-
+      });
     });
   </script>
 
