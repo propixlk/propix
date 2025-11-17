@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Admin - Add Price - Landify</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets.img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <link href="assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="starter-page-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <h1 class="sitename">Landify (Admin)</h1>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="price-list.html" class="active">Add New Price</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a class="btn-getstarted" href="index.html#about">Get Started</a>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <div class="page-title light-background">
+      <div class="container">
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Add New Price</li>
+          </ol>
+        </nav>
+        <h1>Add New Price</h1>
+      </div>
+    </div><section id="starter-section" class="starter-section section">
+
+      <div class="container" data-aos="fade-up">
+        
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <form id="priceForm">
+              
+              <div class="mb-3">
+                <label for="category" class="form-label">Category (වර්ගය)</label>
+                <input type="text" class="form-control" id="category" name="category" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="service" class="form-label">Service (සේවාව)</label>
+                <input type="text" class="form-control" id="service" name="service" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="description" class="form-label">Description (විස්තරය)</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="price" class="form-label">Price (මිල)</label>
+                <input type="text" class="form-control" id="price" name="price" placeholder="උදා: Rs. 5000" required>
+              </div>
+
+              <button type="submit" class="btn btn-primary" id="submitButton">
+                <span id="buttonSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                Save Price
+              </button>
+
+            </form>
+            
+            <div id="formStatus" class="mt-4"></div>
+
+          </div>
+        </div>
+      </div>
+
+    </section></main>
+
+  <footer id="footer" class="footer position-relative dark-background">
+    </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // !!!=========================================!!!
+      // !!!            වැදගත්                    !!!
+      // !!! පියවර 2 න් ලැබුණු ඔබගේ Google Apps Script "Web app URL" එක මෙතන paste කරන්න
+      // !!!=========================================!!!
+      const webAppUrl = "https://script.google.com/macros/s/AKfycbyEiNMgBDJVPTngJtNxfM0YLEdUAM4zp_PpWGH4E5W_iP76egHvkcoOFjXvPrIblyNhNQ/exec"; 
+      // උදා: "https://script.google.com/macros/s/xxxxxxxxxxxx/exec"
+
+      const form = document.getElementById('priceForm');
+      const formStatus = document.getElementById('formStatus');
+      const submitButton = document.getElementById('submitButton');
+      const buttonSpinner = document.getElementById('buttonSpinner');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Form එක submit වීම වැළැක්වීම
+
+        // Button එක disable කර Spinner එක පෙන්වීම
+        submitButton.disabled = true;
+        buttonSpinner.style.display = 'inline-block';
+        formStatus.innerHTML = '<div class="alert alert-info" role="alert">දත්ත යවමින් පවතී...</div>';
+
+        const formData = new FormData(form);
+
+        fetch(webAppUrl, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Button එක නැවත enable කිරීම
+          submitButton.disabled = false;
+          buttonSpinner.style.display = 'none';
+
+          if (data.status === 'success') {
+            formStatus.innerHTML = `<div class="alert alert-success" role="alert">සාර්ථකයි! දත්ත ඇතුළත් කරන ලදී.</div>`;
+            form.reset(); // Form එක clear කිරීම
+          } else {
+            throw new Error(data.message || 'Unknown error');
+          }
+        })
+        .catch(error => {
+          submitButton.disabled = false;
+          buttonSpinner.style.display = 'none';
+          console.error('Error:', error);
+          formStatus.innerHTML = `<div class="alert alert-danger" role="alert">දෝෂයක් ඇතිවිය! ${error.message}. කරුණාකර Apps Script settings (Anyone) සහ URL එක පරීක්ෂා කරන්න.</div>`;
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>
