@@ -81,49 +81,45 @@
       </div>
     </div>
 
-    <!-- Pricing Section -->
     <section id="pricing" class="pricing section">
-      <div class="container" data-aos="fade-up">
+  <div class="container" data-aos="fade-up">
 
-        <!-- Search bar row -->
-<div class="row mb-4 justify-content-center">
-  <div class="col-lg-6 col-md-8 col-sm-10">
-    <!-- Search input -->
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input id="price-search" type="search" class="form-control" placeholder="Search item name or description..." aria-label="Search prices" />
-      <button id="clear-search" class="btn btn-outline-secondary" type="button" title="Clear search">&times;</button>
-    </div>
-    </div>
-  </div>
-</div>
-
-
-        <!-- Loading Spinner -->
-        <div id="loading-spinner" class="row gy-4">
-          <div class="col-lg-12 text-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-3 fs-5">Loading prices...</p>
-          </div>
+    <!-- Search bar row -->
+    <div class="row mb-4 justify-content-center">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="price-search" type="search" class="form-control" placeholder="Search item name or description..." aria-label="Search prices" />
+          <button id="clear-search" class="btn btn-outline-secondary" type="button" title="Clear search">&times;</button>
         </div>
-
-        <!-- Error Message -->
-        <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
-
-        <!-- Container for price cards -->
-        <div class="row gy-4" id="price-list-container">
-          <!-- Price cards injected here -->
-        </div>
-
-        <!-- No-results placeholder -->
-        <div id="no-results" class="no-results d-none">
-          <p class="mb-0">No services match your search.</p>
-        </div>
-
       </div>
-    </section>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="row gy-4 justify-content-center">
+      <div class="col-lg-12 text-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 fs-5">Loading prices...</p>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
+
+    <!-- Price Cards Container -->
+    <div class="row gy-4 justify-content-center" id="price-list-container">
+      <!-- Cards injected here -->
+    </div>
+
+    <!-- No-results placeholder -->
+    <div id="no-results" class="no-results d-none">
+      <p class="mb-0">No services match your search.</p>
+    </div>
+
+  </div>
+</section>
 
   </main>
 
@@ -220,7 +216,7 @@
 
       // Helper: render one card
       function renderCard(item) {
-        const desc = item.description ? item.description : 'No description provided.';
+        const desc = item.description ? item.description : '';
         const price = item.price ? item.price : 'N/A';
         const category = item.category ? item.category : 'Category';
         const service = item.service ? item.service : 'Service';
