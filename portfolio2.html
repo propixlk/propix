@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | BluePixel</title>
+    <meta name="description" content="Explore our extensive portfolio of graphic design works.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Config for Tailwind (Matches Main Site) -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            100: '#03abec',
+                            200: '#1590ef',
+                            300: '#1c86f1',
+                            400: '#2e69f4',
+                            500: '#3d53f7',
+                            600: '#424cf6',
+                            900: '#1a237e', 
+                        },
+                        dark: {
+                            bg: '#0b1121', 
+                            card: '#1e293b',
+                            text: '#f8fafc',
+                            muted: '#cbd5e1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles */
+        body {
+            cursor: none;
+        }
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .custom-cursor { display: none; }
+        }
+
+        .custom-cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            border: 2px solid #424cf6;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        .custom-cursor.hovered {
+            width: 40px; height: 40px;
+            background-color: rgba(66, 76, 246, 0.3);
+            border-color: transparent;
+        }
+
+        /* Zero Gap Masonry */
+        .gallery-column {
+            column-count: 1;
+            column-gap: 0;
+        }
+        @media (min-width: 640px) { .gallery-column { column-count: 2; } }
+        @media (min-width: 768px) { .gallery-column { column-count: 3; } }
+        @media (min-width: 1024px) { .gallery-column { column-count: 4; } }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 0; /* No vertical gap */
+            display: block;
+            width: 100%;
+            line-height: 0; /* Fixes tiny gaps below images */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Image hover zoom effect */
+        .gallery-item img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Filter Button Styles */
+        .filter-btn.active {
+            background-color: #424cf6;
+            color: white;
+            border-color: #424cf6;
+        }
+
+        /* Glass Nav */
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .dark .glass {
+            background: rgba(11, 17, 33, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor hidden md:block" id="customCursor"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
+                   <img src="https://placehold.co/200x50/png?text=BluePixel+Logo" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain dark:invert transition-all"> 
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
+                    <a href="index.html#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Services</a>
+                    <a href="index.html#contact" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                        Start Project
+                    </a>
+                    <!-- Dark Mode Toggle -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                </div>
+
+                 <!-- Mobile Button -->
+                 <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                       <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                       <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                   </button>
+               </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-32 pb-12 bg-gray-50 dark:bg-black/20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Our Portfolio</h1>
+            <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">A curated collection of our finest work across branding, digital, and print.</p>
+            
+            <!-- Filter Options -->
+            <div class="flex flex-wrap justify-center gap-3" id="filters">
+                <button class="filter-btn active px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition hoverable" onclick="filterGallery('all', this)">All</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition hoverable" onclick="filterGallery('branding', this)">Branding</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition hoverable" onclick="filterGallery('social', this)">Social Media</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition hoverable" onclick="filterGallery('print', this)">Print</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition hoverable" onclick="filterGallery('web', this)">Web</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zero Gap Gallery -->
+    <div class="w-full">
+        <div class="gallery-column w-full" id="gallery-container">
+            <!-- Image 1: Branding -->
+            <div class="gallery-item group" data-category="branding">
+                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?w=800&q=80" alt="Design" loading="lazy">
+                <!-- Overlay (Optional: Remove 'hidden' if you want a subtle tint on hover) -->
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 2: Social -->
+            <div class="gallery-item group" data-category="social">
+                <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 3: Print -->
+            <div class="gallery-item group" data-category="print">
+                <img src="https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 4: Branding (Tall) -->
+            <div class="gallery-item group" data-category="branding">
+                <img src="https://images.unsplash.com/photo-1586717791821-3f44a5638d0f?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+             <!-- Image 5: Web -->
+             <div class="gallery-item group" data-category="web">
+                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 6: Social -->
+            <div class="gallery-item group" data-category="social">
+                <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 7: Print -->
+            <div class="gallery-item group" data-category="print">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 8: Branding -->
+            <div class="gallery-item group" data-category="branding">
+                <img src="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 9: Web -->
+            <div class="gallery-item group" data-category="web">
+                <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Image 10: Social -->
+            <div class="gallery-item group" data-category="social">
+                <img src="https://images.unsplash.com/photo-1626785774625-ddcddc3445e9?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+             <!-- Image 11: Branding -->
+             <div class="gallery-item group" data-category="branding">
+                <img src="https://images.unsplash.com/photo-1629367494173-c78a56567877?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+             
+            <!-- Image 12: Print -->
+            <div class="gallery-item group" data-category="print">
+                <img src="https://images.unsplash.com/photo-1603380353725-f8306897773e?w=800&q=80" alt="Design" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <section class="bg-brand-50 dark:bg-brand-900/20 py-12 border-y border-brand-100 dark:border-brand-800/30">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Quick design need?</h3>
+                    <p class="text-gray-600 dark:text-dark-muted">Skip the meeting. Get a quote instantly.</p>
+                </div>
+                <button onclick="toggleModal()" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
+                    Get Quick Quote
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center mb-4 md:mb-0 hoverable">
+                    <img src="https://placehold.co/150x40/png?text=BluePixel" alt="BluePixel" class="h-8 w-auto mr-2 invert">
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between text-sm text-gray-400">
+                <p>&copy; 2023 BluePixel Graphic Design. All rights reserved.</p>
+                <div class="space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white hoverable">Privacy Policy</a>
+                    <a href="#" class="hover:text-white hoverable">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Dark Mode Logic (Check localStorage/System in production, simplified here)
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Mouse Cursor
+        const cursor = document.getElementById('customCursor');
+        const hoverables = document.querySelectorAll('.hoverable, a, button, .gallery-item');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // Filter Function
+        function filterGallery(category, btn) {
+            // Update Buttons
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filter Items
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                    item.classList.add('animate-fade-in'); // Add simple fade animation
+                    setTimeout(() => item.classList.remove('animate-fade-in'), 500);
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
