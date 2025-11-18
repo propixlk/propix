@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Propix Lk | Creative Graphic Design Services</title>
     <meta name="description" content="Professional Graphic Design Services - Posters, Banners, UI/UX and more.">
+    
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/Favicon/favicon-16x16.png">
+    <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
+    <meta name="theme-color" content="#ffffff">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -192,9 +199,50 @@
         .glow-card:hover::before {
             opacity: 1;
         }
+
+        /* Xmas Snow and Item Effect Container */
+        /* ... දැනට පවතින Custom Styles ... */
+
+        /* Real Snow Effect CSS */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            /* සුළු සෙවනැල්ලක් එකතු කර ඇත්තේ වඩාත් ත්‍රිමාන පෙනුමක් (3D look) ලබා දීමටය */
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); 
+            animation: snowfall linear infinite;
+        }
+
+        /* හිම වැටීමේ Keyframes */
+        @keyframes snowfall {
+            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+            5% { opacity: 0.8; } /* ඉක්මනින් දර්ශනය වීමට */
+            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; } /* අවසානයේ අතුරුදහන් වීමට */
+        }
+        
+        /* ... අනෙකුත් Custom Styles ... */
+        /* Xmas Snow and Item Effect Container */
+
+
     </style>
 </head>
 <body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
+
+    <!-- Xmas Snow and Item Effect Container -->
+    <div class="snow-container" id="snowContainer"></div>
+    <!-- Xmas Snow and Item Effect Container -->
 
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
 
@@ -207,26 +255,23 @@
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-4">
+            <form action="https://formspree.io/f/xwpolbba" method="POST" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Your Name</label>
-                    <input type="text" name="name" placeholder="John Doe" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+                    <input type="text" name="name" placeholder="Enter Name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Design Detail</label>
                     <select name="design_type" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition appearance-none">
-                        <option value="" disabled selected>Choose a service...</option>
-                        <option value="Logo Design">Logo Design</option>
-                        <option value="Social Media Post">Social Media Post</option>
-                        <option value="Banner/Poster">Banner/Poster</option>
-                        <option value="Flyer/Brochure">Flyer/Brochure</option>
-                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="" disabled selected>Choose a service..</option>
+                        <option value="Digital Design">Digital design</option>
+                        <option value="Print design">Print Design</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Note</label>
-                    <textarea name="note" placeholder="Describe your idea roughly..." rows="3" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition"></textarea>
+                    <textarea name="note" placeholder="Describe your idea.." rows="3" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">How should we contact you?</label>
@@ -265,7 +310,7 @@
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                     </button>
-                    <a href="#contact" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
                         Let's Talk
                     </a>
                 </div>
@@ -353,7 +398,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Experience</p>
-                            <p class="font-bold text-gray-900 dark:text-white">5+ Years in Design</p>
+                            <p class="font-bold text-gray-900 dark:text-white">3+ Years in Design</p>
                         </div>
                     </div>
                 </div>
@@ -385,8 +430,8 @@
     <section id="portfolio" class="py-20 bg-gray-50 dark:bg-black/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl font-display font-bold text-gray-900 dark:text-white">Selected Works</h2>
-                <p class="text-gray-500 dark:text-gray-400 mt-4">A showcase of our recent creative endeavors.</p>
+                <h2 class="text-4xl font-display font-bold text-gray-900 dark:text-white">Portfolio</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-4">A showcase of our recent creative designs.</p>
             </div>
             <div class="masonry-grid reveal">
                 <div class="masonry-item group relative hoverable">
@@ -704,7 +749,7 @@
                 </div>
 
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-8 text-gray-800 dark:text-white shadow-2xl reveal">
-                    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-4">
+                    <form action="https://formspree.io/f/xwpolbba" method="POST" class="space-y-4">
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
@@ -720,7 +765,7 @@
                             <textarea name="message" rows="4" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-gray-900 dark:text-white"></textarea>
                         </div>
                         <button type="submit" class="w-full py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 transition transform active:scale-95 hoverable shadow-lg shadow-brand-500/30">
-                            Send Request
+                            Send Message
                         </button>
                     </form>
                 </div>
@@ -735,14 +780,15 @@
                     <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-8 w-auto mr-2">
                 </div>
                 <div class="flex space-x-6">
-                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                    <a href="https://www.tiktok.com/@propix_lk" class="hover:text-brand-400 transition hoverable"><i data-lucide="music-2" class="w-5 h-5"></i></a>
+                    <a href="https://www.facebook.com/share/1Bj9wAdLRN/" class="hover:text-brand-400 transition hoverable"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="hover:text-brand-400 transition hoverable"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+                    <!--<a href="https://t.me/propixlk" class="hover:text-brand-400 transition hoverable"><i data-lucide="send" class="w-5 h-5"></i></a>-->
+                    <a href="Mailto:propixlk@gmail.com" class="hover:text-brand-400 transition hoverable"><i data-lucide="mail" class="w-5 h-5"></i></a>
                 </div>
             </div>
             <div class="border-t border-gray-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between text-sm text-gray-400">
-                <p>&copy; 2023 BluePixel Graphic Design. All rights reserved.</p>
+                <p>&copy; Propix LK. All rights reserved.<br>2024 - 2026</p>
                 <div class="space-x-4 mt-4 md:mt-0">
                     <a href="#" class="hover:text-white hoverable">Privacy Policy</a>
                     <a href="#" class="hover:text-white hoverable">Terms of Service</a>
@@ -840,6 +886,52 @@
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
+
+
+        // ☃️ Real Snowfall Generator
+        const snowContainer = document.getElementById('snowContainer');
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+
+            // 1px සිට 4px දක්වා අහඹු ප්‍රමාණය (Random size from 1px to 4px)
+            const size = Math.random() * 3 + 1; 
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+
+            // 0.3 සිට 0.8 දක්වා අහඹු අපැහැදිලි බව (Random opacity from 0.3 to 0.8)
+            snowflake.style.opacity = `${Math.random() * 0.5 + 0.3}`;
+
+            // අහඹු ආරම්භක ස්ථානය (Random starting position)
+            snowflake.style.left = `${Math.random() * 100}vw`;
+
+            // වේගය (Duration) - කුඩා හිම කැටිති සෙමින් වැටේ (Smaller snowflakes fall slower)
+            const duration = Math.random() * 8 + 10; // 10s සිට 18s
+            snowflake.style.animationDuration = `${duration}s`;
+            
+            // වැටීම ආරම්භ කිරීමට සුළු ප්‍රමාදයක් (Small delay to stagger the start)
+            const delay = Math.random() * 5; 
+            snowflake.style.animationDelay = `${delay}s`;
+
+            // සුළං බලපෑම සඳහා තිරස් විස්ථාපනය (Horizontal offset for wind effect)
+            // -100px සිට 100px දක්වා තිරස් චලනය
+            const windOffset = Math.random() * 200 - 100; 
+            snowflake.style.setProperty('--wind-offset', `${windOffset}px`);
+
+            snowContainer.appendChild(snowflake);
+
+            // වැටීම අවසන් වූ පසු ඉවත් කරන්න
+            setTimeout(() => {
+                snowflake.remove();
+            }, (duration + delay) * 1000);
+        }
+
+        // සෑම මිලි තත්පර 150 කටම වරක් හිම කැටියක් සාදන්න (Create one snowflake every 150ms)
+        // (තීව්‍රතාව වැඩි කිරීමට ඔබට මෙම අගය අඩු කළ හැක)
+        setInterval(createSnowflake, 150);
+
+
     </script>
 </body>
 </html>
