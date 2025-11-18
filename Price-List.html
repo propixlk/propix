@@ -1,362 +1,436 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Price List - Landify</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price List | BluePixel</title>
+    <meta name="description" content="Explore the pricing details for our graphic design services.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon" />
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <!-- Custom Config for Tailwind (Matches Main Site) -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            100: '#03abec',
+                            200: '#1590ef',
+                            300: '#1c86f1',
+                            400: '#2e69f4',
+                            500: '#3d53f7',
+                            600: '#424cf6',
+                            900: '#1a237e', 
+                        },
+                        dark: {
+                            bg: '#0b1121', 
+                            card: '#1e293b',
+                            text: '#f8fafc',
+                            muted: '#cbd5e1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        /* Custom Styles for Glass effect and Cursor */
+        body {
+            cursor: none;
+        }
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .custom-cursor { display: none; }
+        }
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+        .custom-cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            border: 2px solid #424cf6;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        .custom-cursor.hovered {
+            width: 40px; height: 40px;
+            background-color: rgba(66, 76, 246, 0.3);
+            border-color: transparent;
+        }
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet" />
-
-  <!-- Small CSS fix so prices show (overrides hidden rule in main.css) -->
-  <style>
-    /* Ensure price is visible */
-    .pricing .price-card .card-head .price-wrap .price.price-monthly {
-      display: inline-flex !important;
-    }
-
-    /* Small styling for search bar */
-    #price-search {
-      max-width: 480px;
-      width: 100%;
-    }
-    .no-results {
-      text-align: center;
-      padding: 24px 0;
-      color: #6c757d;
-    }
-  </style>
+        /* Glass Nav */
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .dark .glass {
+            background: rgba(11, 17, 33, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Loading Spinner Animation */
+        .spinner {
+            border-top-color: #424cf6;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
+<body class="antialiased bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
 
-<body class="starter-page-page">
+    <!-- Custom Cursor -->
+    <div class="custom-cursor hidden md:block" id="customCursor"></div>
 
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">Landify</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="Price.html" class="active">Price List</a></li>
-          <li><a href="Price-List.html">Add Price (Admin)</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="index.html#about">Get Started</a>
-    </div>
-  </header>
-
-  <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title light-background">
-      <div class="container">
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Price List</li>
-          </ol>
-        </nav>
-        <h1>Our Price List</h1>
-      </div>
-    </div>
-
-    <section id="pricing" class="pricing section">
-  <div class="container" data-aos="fade-up">
-
-    <!-- Search bar row -->
-    <div class="row mb-4 justify-content-center">
-      <div class="col-lg-6 col-md-8 col-sm-10">
-        <div class="input-group">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input id="price-search" type="search" class="form-control" placeholder="Search item name or description..." aria-label="Search prices" />
-          <button id="clear-search" class="btn btn-outline-secondary" type="button" title="Clear search">&times;</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Loading Spinner -->
-    <div id="loading-spinner" class="row gy-4 justify-content-center">
-      <div class="col-lg-12 text-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-3 fs-5">Loading prices...</p>
-      </div>
-    </div>
-
-    <!-- Error Message -->
-    <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
-
-    <!-- Price Cards Container -->
-    <div class="row gy-4 justify-content-center" id="price-list-container">
-      <!-- Cards injected here -->
-    </div>
-
-    <!-- No-results placeholder -->
-    <div id="no-results" class="no-results d-none">
-      <p class="mb-0">No services match your search.</p>
-    </div>
-
-  </div>
-</section>
-
-  </main>
-
-  <!-- Footer (unchanged) -->
-  <footer id="footer" class="footer position-relative dark-background">
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-5 col-md-12 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Landify</span>
-          </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
-          <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">MyWebsite</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-
-  <!-- Main JS -->
-  <script src="assets/js/main.js"></script>
-
-  <!-- ========== FETCH + SEARCH SCRIPT ========== -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // ====== IMPORTANT: paste your Google Apps Script web app URL here ======
-      const webAppUrl = "https://script.google.com/macros/s/AKfycbxRxjyL8N_PCTq9uXpiXR7lvc8O6E8I60cmvdjRZ_CUGe-meMdfO2pBiZJjVE4OAHhjSA/exec";
-      // =====================================================================
-
-      const container = document.getElementById('price-list-container');
-      const spinnerRow = document.getElementById('loading-spinner');
-      const errorAlert = document.getElementById('error-message');
-      const noResults = document.getElementById('no-results');
-
-      const searchInput = document.getElementById('price-search');
-      const clearBtn = document.getElementById('clear-search');
-
-      // store data for client-side searching
-      let allData = [];
-
-      // Helper: render one card
-      function renderCard(item) {
-        const desc = item.description ? item.description : '';
-        const price = item.price ? item.price : 'N/A';
-        const category = item.category ? item.category : 'Category';
-        const service = item.service ? item.service : 'Service';
-
-        return `
-          <div class="col-lg-4 col-md-6" data-aos="fade-up">
-            <div class="price-card h-100">
-              <div class="card-head">
-                <div class="badge-title">${escapeHtml(category)}</div>
-                <h3 class="title">${escapeHtml(service)}</h3>
-                <div class="price-wrap">
-                  <span class="price price-monthly">${escapeHtml(price)}</span>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
+                   <!-- LOGO FIX: Separated Light/Dark Images -->
+                   <img src="assets/img/Sitelogo.png" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain block dark:hidden transition-all"> 
+                   <img src="assets/img/Sitelogow.png" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
                 </div>
-              </div>
-              <ul class="feature-list">
-                <li><span>${escapeHtml(desc)}</span></li>
-              </ul>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
+                    <a href="portfolio2.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Portfolio</a>
+                    <a href="index.html#contact" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                        Start Project
+                    </a>
+                    <!-- Dark Mode Toggle -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                </div>
+
+                 <!-- Mobile Button -->
+                 <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                       <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                       <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                   </button>
+                   <!-- Added Hamburger Menu Button -->
+                   <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
+                        <i data-lucide="menu" class="w-8 h-8"></i>
+                   </button>
+               </div>
             </div>
-          </div>
-        `;
-      }
+        </div>
 
-      // simple HTML escape to avoid injecting unexpected markup
-      function escapeHtml(text) {
-        return String(text)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-800 shadow-lg top-20 left-0">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Home</a>
+                <a href="portfolio2.html" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Portfolio</a>
+                <a href="index.html#contact" class="block px-3 py-3 text-base font-medium text-brand-600 font-bold">Start Project</a>
+            </div>
+        </div>
+    </nav>
 
-      // Show error in alert
-      function showError(message) {
-        spinnerRow.style.display = 'none';
-        errorAlert.classList.remove('d-none');
-        errorAlert.innerHTML = `<strong>Error:</strong> ${escapeHtml(message)}`;
-      }
+    <!-- Header Section -->
+    <section class="pt-32 pb-12 bg-gray-50 dark:bg-black/20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Pricing & Packages</h1>
+            <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">Simple and transparent pricing for all our graphic design services.</p>
+            
+            <!-- Search Bar -->
+            <div class="relative max-w-xl mx-auto mb-8">
+                <input type="text" id="search-input" placeholder="Search for a service or category..." 
+                       class="w-full px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-full bg-white dark:bg-dark-card text-gray-900 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition shadow-lg pl-12"
+                       aria-label="Search price list">
+                <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <button id="clear-search-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 dark:text-gray-400 hover:text-brand-600 hidden" aria-label="Clear search">
+                    <i data-lucide="x-circle" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </section>
 
-      // Fetch data from web app (async)
-      async function loadData() {
-        // basic validation
-        if (!webAppUrl || webAppUrl.includes("PASTE_YOUR_WEB_APP_URL_HERE")) {
-          showError('Web App URL is not set. Please paste your Google Apps Script Web App URL into the script.');
-          return;
+    <!-- Price List Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Loading Indicator -->
+        <div id="loading" class="text-center py-20">
+            <div class="w-12 h-12 border-4 border-gray-200 border-solid rounded-full spinner mx-auto mb-4"></div>
+            <p class="text-gray-500 dark:text-gray-400">Loading price list...</p>
+        </div>
+
+        <div id="price-list-container" class="flex flex-wrap -mx-4 hidden">
+            <!-- Price cards will be rendered here by JavaScript -->
+        </div>
+
+        <div id="no-results" class="hidden text-center text-gray-500 dark:text-gray-400 mt-10">
+            <p class="text-2xl font-display font-medium">No results found for your search query.</p>
+            <p class="text-sm mt-2">Try adjusting your search terms or view the full list.</p>
+        </div>
+    </div>
+
+    <!-- Call to Action Section (Matches Portfolio/Index) -->
+    <section class="bg-brand-50 dark:bg-brand-900/20 py-12 border-y border-brand-100 dark:border-brand-800/30">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Quick design need?</h3>
+                    <p class="text-gray-600 dark:text-dark-muted">Skip the meeting. Get a quote instantly.</p>
+                </div>
+                <!-- Assuming the toggleModal function exists for a quick quote form -->
+                <a href="index.html#contact" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
+                    Get Quick Quote
+                </a>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center mb-4 md:mb-0 hoverable">
+                    <!-- FOOTER LOGO FIX: Always show the White/Dark Mode Logo (No Invert) -->
+                    <img src="assets/img/Sitelogow.png" alt="BluePixel" class="h-8 w-auto mr-2">
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between text-sm text-gray-400">
+                <p>&copy; 2023 BluePixel Graphic Design. All rights reserved.</p>
+                <div class="space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white hoverable">Privacy Policy</a>
+                    <a href="#" class="hover:text-white hoverable">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Use the default AppScript URL from the original file (if available)
+        // **IMPORTANT:** Replace 'YOUR_APPSCRIPT_WEB_APP_URL' with the actual URL 
+        // of your deployed Google App Script Web App.
+        const appScriptUrl = 'YOUR_APPSCRIPT_WEB_APP_URL'; 
+
+        let allData = [];
+        let allCategories = [];
+
+        // UI elements
+        const searchInput = document.getElementById('search-input');
+        const clearBtn = document.getElementById('clear-search-btn');
+        const container = document.getElementById('price-list-container');
+        const noResults = document.getElementById('no-results');
+        const loading = document.getElementById('loading');
+
+
+        // --- Core Functions (AppScript Integration) ---
+
+        /**
+         * Renders a single price item card using Tailwind CSS.
+         * @param {object} item 
+         * @returns {string} HTML markup for the card.
+         */
+        const renderCard = (item) => {
+            // Updated to modern Tailwind card style
+            return `
+                <div class="w-full sm:w-1/2 lg:w-1/3 p-4">
+                    <div class="bg-white dark:bg-dark-card p-6 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] h-full flex flex-col justify-between border border-gray-100 dark:border-gray-700/50">
+                        <div>
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-brand-600 text-white mb-3 shadow-md">
+                                <i data-lucide="tag" class="w-3 h-3 mr-1"></i> ${item.category || 'General'}
+                            </span>
+                            <h5 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-2">${item.service || 'Service Name'}</h5>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${item.description || 'Detailed description of the service and what it includes.'}</p>
+                        </div>
+                        <div class="pt-4 border-t border-gray-200 dark:border-gray-700 mt-4 flex justify-between items-center">
+                            <h4 class="text-3xl font-display font-extrabold text-brand-600">${item.price || 'N/A'}</h4>
+                            <a href="index.html#contact" class="px-4 py-2 bg-brand-600 text-white rounded-full text-sm font-medium hover:bg-brand-500 transition shadow-lg hoverable">
+                                Get Quote
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+        
+        /**
+         * Filters the price list data based on a query and updates the UI.
+         * @param {string} q - Search query.
+         */
+        const filterAndRender = (q) => {
+            q = q.toLowerCase().trim();
+
+            container.innerHTML = '';
+            
+            if (!q) {
+                // show all
+                if (allData.length === 0) {
+                    container.innerHTML = '<div class="w-full text-center py-10"><p class="text-lg">No prices have been added yet.</p></div>';
+                    noResults.classList.add('hidden');
+                    container.classList.remove('hidden');
+                    return;
+                }
+                container.innerHTML = allData.map(renderCard).join('');
+                noResults.classList.add('hidden');
+            } else {
+                const filtered = allData.filter(item => {
+                    const hay = [
+                        (item.service || ''),
+                        (item.category || ''),
+                        (item.description || ''),
+                        (item.price || '')
+                    ].join(' ').toLowerCase();
+                    return hay.indexOf(q) !== -1;
+                });
+
+                if (filtered.length === 0) {
+                    container.innerHTML = '';
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                    container.innerHTML = filtered.map(renderCard).join('');
+                }
+            }
+
+            // Re-create lucide icons after injecting HTML
+            lucide.createIcons();
+            
+            // Show/hide clear button
+            if (q.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+        };
+
+        /**
+         * Fetches data from the Google App Script Web App.
+         */
+        const loadData = async () => {
+             if (appScriptUrl === 'https://script.google.com/macros/s/AKfycbxRxjyL8N_PCTq9uXpiXR7lvc8O6E8I60cmvdjRZ_CUGe-meMdfO2pBiZJjVE4OAHhjSA/exec') {
+                loading.innerHTML = '<div class="text-center py-20 text-red-500"><p>Error: Please update <b>appScriptUrl</b> in the script with your actual Google App Script Web App URL.</p></div>';
+                container.classList.add('hidden');
+                return;
+            }
+
+            loading.classList.remove('hidden');
+            container.classList.add('hidden');
+
+            try {
+                // Fetch data from the Google AppScript Web App
+                const response = await fetch(appScriptUrl + '?action=getPrices');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Assuming the AppScript returns JSON data
+                const data = await response.json();
+                
+                if (data.status === 'success' && Array.isArray(data.prices)) {
+                    allData = data.prices;
+                } else {
+                    // Handle non-standard success response or empty data
+                    allData = [];
+                    console.warn("AppScript response structure unexpected or empty data received:", data);
+                }
+
+                filterAndRender(searchInput.value); // Render loaded data
+
+            } catch (error) {
+                console.error("Error fetching data from AppScript:", error);
+                container.innerHTML = '<div class="w-full text-center py-10 text-red-500">Error loading price list. Please check your AppScript deployment and URL.</div>';
+                container.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+                container.classList.remove('hidden');
+            }
+        };
+
+        // --- UI & Event Listeners ---
+        
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
         }
 
-        try {
-          // show spinner
-          spinnerRow.style.display = '';
-          errorAlert.classList.add('d-none');
-          noResults.classList.add('d-none');
-          container.innerHTML = '';
+        // Mouse Cursor Logic
+        window.onload = function() {
+            lucide.createIcons();
 
-          const resp = await fetch(webAppUrl, { method: 'GET', headers: { 'Accept': 'application/json' } });
+            const cursor = document.getElementById('customCursor');
+            const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select, .rounded-xl');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
 
-          if (!resp.ok) {
-            throw new Error(`Network error (status ${resp.status})`);
-          }
+            hoverables.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+            
+            // Mobile Menu Logic
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if(btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                });
 
-          const result = await resp.json();
+                // Close when clicking links
+                menu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        menu.classList.add('hidden');
+                    });
+                });
+            }
 
-          if (result.status !== 'success' || !Array.isArray(result.data)) {
-            throw new Error(result.message || 'Unexpected response format from the web app.');
-          }
+            // Search Events
+            searchInput.addEventListener('input', () => filterAndRender(searchInput.value));
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filterAndRender('');
+            });
 
-          allData = result.data.slice(); // copy
+            // Start loading data from AppScript
+            loadData();
+        };
 
-          // hide spinner
-          spinnerRow.style.display = 'none';
-
-          if (allData.length === 0) {
-            container.innerHTML = '<div class="col-lg-12 text-center"><p>No prices have been added yet.</p></div>';
-            return;
-          }
-
-          // render all cards
-          container.innerHTML = allData.map(renderCard).join('');
-
-          // re-run AOS if present
-          if (window.AOS && typeof window.AOS.refresh === 'function') {
-            window.AOS.refresh();
-          }
-        } catch (err) {
-          console.error('Error fetching prices:', err);
-          showError(err.message || 'Failed to load prices. Check the Apps Script deployment and CORS settings (web app should be deployed to allow access).');
-        }
-      }
-
-      // Filter logic
-      function filterAndRender(query) {
-        const q = (query || '').trim().toLowerCase();
-        if (!q) {
-          // show all
-          if (allData.length === 0) {
-            container.innerHTML = '<div class="col-lg-12 text-center"><p>No prices have been added yet.</p></div>';
-            noResults.classList.add('d-none');
-            return;
-          }
-          container.innerHTML = allData.map(renderCard).join('');
-          noResults.classList.add('d-none');
-          return;
-        }
-
-        const filtered = allData.filter(item => {
-          const hay = [
-            (item.service || ''),
-            (item.category || ''),
-            (item.description || ''),
-            (item.price || '')
-          ].join(' ').toLowerCase();
-          return hay.indexOf(q) !== -1;
-        });
-
-        if (filtered.length === 0) {
-          container.innerHTML = '';
-          noResults.classList.remove('d-none');
-        } else {
-          noResults.classList.add('d-none');
-          container.innerHTML = filtered.map(renderCard).join('');
-        }
-
-        // refresh AOS if available
-        if (window.AOS && typeof window.AOS.refresh === 'function') {
-          window.AOS.refresh();
-        }
-      }
-
-      // EVENTS
-      searchInput.addEventListener('input', () => filterAndRender(searchInput.value));
-      clearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        filterAndRender('');
-        searchInput.focus();
-      });
-
-      // initial load
-      loadData();
-    });
-  </script>
+    </script>
 </body>
-
 </html>
