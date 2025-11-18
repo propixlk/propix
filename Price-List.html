@@ -120,7 +120,7 @@
                 <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
                    <!-- LOGO FIX: Separated Light/Dark Images -->
                    <img src="assets/img/Sitelogo.png" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain block dark:hidden transition-all"> 
-                   <img src="assets/img/Sitelogow.png" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
+                   <img src="assets/img/Sitelogo-White.png" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
                 </div>
 
                 <!-- Desktop Menu -->
@@ -143,9 +143,10 @@
                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                    </button>
-                   <!-- Added Hamburger Menu Button -->
-                   <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
-                        <i data-lucide="menu" class="w-8 h-8"></i>
+                   <!-- Mobile Menu Button with Icon Swap -->
+                   <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none p-2">
+                        <i data-lucide="menu" class="w-7 h-7 menu-icon"></i>
+                        <i data-lucide="x" class="w-7 h-7 x-icon hidden"></i>
                    </button>
                </div>
             </div>
@@ -170,10 +171,10 @@
             <!-- Search Bar -->
             <div class="relative max-w-xl mx-auto mb-8">
                 <input type="text" id="search-input" placeholder="Search for a service or category..." 
-                       class="w-full px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-full bg-white dark:bg-dark-card text-gray-900 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition shadow-lg pl-12"
+                       class="w-full px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-full bg-white dark:bg-dark-card text-gray-900 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition shadow-lg pl-12 hoverable"
                        aria-label="Search price list">
                 <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                <button id="clear-search-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 dark:text-gray-400 hover:text-brand-600 hidden" aria-label="Clear search">
+                <button id="clear-search-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 dark:text-gray-400 hover:text-brand-600 hidden hoverable" aria-label="Clear search">
                     <i data-lucide="x-circle" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -221,7 +222,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center mb-8">
                 <div class="flex items-center mb-4 md:mb-0 hoverable">
                     <!-- FOOTER LOGO FIX: Always show the White/Dark Mode Logo (No Invert) -->
-                    <img src="assets/img/Sitelogow.png" alt="BluePixel" class="h-8 w-auto mr-2">
+                    <img src="assets/img/Sitelogo-White.png" alt="BluePixel" class="h-8 w-auto mr-2">
                 </div>
                 <div class="flex space-x-6">
                     <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="facebook" class="w-5 h-5"></i></a>
@@ -241,7 +242,6 @@
     </footer>
 
     <script>
-        // Use the default AppScript URL from the original file (if available)
         // **IMPORTANT:** Replace 'YOUR_APPSCRIPT_WEB_APP_URL' with the actual URL 
         // of your deployed Google App Script Web App.
         const appScriptUrl = 'YOUR_APPSCRIPT_WEB_APP_URL'; 
@@ -268,7 +268,7 @@
             // Updated to modern Tailwind card style
             return `
                 <div class="w-full sm:w-1/2 lg:w-1/3 p-4">
-                    <div class="bg-white dark:bg-dark-card p-6 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] h-full flex flex-col justify-between border border-gray-100 dark:border-gray-700/50">
+                    <div class="bg-white dark:bg-dark-card p-6 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] h-full flex flex-col justify-between border border-gray-100 dark:border-gray-700/50 hoverable">
                         <div>
                             <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-brand-600 text-white mb-3 shadow-md">
                                 <i data-lucide="tag" class="w-3 h-3 mr-1"></i> ${item.category || 'General'}
@@ -299,7 +299,7 @@
             if (!q) {
                 // show all
                 if (allData.length === 0) {
-                    container.innerHTML = '<div class="w-full text-center py-10"><p class="text-lg">No prices have been added yet.</p></div>';
+                    container.innerHTML = '<div class="w-full text-center py-10"><p class="text-lg text-gray-500 dark:text-gray-400">No prices have been added yet.</p></div>';
                     noResults.classList.add('hidden');
                     container.classList.remove('hidden');
                     return;
@@ -342,7 +342,7 @@
          */
         const loadData = async () => {
              if (appScriptUrl === 'https://script.google.com/macros/s/AKfycbxRxjyL8N_PCTq9uXpiXR7lvc8O6E8I60cmvdjRZ_CUGe-meMdfO2pBiZJjVE4OAHhjSA/exec') {
-                loading.innerHTML = '<div class="text-center py-20 text-red-500"><p>Error: Please update <b>appScriptUrl</b> in the script with your actual Google App Script Web App URL.</p></div>';
+                loading.innerHTML = '<div class="text-center py-20 text-red-500"><p class="font-bold mb-2">Error: AppScript URL Missing</p><p>Please update <b>appScriptUrl</b> in the script with your actual Google App Script Web App URL.</p></div>';
                 container.classList.add('hidden');
                 return;
             }
@@ -364,8 +364,8 @@
                 if (data.status === 'success' && Array.isArray(data.prices)) {
                     allData = data.prices;
                 } else {
-                    // Handle non-standard success response or empty data
                     allData = [];
+                    // Even if success is false or data is empty, we still render.
                     console.warn("AppScript response structure unexpected or empty data received:", data);
                 }
 
@@ -387,35 +387,55 @@
             document.documentElement.classList.toggle('dark');
         }
 
-        // Mouse Cursor Logic
+        // Mouse Cursor Logic and Initial Load
         window.onload = function() {
             lucide.createIcons();
 
             const cursor = document.getElementById('customCursor');
+            // Added .rounded-xl to hoverables for card effect
             const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select, .rounded-xl');
             
             document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
+                // Only move cursor if it's visible (i.e., not mobile)
+                if (cursor) {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                }
             });
 
             hoverables.forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+                el.addEventListener('mouseenter', () => {
+                    if (cursor) cursor.classList.add('hovered');
+                });
+                el.addEventListener('mouseleave', () => {
+                    if (cursor) cursor.classList.remove('hovered');
+                });
             });
             
             // Mobile Menu Logic
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');
+            const menuIcon = btn.querySelector('.menu-icon');
+            const xIcon = btn.querySelector('.x-icon');
+
             if(btn && menu) {
                 btn.addEventListener('click', () => {
-                    menu.classList.toggle('hidden');
+                    const isHidden = menu.classList.toggle('hidden');
+                    if (isHidden) {
+                        menuIcon.classList.remove('hidden');
+                        xIcon.classList.add('hidden');
+                    } else {
+                        menuIcon.classList.add('hidden');
+                        xIcon.classList.remove('hidden');
+                    }
                 });
 
                 // Close when clicking links
                 menu.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', () => {
                         menu.classList.add('hidden');
+                        menuIcon.classList.remove('hidden');
+                        xIcon.classList.add('hidden');
                     });
                 });
             }
