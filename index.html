@@ -200,9 +200,6 @@
             opacity: 1;
         }
 
-        /* Xmas Snow and Item Effect Container */
-        /* ... දැනට පවතින Custom Styles ... */
-
         /* Real Snow Effect CSS */
         .snow-container {
             position: fixed;
@@ -220,79 +217,23 @@
             background: white;
             border-radius: 50%;
             pointer-events: none;
-            /* සුළු සෙවනැල්ලක් එකතු කර ඇත්තේ වඩාත් ත්‍රිමාන පෙනුමක් (3D look) ලබා දීමටය */
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); 
             animation: snowfall linear infinite;
         }
 
-        /* හිම වැටීමේ Keyframes */
         @keyframes snowfall {
             0% { transform: translateY(-100%) translateX(0); opacity: 0; }
-            5% { opacity: 0.8; } /* ඉක්මනින් දර්ශනය වීමට */
-            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; } /* අවසානයේ අතුරුදහන් වීමට */
+            5% { opacity: 0.8; } 
+            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; } 
         }
-        
-        /* ... අනෙකුත් Custom Styles ... */
-        /* Xmas Snow and Item Effect Container */
-
 
     </style>
 </head>
 <body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
 
-    <!-- Xmas Snow and Item Effect Container -->
     <div class="snow-container" id="snowContainer"></div>
-    <!-- Xmas Snow and Item Effect Container -->
 
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
-
-    <div id="quick-modal" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleModal()"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white dark:bg-dark-card rounded-2xl shadow-2xl p-8 transition-all scale-100 border border-gray-200 dark:border-gray-700">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white">Quick Quote</h3>
-                <button onclick="toggleModal()" class="text-gray-500 hover:text-red-500 transition">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            <form action="https://formspree.io/f/xwpolbba" method="POST" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Your Name</label>
-                    <input type="text" name="name" placeholder="Enter Name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Design Detail</label>
-                    <select name="design_type" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition appearance-none">
-                        <option value="" disabled selected>Choose a service..</option>
-                        <option value="Digital Design">Digital design</option>
-                        <option value="Print design">Print Design</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Note</label>
-                    <textarea name="note" placeholder="Describe your idea.." rows="3" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">How should we contact you?</label>
-                    <div class="grid grid-cols-2 gap-4 mb-3">
-                        <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                            <input type="radio" name="contact_method" value="Whatsapp" class="w-4 h-4 text-brand-600 focus:ring-brand-500 border-gray-300" checked>
-                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">WhatsApp</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                            <input type="radio" name="contact_method" value="Email" class="w-4 h-4 text-brand-600 focus:ring-brand-500 border-gray-300">
-                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Email</span>
-                        </label>
-                    </div>
-                    <input type="text" name="contact_details" placeholder="Enter Email or WhatsApp Number" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
-                </div>
-                <button type="submit" class="w-full py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
-                    Get Quote Now
-                </button>
-            </form>
-        </div>
-    </div>
 
     <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -612,9 +553,7 @@
         </div>
     </section>
 
-    <!-- Pricing Plans Section -->
     <section id="plans" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
-        <!-- Background Blur Effect -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
 
         <div class="text-center mb-16 reveal">
@@ -624,7 +563,6 @@
 
         <div class="grid md:grid-cols-3 gap-8 reveal">
             
-            <!-- Plan 1: Starter -->
             <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Starter Pack</h3>
                 <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">$49 <span class="text-base font-normal text-gray-500">/project</span></div>
@@ -650,7 +588,6 @@
                 </button>
             </div>
 
-            <!-- Plan 2: Professional (Highlighted) -->
             <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border-2 border-brand-500 shadow-2xl shadow-brand-500/20 transform md:-translate-y-4 flex flex-col relative group hoverable z-10">
                 <div class="absolute top-0 right-0 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">MOST POPULAR</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Professional</h3>
@@ -677,7 +614,6 @@
                 </button>
             </div>
 
-            <!-- Plan 3: Business -->
             <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Business</h3>
                 <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">$199 <span class="text-base font-normal text-gray-500">/month</span></div>
@@ -859,25 +795,39 @@
                 </div>
 
                 <div class="bg-white dark:bg-dark-card rounded-2xl p-8 text-gray-800 dark:text-white shadow-2xl reveal">
-                    <form action="https://formspree.io/f/xwpolbba" method="POST" class="space-y-4">
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
-                                <input type="text" name="name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition text-gray-900 dark:text-white">
+                    <div id="form-container">
+                        <form id="contact-form" action="https://formspree.io/f/xwpolbba" method="POST" class="space-y-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                                    <input type="text" name="name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition text-gray-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                    <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition text-gray-900 dark:text-white">
+                                </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                                <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none transition text-gray-900 dark:text-white">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
+                                <textarea name="message" rows="4" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-gray-900 dark:text-white"></textarea>
                             </div>
+                            <button type="submit" class="w-full py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 transition transform active:scale-95 hoverable shadow-lg shadow-brand-500/30">
+                                Send Message
+                            </button>
+                        </form>
+                        
+                        <div id="form-status" class="hidden text-center p-6 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                            <i data-lucide="check-circle" class="w-12 h-12 text-green-500 mx-auto mb-3"></i>
+                            <h3 class="text-xl font-bold text-green-700 dark:text-green-300 mb-2">Message Sent!</h3>
+                            <p class="text-green-600 dark:text-green-400">Thank you for contacting us. We will get back to you shortly.</p>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
-                            <textarea name="message" rows="4" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-gray-900 dark:text-white"></textarea>
+                        
+                        <div id="form-error" class="hidden text-center p-6 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                            <i data-lucide="alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-3"></i>
+                            <h3 class="text-xl font-bold text-red-700 dark:text-red-300 mb-2">Error!</h3>
+                            <p class="text-red-600 dark:text-red-400">Something went wrong. Please try again later.</p>
                         </div>
-                        <button type="submit" class="w-full py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 transition transform active:scale-95 hoverable shadow-lg shadow-brand-500/30">
-                            Send Message
-                        </button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -893,7 +843,6 @@
                     <a href="https://www.tiktok.com/@propix_lk" class="hover:text-brand-400 transition hoverable"><i data-lucide="music-2" class="w-5 h-5"></i></a>
                     <a href="https://www.facebook.com/share/1Bj9wAdLRN/" class="hover:text-brand-400 transition hoverable"><i data-lucide="facebook" class="w-5 h-5"></i></a>
                     <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="hover:text-brand-400 transition hoverable"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
-                    <!--<a href="https://t.me/propixlk" class="hover:text-brand-400 transition hoverable"><i data-lucide="send" class="w-5 h-5"></i></a>-->
                     <a href="Mailto:propixlk@gmail.com" class="hover:text-brand-400 transition hoverable"><i data-lucide="mail" class="w-5 h-5"></i></a>
                 </div>
             </div>
@@ -975,17 +924,6 @@
             }
         });
 
-        function toggleModal() {
-            const modal = document.getElementById('quick-modal');
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } else {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
         const cursor = document.getElementById('customCursor');
         const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select');
         document.addEventListener('mousemove', (e) => {
@@ -997,33 +935,19 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-
-        // Function to send WhatsApp message with Plan Name
         function buyPlan(planName) {
-            // ඔබේ WhatsApp අංකය මෙතැනට ඇතුළත් කරන්න (රටේ කේතය සමග, + ලකුණ නැතිව)
             const phoneNumber = "94768294496"; 
-            
-            // පණිවිඩය සකස් කිරීම
             const message = `Hi, I want to buy "${planName}"`;
-            
-            // WhatsApp Link එක විවෘත කිරීම
             const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
 
-        // Function to send WhatsApp message Request
         function request() {
-            // ඔබේ WhatsApp අංකය මෙතැනට ඇතුළත් කරන්න (රටේ කේතය සමග, + ලකුණ නැතිව)
             const phoneNumber = "94768294496"; 
-            
-            // පණිවිඩය සකස් කිරීම
             const message = `Hi, I want to design..`;
-            
-            // WhatsApp Link එක විවෘත කිරීම
             const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
-
 
         // ☃️ Real Snowfall Generator
         const snowContainer = document.getElementById('snowContainer');
@@ -1031,43 +955,69 @@
         function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
-
-            // 1px සිට 4px දක්වා අහඹු ප්‍රමාණය (Random size from 1px to 4px)
             const size = Math.random() * 3 + 1; 
             snowflake.style.width = `${size}px`;
             snowflake.style.height = `${size}px`;
-
-            // 0.3 සිට 0.8 දක්වා අහඹු අපැහැදිලි බව (Random opacity from 0.3 to 0.8)
             snowflake.style.opacity = `${Math.random() * 0.5 + 0.3}`;
-
-            // අහඹු ආරම්භක ස්ථානය (Random starting position)
             snowflake.style.left = `${Math.random() * 100}vw`;
-
-            // වේගය (Duration) - කුඩා හිම කැටිති සෙමින් වැටේ (Smaller snowflakes fall slower)
-            const duration = Math.random() * 8 + 10; // 10s සිට 18s
+            const duration = Math.random() * 8 + 10; 
             snowflake.style.animationDuration = `${duration}s`;
-            
-            // වැටීම ආරම්භ කිරීමට සුළු ප්‍රමාදයක් (Small delay to stagger the start)
             const delay = Math.random() * 5; 
             snowflake.style.animationDelay = `${delay}s`;
-
-            // සුළං බලපෑම සඳහා තිරස් විස්ථාපනය (Horizontal offset for wind effect)
-            // -100px සිට 100px දක්වා තිරස් චලනය
             const windOffset = Math.random() * 200 - 100; 
             snowflake.style.setProperty('--wind-offset', `${windOffset}px`);
-
             snowContainer.appendChild(snowflake);
-
-            // වැටීම අවසන් වූ පසු ඉවත් කරන්න
             setTimeout(() => {
                 snowflake.remove();
             }, (duration + delay) * 1000);
         }
-
-        // සෑම මිලි තත්පර 150 කටම වරක් හිම කැටියක් සාදන්න (Create one snowflake every 150ms)
-        // (තීව්‍රතාව වැඩි කිරීමට ඔබට මෙම අගය අඩු කළ හැක)
         setInterval(createSnowflake, 150);
 
+        // AJAX FORM SUBMISSION HANDLER
+        const contactForm = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+        const formError = document.getElementById('form-error');
+
+        if(contactForm) {
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const data = new FormData(contactForm);
+                const button = contactForm.querySelector('button[type="submit"]');
+                const originalText = button.innerText;
+                
+                // Disable button and show loading state
+                button.disabled = true;
+                button.innerText = 'Sending...';
+
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: contactForm.method,
+                        body: data,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Success: Hide form, Show success message
+                        contactForm.reset();
+                        contactForm.classList.add('hidden');
+                        formStatus.classList.remove('hidden');
+                        formError.classList.add('hidden');
+                    } else {
+                        // Error from Formspree
+                        formError.classList.remove('hidden');
+                        button.disabled = false;
+                        button.innerText = originalText;
+                    }
+                } catch (error) {
+                    // Network Error
+                    formError.classList.remove('hidden');
+                    button.disabled = false;
+                    button.innerText = originalText;
+                }
+            });
+        }
 
     </script>
     

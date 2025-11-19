@@ -291,10 +291,10 @@
             <div class="flex flex-col md:flex-row items-center justify-center gap-6">
                 <div>
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Quick design need?</h3>
-                    <p class="text-gray-600 dark:text-dark-muted">Skip the meeting. Get a quote instantly.</p>
+                    <p class="text-gray-600 dark:text-dark-muted">Instant quote, discount now.</p>
                 </div>
-                <button onclick="toggleModal()" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
-                    Get Quick Quote
+                <button onclick="request()" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
+                    Request
                 </button>
             </div>
         </div>
@@ -386,6 +386,20 @@
                 });
             });
         }
+
+        // Function to send WhatsApp message Design Request
+        function request() {
+            // ඔබේ WhatsApp අංකය මෙතැනට ඇතුළත් කරන්න (රටේ කේතය සමග, + ලකුණ නැතිව)
+            const phoneNumber = "94768294496"; 
+            
+            // පණිවිඩය සකස් කිරීම
+            const message = `Hi, I want to design..`;
+            
+            // WhatsApp Link එක විවෘත කිරීම
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
     </script>
 </body>
 </html>
