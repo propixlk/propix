@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -472,10 +472,12 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-12 text-center">
-                <a href="portfolio.html" class="inline-flex items-center gap-2 text-brand-600 dark:text-brand-400 font-bold hover:text-brand-500 transition group hoverable">
-                    View More Designs 
-                    <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+            <div class="mt-16 text-center pb-8">
+                <a href="portfolio.html" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 font-bold text-white transition-all duration-300 bg-gradient-to-r from-brand-600 to-brand-400 rounded-full shadow-lg shadow-brand-500/40 hover:shadow-brand-500/60 hover:scale-105 hover:-translate-y-1 overflow-hidden hoverable">
+                    <div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out z-10"></div>
+                    
+                    <span class="relative z-20 text-lg">View More Designs</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5 relative z-20 transition-transform duration-300 group-hover:translate-x-2"></i>
                 </a>
             </div>
         </div>
@@ -542,7 +544,7 @@
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Quick design need?</h3>
                     <p class="text-gray-600 dark:text-dark-muted">Instant quote, discount now.</p>
                 </div>
-                <button onclick="toggleModal()" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
+                <button onclick="request()" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
                     Request
                 </button>
             </div>
@@ -607,6 +609,100 @@
                     <p class="text-gray-400 text-sm">Custom digital art and character design for uniqueness.</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans Section -->
+    <section id="plans" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+        <!-- Background Blur Effect -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl font-display font-bold text-gray-900 dark:text-white">Design Packages</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-4">Choose the perfect plan for your business needs.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 reveal">
+            
+            <!-- Plan 1: Starter -->
+            <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Starter Pack</h3>
+                <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">$49 <span class="text-base font-normal text-gray-500">/project</span></div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Perfect for individuals and small startups.</p>
+                
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 2 Social Media Posts
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Basic Logo Design
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 3 Revisions
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 2 Days Delivery
+                    </li>
+                </ul>
+
+                <button onclick="buyPlan('Starter Pack')" class="w-full py-3 rounded-xl border border-brand-200 dark:border-gray-600 text-brand-600 dark:text-white font-bold hover:bg-brand-600 hover:text-white hover:border-brand-600 transition hoverable">
+                    Get Started
+                </button>
+            </div>
+
+            <!-- Plan 2: Professional (Highlighted) -->
+            <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border-2 border-brand-500 shadow-2xl shadow-brand-500/20 transform md:-translate-y-4 flex flex-col relative group hoverable z-10">
+                <div class="absolute top-0 right-0 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">MOST POPULAR</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Professional</h3>
+                <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">$99 <span class="text-base font-normal text-gray-500">/project</span></div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Best for growing businesses needing branding.</p>
+                
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> 5 Social Media Posts
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Premium Logo + Source File
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Unlimited Revisions
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Priority Support
+                    </li>
+                </ul>
+
+                <button onclick="buyPlan('Professional Pack')" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-400 text-white font-bold shadow-lg hover:shadow-brand-500/50 hover:scale-105 transition transform hoverable">
+                    Get Professional
+                </button>
+            </div>
+
+            <!-- Plan 3: Business -->
+            <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Business</h3>
+                <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">$199 <span class="text-base font-normal text-gray-500">/month</span></div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Complete design solution for companies.</p>
+                
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Unlimited Designs
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Full Branding Kit
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 24/7 Dedicated Support
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Web UI Assets
+                    </li>
+                </ul>
+
+                <button onclick="buyPlan('Business Pack')" class="w-full py-3 rounded-xl border border-brand-200 dark:border-gray-600 text-brand-600 dark:text-white font-bold hover:bg-brand-600 hover:text-white hover:border-brand-600 transition hoverable">
+                    Contact Sales
+                </button>
+            </div>
+
         </div>
     </section>
 
@@ -902,6 +998,33 @@
         });
 
 
+        // Function to send WhatsApp message with Plan Name
+        function buyPlan(planName) {
+            // ඔබේ WhatsApp අංකය මෙතැනට ඇතුළත් කරන්න (රටේ කේතය සමග, + ලකුණ නැතිව)
+            const phoneNumber = "94768294496"; 
+            
+            // පණිවිඩය සකස් කිරීම
+            const message = `Hi, I want to buy "${planName}"`;
+            
+            // WhatsApp Link එක විවෘත කිරීම
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Function to send WhatsApp message Request
+        function request() {
+            // ඔබේ WhatsApp අංකය මෙතැනට ඇතුළත් කරන්න (රටේ කේතය සමග, + ලකුණ නැතිව)
+            const phoneNumber = "94768294496"; 
+            
+            // පණිවිඩය සකස් කිරීම
+            const message = `Hi, I want to design..`;
+            
+            // WhatsApp Link එක විවෘත කිරීම
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+
         // ☃️ Real Snowfall Generator
         const snowContainer = document.getElementById('snowContainer');
 
@@ -947,5 +1070,6 @@
 
 
     </script>
+    
 </body>
 </html>

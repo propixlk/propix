@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +58,7 @@
     </script>
 
     <style>
-        /* Custom Cursor & Snow (From index.html) */
+        /* Custom Cursor & Snow */
         body { cursor: none; }
         @media (pointer: coarse) {
             body { cursor: auto; }
@@ -86,12 +86,6 @@
         
         .step-indicator-item.active .step-circle { background-color: #424cf6; color: white; border-color: #424cf6; }
         .step-indicator-item.completed .step-circle { background-color: #10b981; color: white; border-color: #10b981; }
-        .step-indicator-item.completed .step-line { background-color: #10b981; }
-        
-        /* Checkbox Style */
-        input[type="checkbox"]:checked {
-            background-color: #424cf6; border-color: #424cf6;
-        }
         
         /* Design Selection */
         .design-template.selected {
@@ -124,6 +118,7 @@
                     <img src="assets/img/Sitelogo.png" alt="Logo" class="h-[50px] w-[200px] object-contain block dark:hidden transition-all"> 
                     <img src="assets/img/Sitelogow.png" alt="Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
                 </div>
+                
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
                     <a href="#" class="text-brand-600 dark:text-brand-400 font-bold transition hoverable">CV Builder</a>
@@ -135,12 +130,26 @@
                         සිංහල
                     </button>
                 </div>
+
                 <div class="md:hidden flex items-center gap-4">
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                    </button>
+                   <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
+                        <i data-lucide="menu" class="w-8 h-8"></i>
+                   </button>
                 </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-800 shadow-lg left-0 top-20">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="index.html" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Home</a>
+                <a href="#" class="block px-3 py-3 text-base font-medium text-brand-600 dark:text-brand-400 font-bold hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">CV Builder</a>
+                <button id="lang-toggle-mobile" class="w-full text-left block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">
+                    සිංහල
+                </button>
             </div>
         </div>
     </nav>
@@ -371,7 +380,7 @@
                             <img src="assets/img/cv/4.jpg" alt="T4" class="rounded-md shadow-sm group-hover:shadow-md transition">
                             <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 4</p>
                         </div>
-                        <div class="col-span-2 md:col-span-4 mt-4">
+                         <div class="col-span-2 md:col-span-4 mt-4">
                              <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center cursor-pointer hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900/10 transition design-template" data-design-name="My Own Design">
                                  <i data-lucide="upload-cloud" class="w-10 h-10 mx-auto text-brand-500 mb-2"></i>
                                  <h5 class="font-bold text-gray-900 dark:text-white" data-en="Use My Own Design" data-si="මගේම නිර්මාණයක් භාවිතා කරන්න">Use My Own Design</h5>
@@ -448,6 +457,25 @@
 
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
 
+        // --- Mobile Menu Logic ---
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLangToggle = document.getElementById('lang-toggle-mobile');
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close menu when clicking a link
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+
         // --- Logic ---
         document.addEventListener('DOMContentLoaded', function() {
             let currentStep = 1;
@@ -467,7 +495,6 @@
                 addEducation: { en: 'Add Education', si: 'අධ්‍යාපනයක් එක් කරන්න' },
                 addExperience: { en: 'Add Experience', si: 'පළපුරුද්දක් එක් කරන්න' },
                 addReference: { en: 'Add Reference', si: 'නිර්දේශයක් එක් කරන්න' }
-                // Add more placeholders as needed in the HTML directly using data attributes
             };
 
             function setLanguage(lang) {
@@ -477,11 +504,12 @@
                              el.placeholder = el.getAttribute('data-' + lang + '-placeholder');
                         }
                     } else {
-                         // Handle generic text
                          el.textContent = el.getAttribute('data-' + lang);
                     }
                 });
                 langToggleBtn.textContent = lang === 'en' ? 'සිංහල' : 'English';
+                if(mobileLangToggle) mobileLangToggle.textContent = lang === 'en' ? 'සිංහල' : 'English';
+                
                 currentLang = lang;
                 updateButtons();
                 if(currentStep === 7) generateReview();
@@ -490,6 +518,13 @@
             langToggleBtn.addEventListener('click', () => {
                 setLanguage(currentLang === 'en' ? 'si' : 'en');
             });
+
+            if(mobileLangToggle) {
+                mobileLangToggle.addEventListener('click', () => {
+                    setLanguage(currentLang === 'en' ? 'si' : 'en');
+                    mobileMenu.classList.add('hidden'); // Close menu after toggle
+                });
+            }
 
             function updateButtons() {
                 prevBtn.classList.toggle('hidden', currentStep === 1);
