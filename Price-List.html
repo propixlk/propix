@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price List | BluePixel</title>
-    <meta name="description" content="Explore the pricing details for our graphic design services.">
+    <title>Price List | Propix Lk</title>
+    <meta name="description" content="Our professional design service pricing list.">
     
-    <!-- Tailwind CSS -->
+    <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
+    <meta name="theme-color" content="#ffffff">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Custom Config for Tailwind (Matches Main Site) -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -45,11 +44,16 @@
                         display: ['Space Grotesk', 'sans-serif'],
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
                     },
                     keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
                         fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
@@ -59,10 +63,8 @@
     </script>
 
     <style>
-        /* Custom Styles for Glass effect and Cursor */
-        body {
-            cursor: none;
-        }
+        /* Custom Styles */
+        body { cursor: none; }
         @media (pointer: coarse) {
             body { cursor: auto; }
             .custom-cursor { display: none; }
@@ -70,23 +72,17 @@
 
         .custom-cursor {
             position: fixed;
-            top: 0; left: 0;
-            width: 20px; height: 20px;
-            border: 2px solid #424cf6;
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            transition: transform 0.1s ease, width 0.2s, height 0.2s, background-color 0.2s;
+            top: 0; left: 0; width: 20px; height: 20px;
+            border: 2px solid #424cf6; border-radius: 50%;
+            pointer-events: none; transform: translate(-50%, -50%);
+            z-index: 9999; transition: transform 0.1s ease, width 0.2s, height 0.2s;
             mix-blend-mode: difference;
         }
         .custom-cursor.hovered {
             width: 40px; height: 40px;
-            background-color: rgba(66, 76, 246, 0.3);
-            border-color: transparent;
+            background-color: rgba(66, 76, 246, 0.3); border-color: transparent;
         }
 
-        /* Glass Nav */
         .glass {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
@@ -96,225 +92,283 @@
             background: rgba(11, 17, 33, 0.9);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
-        /* Loading Spinner Animation */
-        .spinner {
-            border-top-color: #424cf6;
-            animation: spin 1s linear infinite;
+
+        /* Glow Card Effect */
+        .glow-card { position: relative; overflow: hidden; }
+        .glow-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 1rem; padding: 2px;
+            background: linear-gradient(45deg, #424cf6, transparent, #03abec);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0.5; transition: opacity 0.3s; pointer-events: none;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .glow-card:hover::before { opacity: 1; }
+
+        /* Snow Container */
+        .snow-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 999; overflow: hidden;
+        }
+        .snowflake {
+            position: absolute; background: white; border-radius: 50%;
+            pointer-events: none; box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); 
+            animation: snowfall linear infinite;
+        }
+        @keyframes snowfall {
+            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+            5% { opacity: 0.8; }
+            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; }
         }
     </style>
 </head>
-<body class="antialiased bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
 
-    <!-- Custom Cursor -->
+    <div class="snow-container" id="snowContainer"></div>
+
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
 
-    <!-- Navigation -->
     <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
-                   <!-- LOGO FIX: Separated Light/Dark Images -->
-                   <img src="assets/img/Sitelogo.png" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain block dark:hidden transition-all"> 
-                   <img src="assets/img/Sitelogo-White.png" alt="BluePixel Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
+                    <img src="assets/img/Sitelogo.png" alt="Logo" class="h-[50px] w-[200px] object-contain block dark:hidden transition-all"> 
+                    <img src="assets/img/Sitelogow.png" alt="Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
                 </div>
-
-                <!-- Desktop Menu -->
+                
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
-                    <a href="portfolio2.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Portfolio</a>
-                    <a href="index.html#contact" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
-                        Start Project
-                    </a>
-                    <!-- Dark Mode Toggle -->
+                    <a href="index.html#portfolio" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Work</a>
+                    <a href="#" class="text-brand-600 dark:text-brand-400 font-bold transition hoverable">Price List</a>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                     </button>
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                        Let's Talk
+                    </a>
                 </div>
-
-                 <!-- Mobile Button -->
-                 <div class="md:hidden flex items-center gap-4">
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
-                       <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
-                       <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                   </button>
-                   <!-- Mobile Menu Button with Icon Swap -->
-                   <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none p-2">
-                        <i data-lucide="menu" class="w-7 h-7 menu-icon"></i>
-                        <i data-lucide="x" class="w-7 h-7 x-icon hidden"></i>
-                   </button>
-               </div>
+                
+                <div class="md:hidden flex items-center gap-4">
+                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
+                        <i data-lucide="menu" class="w-8 h-8"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-800 shadow-lg top-20 left-0">
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-800 shadow-lg">
             <div class="px-4 pt-2 pb-6 space-y-2">
                 <a href="index.html" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Home</a>
-                <a href="portfolio2.html" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Portfolio</a>
-                <a href="index.html#contact" class="block px-3 py-3 text-base font-medium text-brand-600 font-bold">Start Project</a>
+                <a href="index.html#portfolio" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Work</a>
+                <a href="#" class="block px-3 py-3 text-base font-medium text-brand-600 dark:text-brand-400 font-bold hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Price List</a>
+                <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Contact</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <section class="pt-32 pb-12 bg-gray-50 dark:bg-black/20">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Pricing & Packages</h1>
-            <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">Simple and transparent pricing for all our graphic design services.</p>
-            
-            <!-- Search Bar -->
-            <div class="relative max-w-xl mx-auto mb-8">
-                <input type="text" id="search-input" placeholder="Search for a service or category..." 
-                       class="w-full px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-full bg-white dark:bg-dark-card text-gray-900 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition shadow-lg pl-12 hoverable"
-                       aria-label="Search price list">
-                <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                <button id="clear-search-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 dark:text-gray-400 hover:text-brand-600 hidden hoverable" aria-label="Clear search">
-                    <i data-lucide="x-circle" class="w-5 h-5"></i>
+    <section class="pt-32 pb-12 lg:pt-40 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center relative">
+        <div class="relative z-10">
+            <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand-200 bg-brand-50 dark:bg-brand-900/30 dark:border-brand-700 text-brand-600 dark:text-brand-300 text-sm font-medium mb-6">
+                <span class="flex h-2 w-2 rounded-full bg-brand-500 mr-2 animate-pulse"></span>
+                Transparent Pricing
+            </div>
+            <h1 class="text-4xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-6">
+                Service <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-brand-400 to-brand-100">Price List</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-dark-muted">
+                Explore our competitive rates for high-quality design services. Use the search bar below to find exactly what you need.
+            </p>
+        </div>
+    </section>
+
+    <section class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen">
+        
+        <div class="max-w-2xl mx-auto mb-16 relative">
+            <div class="relative flex items-center">
+                <i data-lucide="search" class="absolute left-4 text-gray-400 w-5 h-5"></i>
+                <input id="price-search" type="text" placeholder="Search service (e.g., Logo, Flyer)..." 
+                    class="w-full pl-12 pr-12 py-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-card text-gray-900 dark:text-white shadow-lg focus:ring-2 focus:ring-brand-500 outline-none transition text-lg hoverable">
+                <button id="clear-search" class="absolute right-4 text-gray-400 hover:text-brand-500 transition hidden">
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
-    </section>
 
-    <!-- Price List Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Loading Indicator -->
-        <div id="loading" class="text-center py-20">
-            <div class="w-12 h-12 border-4 border-gray-200 border-solid rounded-full spinner mx-auto mb-4"></div>
-            <p class="text-gray-500 dark:text-gray-400">Loading price list...</p>
+        <div id="loading-spinner" class="flex flex-col items-center justify-center py-20">
+            <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mb-4"></div>
+            <p class="text-gray-500 dark:text-gray-400 font-medium animate-pulse">Loading prices...</p>
         </div>
 
-        <div id="price-list-container" class="flex flex-wrap -mx-4 hidden">
-            <!-- Price cards will be rendered here by JavaScript -->
+        <div id="error-message" class="hidden max-w-2xl mx-auto bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-300 px-6 py-4 rounded-xl text-center mb-8">
         </div>
 
-        <div id="no-results" class="hidden text-center text-gray-500 dark:text-gray-400 mt-10">
-            <p class="text-2xl font-display font-medium">No results found for your search query.</p>
-            <p class="text-sm mt-2">Try adjusting your search terms or view the full list.</p>
-        </div>
-    </div>
-
-    <!-- Call to Action Section (Matches Portfolio/Index) -->
-    <section class="bg-brand-50 dark:bg-brand-900/20 py-12 border-y border-brand-100 dark:border-brand-800/30">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Quick design need?</h3>
-                    <p class="text-gray-600 dark:text-dark-muted">Skip the meeting. Get a quote instantly.</p>
-                </div>
-                <!-- Assuming the toggleModal function exists for a quick quote form -->
-                <a href="index.html#contact" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
-                    Get Quick Quote
-                </a>
+        <div id="price-list-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             </div>
+
+        <div id="no-results" class="hidden text-center py-20">
+            <div class="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                <i data-lucide="search-x" class="w-8 h-8 text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">No services found</h3>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">Try searching for a different term.</p>
         </div>
     </section>
 
-    
-    <!-- Footer -->
     <footer class="bg-gray-900 dark:bg-black text-white pt-16 pb-8 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8">
                 <div class="flex items-center mb-4 md:mb-0 hoverable">
-                    <!-- FOOTER LOGO FIX: Always show the White/Dark Mode Logo (No Invert) -->
-                    <img src="assets/img/Sitelogo-White.png" alt="BluePixel" class="h-8 w-auto mr-2">
+                    <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-8 w-auto mr-2">
                 </div>
                 <div class="flex space-x-6">
                     <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-                    <a href="#" class="hover:text-brand-400 transition hoverable"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="hover:text-brand-400 transition hoverable"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+                    <a href="Mailto:propixlk@gmail.com" class="hover:text-brand-400 transition hoverable"><i data-lucide="mail" class="w-5 h-5"></i></a>
                 </div>
             </div>
             <div class="border-t border-gray-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between text-sm text-gray-400">
-                <p>&copy; 2023 BluePixel Graphic Design. All rights reserved.</p>
+                <p>&copy; Propix LK. All rights reserved.<br>2024 - 2026</p>
                 <div class="space-x-4 mt-4 md:mt-0">
                     <a href="#" class="hover:text-white hoverable">Privacy Policy</a>
-                    <a href="#" class="hover:text-white hoverable">Terms of Service</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // **IMPORTANT:** Replace 'YOUR_APPSCRIPT_WEB_APP_URL' with the actual URL 
-        // of your deployed Google App Script Web App.
-        const appScriptUrl = 'YOUR_APPSCRIPT_WEB_APP_URL'; 
+        lucide.createIcons();
 
-        let allData = [];
-        let allCategories = [];
+        // Dark Mode Logic
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
 
-        // UI elements
-        const searchInput = document.getElementById('search-input');
-        const clearBtn = document.getElementById('clear-search-btn');
-        const container = document.getElementById('price-list-container');
-        const noResults = document.getElementById('no-results');
-        const loading = document.getElementById('loading');
+        // --- Mobile Menu Logic (NEW) ---
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close menu when clicking a link
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
 
+        // --- Pricing Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const webAppUrl = "https://script.google.com/macros/s/AKfycbxRxjyL8N_PCTq9uXpiXR7lvc8O6E8I60cmvdjRZ_CUGe-meMdfO2pBiZJjVE4OAHhjSA/exec";
+            
+            const container = document.getElementById('price-list-container');
+            const spinner = document.getElementById('loading-spinner');
+            const errorAlert = document.getElementById('error-message');
+            const noResults = document.getElementById('no-results');
+            const searchInput = document.getElementById('price-search');
+            const clearBtn = document.getElementById('clear-search');
 
-        // --- Core Functions (AppScript Integration) ---
+            let allData = [];
 
-        /**
-         * Renders a single price item card using Tailwind CSS.
-         * @param {object} item 
-         * @returns {string} HTML markup for the card.
-         */
-        const renderCard = (item) => {
-            // Updated to modern Tailwind card style
-            return `
-                <div class="w-full sm:w-1/2 lg:w-1/3 p-4">
-                    <div class="bg-white dark:bg-dark-card p-6 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] h-full flex flex-col justify-between border border-gray-100 dark:border-gray-700/50 hoverable">
-                        <div>
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-brand-600 text-white mb-3 shadow-md">
-                                <i data-lucide="tag" class="w-3 h-3 mr-1"></i> ${item.category || 'General'}
-                            </span>
-                            <h5 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-2">${item.service || 'Service Name'}</h5>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${item.description || 'Detailed description of the service and what it includes.'}</p>
-                        </div>
-                        <div class="pt-4 border-t border-gray-200 dark:border-gray-700 mt-4 flex justify-between items-center">
-                            <h4 class="text-3xl font-display font-extrabold text-brand-600">${item.price || 'N/A'}</h4>
-                            <a href="index.html#contact" class="px-4 py-2 bg-brand-600 text-white rounded-full text-sm font-medium hover:bg-brand-500 transition shadow-lg hoverable">
-                                Get Quote
-                            </a>
-                        </div>
+            function escapeHtml(text) {
+                return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            }
+
+            function renderCardHTML(item, index) {
+                const desc = item.description || 'Contact for details';
+                const price = item.price || 'N/A';
+                const category = item.category || 'General';
+                const service = item.service || 'Service';
+                
+                // --- WhatsApp Dynamic Message Logic ---
+                const myPhoneNumber = "94768294496"; // IMPORTANT: ඔබේ අංකය මෙතැනට දමන්න
+                const message = `Hi, Can I get ${price}?`;
+                const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(message)}`;
+                
+                const delay = (index % 10) * 100; 
+
+                return `
+                <div class="bg-white dark:bg-dark-card rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:shadow-2xl glow-card group hoverable animate-fade-in flex flex-col h-full" style="animation-delay: ${delay}ms; animation-fill-mode: backwards;">
+                    <div class="mb-4">
+                        <span class="inline-block px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-xs font-bold uppercase tracking-wider border border-brand-100 dark:border-brand-800">
+                            ${escapeHtml(category)}
+                        </span>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition">
+                        ${escapeHtml(service)}
+                    </h3>
+                    <div class="mb-6">
+                        <span class="text-3xl font-bold text-gray-900 dark:text-white">${escapeHtml(price)}</span>
+                    </div>
+                    <div class="mt-auto pt-6 border-t border-gray-100 dark:border-gray-800">
+                        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed flex items-start gap-2">
+                            <i data-lucide="info" class="w-4 h-4 mt-0.5 flex-shrink-0 text-brand-500"></i>
+                            ${escapeHtml(desc)}
+                        </p>
+                        <a href="${whatsappUrl}" target="_blank" class="mt-4 block w-full py-2 text-center text-sm font-bold text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800 rounded-lg hover:bg-brand-600 hover:text-white dark:hover:bg-brand-500 dark:hover:text-white transition hoverable">
+                            Order Now
+                        </a>
                     </div>
                 </div>
-            `;
-        };
-        
-        /**
-         * Filters the price list data based on a query and updates the UI.
-         * @param {string} q - Search query.
-         */
-        const filterAndRender = (q) => {
-            q = q.toLowerCase().trim();
+                `;
+            }
 
-            container.innerHTML = '';
-            
-            if (!q) {
-                // show all
-                if (allData.length === 0) {
-                    container.innerHTML = '<div class="w-full text-center py-10"><p class="text-lg text-gray-500 dark:text-gray-400">No prices have been added yet.</p></div>';
+            async function loadData() {
+                try {
+                    spinner.classList.remove('hidden');
+                    container.innerHTML = '';
+                    
+                    const resp = await fetch(webAppUrl);
+                    const result = await resp.json();
+
+                    if (result.status !== 'success' || !Array.isArray(result.data)) {
+                        throw new Error('Invalid data format');
+                    }
+
+                    allData = result.data;
+                    spinner.classList.add('hidden');
+
+                    if (allData.length === 0) {
+                        noResults.classList.remove('hidden');
+                    } else {
+                        renderList(allData);
+                    }
+
+                } catch (err) {
+                    spinner.classList.add('hidden');
+                    errorAlert.classList.remove('hidden');
+                    errorAlert.textContent = "Failed to load prices. Please check your connection or try again later.";
+                    console.error(err);
+                }
+            }
+
+            function renderList(data) {
+                container.innerHTML = data.map((item, index) => renderCardHTML(item, index)).join('');
+                lucide.createIcons(); 
+            }
+
+            function filterList(query) {
+                const q = query.toLowerCase();
+                if (!q) {
+                    renderList(allData);
+                    clearBtn.classList.add('hidden');
                     noResults.classList.add('hidden');
-                    container.classList.remove('hidden');
                     return;
                 }
-                container.innerHTML = allData.map(renderCard).join('');
-                noResults.classList.add('hidden');
-            } else {
+                
+                clearBtn.classList.remove('hidden');
                 const filtered = allData.filter(item => {
-                    const hay = [
-                        (item.service || ''),
-                        (item.category || ''),
-                        (item.description || ''),
-                        (item.price || '')
-                    ].join(' ').toLowerCase();
-                    return hay.indexOf(q) !== -1;
+                    const hay = [item.service, item.category, item.description, item.price].join(' ').toLowerCase();
+                    return hay.includes(q);
                 });
 
                 if (filtered.length === 0) {
@@ -322,135 +376,55 @@
                     noResults.classList.remove('hidden');
                 } else {
                     noResults.classList.add('hidden');
-                    container.innerHTML = filtered.map(renderCard).join('');
+                    renderList(filtered);
                 }
             }
 
-            // Re-create lucide icons after injecting HTML
-            lucide.createIcons();
-            
-            // Show/hide clear button
-            if (q.length > 0) {
-                clearBtn.classList.remove('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-            }
-        };
-
-        /**
-         * Fetches data from the Google App Script Web App.
-         */
-        const loadData = async () => {
-             if (appScriptUrl === 'https://script.google.com/macros/s/AKfycbxRxjyL8N_PCTq9uXpiXR7lvc8O6E8I60cmvdjRZ_CUGe-meMdfO2pBiZJjVE4OAHhjSA/exec') {
-                loading.innerHTML = '<div class="text-center py-20 text-red-500"><p class="font-bold mb-2">Error: AppScript URL Missing</p><p>Please update <b>appScriptUrl</b> in the script with your actual Google App Script Web App URL.</p></div>';
-                container.classList.add('hidden');
-                return;
-            }
-
-            loading.classList.remove('hidden');
-            container.classList.add('hidden');
-
-            try {
-                // Fetch data from the Google AppScript Web App
-                const response = await fetch(appScriptUrl + '?action=getPrices');
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                // Assuming the AppScript returns JSON data
-                const data = await response.json();
-                
-                if (data.status === 'success' && Array.isArray(data.prices)) {
-                    allData = data.prices;
-                } else {
-                    allData = [];
-                    // Even if success is false or data is empty, we still render.
-                    console.warn("AppScript response structure unexpected or empty data received:", data);
-                }
-
-                filterAndRender(searchInput.value); // Render loaded data
-
-            } catch (error) {
-                console.error("Error fetching data from AppScript:", error);
-                container.innerHTML = '<div class="w-full text-center py-10 text-red-500">Error loading price list. Please check your AppScript deployment and URL.</div>';
-                container.classList.remove('hidden');
-            } finally {
-                loading.classList.add('hidden');
-                container.classList.remove('hidden');
-            }
-        };
-
-        // --- UI & Event Listeners ---
-        
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
-
-        // Mouse Cursor Logic and Initial Load
-        window.onload = function() {
-            lucide.createIcons();
-
-            const cursor = document.getElementById('customCursor');
-            // Added .rounded-xl to hoverables for card effect
-            const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select, .rounded-xl');
-            
-            document.addEventListener('mousemove', (e) => {
-                // Only move cursor if it's visible (i.e., not mobile)
-                if (cursor) {
-                    cursor.style.left = e.clientX + 'px';
-                    cursor.style.top = e.clientY + 'px';
-                }
-            });
-
-            hoverables.forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    if (cursor) cursor.classList.add('hovered');
-                });
-                el.addEventListener('mouseleave', () => {
-                    if (cursor) cursor.classList.remove('hovered');
-                });
-            });
-            
-            // Mobile Menu Logic
-            const btn = document.getElementById('mobile-menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            const menuIcon = btn.querySelector('.menu-icon');
-            const xIcon = btn.querySelector('.x-icon');
-
-            if(btn && menu) {
-                btn.addEventListener('click', () => {
-                    const isHidden = menu.classList.toggle('hidden');
-                    if (isHidden) {
-                        menuIcon.classList.remove('hidden');
-                        xIcon.classList.add('hidden');
-                    } else {
-                        menuIcon.classList.add('hidden');
-                        xIcon.classList.remove('hidden');
-                    }
-                });
-
-                // Close when clicking links
-                menu.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        menu.classList.add('hidden');
-                        menuIcon.classList.remove('hidden');
-                        xIcon.classList.add('hidden');
-                    });
-                });
-            }
-
-            // Search Events
-            searchInput.addEventListener('input', () => filterAndRender(searchInput.value));
+            searchInput.addEventListener('input', (e) => filterList(e.target.value));
             clearBtn.addEventListener('click', () => {
                 searchInput.value = '';
-                filterAndRender('');
+                filterList('');
+                searchInput.focus();
             });
 
-            // Start loading data from AppScript
             loadData();
-        };
+        });
 
+
+        // --- Visual Effects (Cursor & Snow) ---
+        const cursor = document.getElementById('customCursor');
+        const snowContainer = document.getElementById('snowContainer');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            const target = e.target;
+            if (target.matches('a, button, input, .hoverable, .hoverable *')) {
+                cursor.classList.add('hovered');
+            } else {
+                cursor.classList.remove('hovered');
+            }
+        });
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = Math.random() * 3 + 1; 
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.opacity = `${Math.random() * 0.5 + 0.3}`;
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            const duration = Math.random() * 8 + 10;
+            snowflake.style.animationDuration = `${duration}s`;
+            const delay = Math.random() * 5; 
+            snowflake.style.animationDelay = `${delay}s`;
+            const windOffset = Math.random() * 200 - 100; 
+            snowflake.style.setProperty('--wind-offset', `${windOffset}px`);
+            snowContainer.appendChild(snowflake);
+            setTimeout(() => { snowflake.remove(); }, (duration + delay) * 1000);
+        }
+        setInterval(createSnowflake, 150);
     </script>
 </body>
 </html>

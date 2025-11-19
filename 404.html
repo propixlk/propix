@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | Propix Lk</title>
+    
+    <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
+    <meta name="theme-color" content="#ffffff">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            100: '#03abec',
+                            200: '#1590ef',
+                            300: '#1c86f1',
+                            400: '#2e69f4',
+                            500: '#3d53f7',
+                            600: '#424cf6', // Main Brand Color
+                            900: '#1a237e', 
+                        },
+                        dark: {
+                            bg: '#0b1121', 
+                            card: '#1e293b',
+                            text: '#f8fafc',
+                            muted: '#cbd5e1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Cursor & Snow (From index.html) */
+        body { cursor: none; }
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .custom-cursor { display: none; }
+        }
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 2px solid #424cf6; border-radius: 50%;
+            pointer-events: none; transform: translate(-50%, -50%);
+            z-index: 9999; transition: transform 0.1s ease; mix-blend-mode: difference;
+        }
+        .custom-cursor.hovered {
+            width: 40px; height: 40px; background-color: rgba(66, 76, 246, 0.3); border-color: transparent;
+        }
+
+        /* Glitch Effect for 404 Text */
+        .glitch {
+            position: relative;
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        @media (min-width: 768px) { .glitch { font-size: 12rem; } }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch::before {
+            left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-1 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-2 5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(30px, 9999px, 10px, 0); }
+            20% { clip: rect(80px, 9999px, 90px, 0); }
+            40% { clip: rect(20px, 9999px, 60px, 0); }
+            60% { clip: rect(50px, 9999px, 30px, 0); }
+            80% { clip: rect(90px, 9999px, 10px, 0); }
+            100% { clip: rect(10px, 9999px, 80px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(10px, 9999px, 90px, 0); }
+            20% { clip: rect(40px, 9999px, 10px, 0); }
+            40% { clip: rect(80px, 9999px, 50px, 0); }
+            60% { clip: rect(20px, 9999px, 70px, 0); }
+            80% { clip: rect(50px, 9999px, 20px, 0); }
+            100% { clip: rect(70px, 9999px, 40px, 0); }
+        }
+
+        /* Snow Container */
+        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .snowflake {
+            position: absolute; background: white; border-radius: 50%; pointer-events: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); animation: snowfall linear infinite;
+        }
+        @keyframes snowfall {
+            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+            5% { opacity: 0.8; }
+            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 h-screen flex flex-col overflow-hidden">
+
+    <div class="snow-container" id="snowContainer"></div>
+    <div class="custom-cursor hidden md:block" id="customCursor"></div>
+
+    <nav class="fixed w-full z-50 top-0 left-0 p-6 flex justify-between items-center">
+        <div class="flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
+            <img src="assets/img/Sitelogo.png" alt="Logo" class="h-[40px] object-contain block dark:hidden"> 
+            <img src="assets/img/Sitelogow.png" alt="Logo" class="h-[40px] object-contain hidden dark:block"> 
+        </div>
+        <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
+            <i data-lucide="moon" class="w-6 h-6 dark:hidden"></i>
+            <i data-lucide="sun" class="w-6 h-6 hidden dark:block"></i>
+        </button>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center relative z-10 px-4 text-center">
+        
+        <div class="mb-8 animate-float">
+            <div class="relative">
+                <div class="absolute inset-0 bg-brand-500 blur-3xl opacity-20 rounded-full"></div>
+                <i data-lucide="ghost" class="w-32 h-32 text-brand-600 dark:text-brand-400 relative z-10"></i>
+            </div>
+        </div>
+
+        <h1 class="glitch font-display text-brand-900 dark:text-white mb-2" data-text="404">404</h1>
+        
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4 font-display">
+            Look like you're lost
+        </h2>
+        
+        <p class="text-lg text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-10">
+            The page you are looking for is not available or has been moved to another dimension.
+        </p>
+        
+        <a href="index.html" class="px-8 py-4 bg-brand-600 text-white font-bold rounded-full hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable flex items-center gap-2 group">
+            <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+            Go to Home
+        </a>
+
+    </main>
+
+    <footer class="absolute bottom-6 w-full text-center text-sm text-gray-400 dark:text-gray-600">
+        &copy; Propix LK. All rights reserved.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+        
+        // Auto Dark Mode based on system preference or previous selection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Cursor Logic
+        const cursor = document.getElementById('customCursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            const t = e.target;
+            if (t.matches('a, button, .hoverable, .hoverable *')) cursor.classList.add('hovered');
+            else cursor.classList.remove('hovered');
+        });
+
+        // Snow Logic
+        const snowContainer = document.getElementById('snowContainer');
+        function createSnowflake() {
+            const f = document.createElement('div');
+            f.classList.add('snowflake');
+            const size = Math.random() * 3 + 1; 
+            f.style.width = `${size}px`; f.style.height = `${size}px`;
+            f.style.opacity = `${Math.random() * 0.3 + 0.1}`; // Less opacity for background feel
+            f.style.left = `${Math.random() * 100}vw`;
+            f.style.animationDuration = `${Math.random() * 8 + 10}s`;
+            f.style.setProperty('--wind-offset', `${Math.random() * 200 - 100}px`);
+            snowContainer.appendChild(f);
+            setTimeout(() => f.remove(), 15000);
+        }
+        setInterval(createSnowflake, 300); // Slower snow for error page
+    </script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder | Propix Lk</title>
+    <meta name="description" content="Create your professional CV with our step-by-step builder.">
+    
+    <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
+    <meta name="theme-color" content="#ffffff">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            100: '#03abec',
+                            200: '#1590ef',
+                            300: '#1c86f1',
+                            400: '#2e69f4',
+                            500: '#3d53f7',
+                            600: '#424cf6',
+                            900: '#1a237e', 
+                        },
+                        dark: {
+                            bg: '#0b1121', 
+                            card: '#1e293b',
+                            text: '#f8fafc',
+                            muted: '#cbd5e1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Cursor & Snow (From index.html) */
+        body { cursor: none; }
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .custom-cursor { display: none; }
+        }
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 2px solid #424cf6; border-radius: 50%;
+            pointer-events: none; transform: translate(-50%, -50%);
+            z-index: 9999; transition: transform 0.1s ease; mix-blend-mode: difference;
+        }
+        .custom-cursor.hovered {
+            width: 40px; height: 40px; background-color: rgba(66, 76, 246, 0.3); border-color: transparent;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .dark .glass {
+            background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        /* Wizard Styles */
+        .form-step { display: none; }
+        .form-step.active { display: block; animation: fadeIn 0.5s ease-out; }
+        
+        .step-indicator-item.active .step-circle { background-color: #424cf6; color: white; border-color: #424cf6; }
+        .step-indicator-item.completed .step-circle { background-color: #10b981; color: white; border-color: #10b981; }
+        .step-indicator-item.completed .step-line { background-color: #10b981; }
+        
+        /* Checkbox Style */
+        input[type="checkbox"]:checked {
+            background-color: #424cf6; border-color: #424cf6;
+        }
+        
+        /* Design Selection */
+        .design-template.selected {
+            border-color: #424cf6;
+            box-shadow: 0 0 0 4px rgba(66, 76, 246, 0.2);
+        }
+
+        /* Snow Container */
+        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
+        .snowflake {
+            position: absolute; background: white; border-radius: 50%; pointer-events: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); animation: snowfall linear infinite;
+        }
+        @keyframes snowfall {
+            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+            5% { opacity: 0.8; }
+            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="antialiased relative bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
+
+    <div class="snow-container" id="snowContainer"></div>
+    <div class="custom-cursor hidden md:block" id="customCursor"></div>
+
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
+                    <img src="assets/img/Sitelogo.png" alt="Logo" class="h-[50px] w-[200px] object-contain block dark:hidden transition-all"> 
+                    <img src="assets/img/Sitelogow.png" alt="Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
+                    <a href="#" class="text-brand-600 dark:text-brand-400 font-bold transition hoverable">CV Builder</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <button id="lang-toggle" class="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium text-sm hoverable">
+                        සිංහල
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                       <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                       <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                   </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="pt-32 pb-10 px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-4" data-en="CV Builder" data-si="CV නිර්මාපකය">
+            CV Builder
+        </h1>
+        <p class="text-lg text-gray-600 dark:text-dark-muted max-w-2xl mx-auto" data-en="Create your professional CV step-by-step." data-si="ඔබේ වෘත්තීය CV එක පියවරෙන් පියවර සකසා ගන්න.">
+            Create your professional CV step-by-step.
+        </p>
+    </section>
+
+    <section class="px-4 pb-20 max-w-5xl mx-auto">
+        <div class="bg-white dark:bg-dark-card rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-6 md:p-10 relative overflow-hidden">
+            
+            <div class="flex justify-between mb-10 relative z-10 overflow-x-auto pb-4 no-scrollbar">
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 -z-10 transform -translate-y-1/2"></div>
+                <div class="flex justify-between w-full min-w-[600px]">
+                    <div class="step-indicator-item active flex flex-col items-center cursor-pointer" onclick="goToStep(1)">
+                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">1</div>
+                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Personal" data-si="පුද්ගලික">Personal</span>
+                    </div>
+                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(2)">
+                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">2</div>
+                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Edu" data-si="අධ්‍යාපනය">Edu</span>
+                    </div>
+                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(3)">
+                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">3</div>
+                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Work" data-si="පළපුරුද්ද">Work</span>
+                    </div>
+                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(4)">
+                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">4</div>
+                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Skills" data-si="කුසලතා">Skills</span>
+                    </div>
+                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(5)">
+                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">5</div>
+                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Extra" data-si="අමතර">Extra</span>
+                    </div>
+                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(6)">
+                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">6</div>
+                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Design" data-si="නිර්මාණය">Design</span>
+                    </div>
+                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(7)">
+                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10"><i data-lucide="check" class="w-5 h-5"></i></div>
+                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Review" data-si="සමාලෝචනය">Review</span>
+                    </div>
+                </div>
+            </div>
+
+            <form id="cv-form" class="space-y-6">
+                <div class="form-step active" data-step="1">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Personal Details" data-si="පුද්ගලික තොරතුරු">Personal Details</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Full Name" data-si="සම්පූර්ණ නම">Full Name</label>
+                            <input type="text" name="fullName" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="NIC Number" data-si="ජාතික හැඳුනුම්පත් අංකය">NIC Number</label>
+                            <input type="text" name="nic" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        </div>
+                        <div class="col-span-2 space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="About You (Short Bio)" data-si="ඔබ ගැන (කෙටි හැඳින්වීමක්)">About You (Short Bio)</label>
+                            <textarea name="aboutYou" rows="3" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Email" data-si="විද්‍යුත් තැපෑල">Email</label>
+                            <input type="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Phone" data-si="දුරකථන අංකය">Phone</label>
+                            <input type="tel" name="phone" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        </div>
+                         <div class="col-span-2 space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Address" data-si="ලිපිනය">Address</label>
+                            <textarea name="address" rows="2" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
+                        </div>
+                         <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Date of Birth" data-si="උපන්දිනය">Date of Birth</label>
+                            <input type="date" name="dob" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Gender" data-si="ස්ත්‍රී/පුරුෂ භාවය">Gender</label>
+                            <select name="gender" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                                <option value="" disabled selected>Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                         <div class="col-span-2 space-y-2">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="LinkedIn / Portfolio Link" data-si="LinkedIn / Portfolio සබැඳිය">LinkedIn / Portfolio Link</label>
+                            <input type="url" name="portfolioLink" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="2">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Education" data-si="අධ්‍යාපන සුදුසුකම්">Education</h3>
+                    <div id="education-container" class="space-y-4"></div>
+                    <button type="button" id="add-education" class="mt-4 w-full py-3 border-2 border-dashed border-brand-300 dark:border-brand-700 rounded-xl text-brand-600 dark:text-brand-400 font-bold hover:bg-brand-50 dark:hover:bg-brand-900/20 transition flex items-center justify-center gap-2 hoverable">
+                        <i data-lucide="plus-circle"></i> <span data-en="Add Education" data-si="අධ්‍යාපනයක් එක් කරන්න">Add Education</span>
+                    </button>
+                </div>
+
+                <div class="form-step" data-step="3">
+                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Work Experience" data-si="සේවා පළපුරුද්ද">Work Experience</h3>
+                    <div id="experience-container" class="space-y-4"></div>
+                    <button type="button" id="add-experience" class="mt-4 w-full py-3 border-2 border-dashed border-brand-300 dark:border-brand-700 rounded-xl text-brand-600 dark:text-brand-400 font-bold hover:bg-brand-50 dark:hover:bg-brand-900/20 transition flex items-center justify-center gap-2 hoverable">
+                        <i data-lucide="plus-circle"></i> <span data-en="Add Experience" data-si="පළපුරුද්දක් එක් කරන්න">Add Experience</span>
+                    </button>
+                </div>
+
+                <div class="form-step" data-step="4">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Skills" data-si="කුසලතා">Skills</h3>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-xl mb-6">
+                        <h4 class="font-bold text-lg mb-4 text-gray-800 dark:text-white" data-en="Languages" data-si="භාෂා">Languages</h4>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <p class="font-medium mb-2 dark:text-gray-300">Sinhala</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="Sinhala - Reading" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Reading</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="Sinhala - Writing" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Writing</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="Sinhala - Speaking" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Speaking</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-medium mb-2 dark:text-gray-300">English</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="English - Reading" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Reading</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="English - Writing" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Writing</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="English - Speaking" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Speaking</span>
+                                    </label>
+                                </div>
+                            </div>
+                             <div>
+                                <p class="font-medium mb-2 dark:text-gray-300">Tamil</p>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="Tamil - Reading" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Reading</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="Tamil - Writing" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Writing</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
+                                        <input type="checkbox" name="languageSkills[]" value="Tamil - Speaking" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Speaking</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Other Languages" data-si="වෙනත් භාෂා">Other Languages</label>
+                            <input type="text" name="otherLanguages" class="w-full mt-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Other Skills (Soft & Technical)" data-si="වෙනත් කුසලතා">Other Skills (Soft & Technical)</label>
+                        <textarea name="otherSkills" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable" data-en-placeholder="e.g., Microsoft Office, Public Speaking, Java..." data-si-placeholder="උදා: Microsoft Office, Public Speaking, Java..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="5">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Extra Info" data-si="අමතර තොරතුරු">Extra Info</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Awards & Achievements" data-si="සම්මාන සහ ජයග්‍රහණ">Awards & Achievements</label>
+                            <textarea name="awards" rows="3" class="w-full mt-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Additional Information" data-si="වෙනත් තොරතුරු">Additional Information</label>
+                            <textarea name="additionalInfo" rows="3" class="w-full mt-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Target Job Field" data-si="බලාපොරොත්තු වන රැකියා ක්ෂේත්‍රය">Target Job Field</label>
+                            <input type="text" name="jobType" class="w-full mt-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        </div>
+                    </div>
+                    
+                    <hr class="my-6 border-gray-200 dark:border-gray-700">
+                    
+                    <h4 class="font-bold text-lg mb-4 text-gray-800 dark:text-white" data-en="References (Optional)" data-si="නිර්දේශ (විකල්ප)">References (Optional)</h4>
+                    <div id="references-container" class="space-y-4"></div>
+                    <button type="button" id="add-reference" class="mt-4 w-full py-2 border border-brand-300 dark:border-brand-700 rounded-lg text-brand-600 dark:text-brand-400 text-sm font-bold hover:bg-brand-50 dark:hover:bg-brand-900/20 transition flex items-center justify-center gap-2 hoverable">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> <span data-en="Add Reference" data-si="නිර්දේශයක් එක් කරන්න">Add Reference</span>
+                    </button>
+                </div>
+
+                <div class="form-step" data-step="6">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Choose Template" data-si="සැකිල්ලක් තෝරන්න">Choose Template</h3>
+                    <input type="hidden" id="selectedDesign" name="selectedDesign" value="Template 1">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center cursor-pointer group design-template selected p-2 rounded-lg transition" data-design-name="Template 1">
+                            <img src="assets/img/cv/1.jpg" alt="T1" class="rounded-md shadow-sm group-hover:shadow-md transition">
+                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 1</p>
+                        </div>
+                         <div class="text-center cursor-pointer group design-template p-2 rounded-lg transition" data-design-name="Template 2">
+                            <img src="assets/img/cv/2.jpg" alt="T2" class="rounded-md shadow-sm group-hover:shadow-md transition">
+                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 2</p>
+                        </div>
+                         <div class="text-center cursor-pointer group design-template p-2 rounded-lg transition" data-design-name="Template 3">
+                            <img src="assets/img/cv/3.jpg" alt="T3" class="rounded-md shadow-sm group-hover:shadow-md transition">
+                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 3</p>
+                        </div>
+                         <div class="text-center cursor-pointer group design-template p-2 rounded-lg transition" data-design-name="Template 4">
+                            <img src="assets/img/cv/4.jpg" alt="T4" class="rounded-md shadow-sm group-hover:shadow-md transition">
+                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 4</p>
+                        </div>
+                        <div class="col-span-2 md:col-span-4 mt-4">
+                             <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center cursor-pointer hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900/10 transition design-template" data-design-name="My Own Design">
+                                 <i data-lucide="upload-cloud" class="w-10 h-10 mx-auto text-brand-500 mb-2"></i>
+                                 <h5 class="font-bold text-gray-900 dark:text-white" data-en="Use My Own Design" data-si="මගේම නිර්මාණයක් භාවිතා කරන්න">Use My Own Design</h5>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="7">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Review & Submit" data-si="සමාලෝචනය සහ ඉදිරිපත් කිරීම">Review & Submit</h3>
+                    
+                    <div id="review-section" class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 mb-6 text-sm text-gray-700 dark:text-gray-300 font-sans">
+                        </div>
+
+                    <div class="loading hidden text-center py-4">
+                        <div class="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mx-auto mb-2"></div>
+                        <p class="text-gray-500 dark:text-gray-400">Submitting...</p>
+                    </div>
+                    <div class="error-message hidden bg-red-100 text-red-700 p-4 rounded-lg mb-4 text-center"></div>
+
+                    <div class="flex justify-center">
+                        <button type="submit" class="px-8 py-4 bg-brand-600 text-white font-bold rounded-full hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable transform hover:scale-105">
+                            <span data-en="Submit CV Order" data-si="ඇණවුම ඉදිරිපත් කරන්න">Submit CV Order</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                    <button type="button" id="prev-btn" class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition hidden hoverable" data-en="Previous" data-si="පෙර">Previous</button>
+                    
+                    <div class="flex gap-2 ml-auto">
+                        <button type="button" id="skip-btn" class="px-6 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition hoverable" data-en="Skip" data-si="මඟහරින්න">Skip</button>
+                        <button type="button" id="next-btn" class="px-6 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-500 transition shadow-lg hoverable">
+                            <span data-en="Next" data-si="ඊළඟ">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <div id="thank-you-popup" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-dark-card p-8 rounded-2xl shadow-2xl max-w-md w-full text-center transform scale-90 transition-transform duration-300 border border-gray-100 dark:border-gray-700">
+            <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="check" class="w-10 h-10 text-green-600 dark:text-green-400"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2" data-en="Success!" data-si="සාර්ථකයි!">Success!</h2>
+            <p class="text-gray-600 dark:text-dark-muted mb-6" data-en="Your details have been submitted. We will contact you shortly." data-si="ඔබගේ තොරතුරු ඉදිරිපත් කර ඇත. අපි ඉක්මනින් ඔබව අමතන්නෙමු.">Your details have been submitted. We will contact you shortly.</p>
+            <a href="index.html" class="inline-block px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 transition hoverable">
+                <span data-en="Back to Home" data-si="මුල් පිටුවට">Back to Home</span>
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 dark:bg-black text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center mb-4 md:mb-0 hoverable">
+                    <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-8 w-auto mr-2">
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="hover:text-brand-400 transition hoverable"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+                    <a href="Mailto:propixlk@gmail.com" class="hover:text-brand-400 transition hoverable"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center md:text-left text-sm text-gray-400">
+                <p>&copy; Propix LK. All rights reserved. 2024 - 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
+
+        // --- Logic ---
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentStep = 1;
+            const totalSteps = 7;
+            const formSteps = document.querySelectorAll('.form-step');
+            const stepIndicators = document.querySelectorAll('.step-indicator-item');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const skipBtn = document.getElementById('skip-btn');
+            const cvForm = document.getElementById('cv-form');
+            const langToggleBtn = document.getElementById('lang-toggle');
+            let currentLang = 'en';
+
+            const translations = {
+                next: { en: 'Next', si: 'ඊළඟ' },
+                reviewFinish: { en: 'Finish', si: 'අවසන් කරන්න' },
+                addEducation: { en: 'Add Education', si: 'අධ්‍යාපනයක් එක් කරන්න' },
+                addExperience: { en: 'Add Experience', si: 'පළපුරුද්දක් එක් කරන්න' },
+                addReference: { en: 'Add Reference', si: 'නිර්දේශයක් එක් කරන්න' }
+                // Add more placeholders as needed in the HTML directly using data attributes
+            };
+
+            function setLanguage(lang) {
+                document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        if(el.hasAttribute('data-' + lang + '-placeholder')) {
+                             el.placeholder = el.getAttribute('data-' + lang + '-placeholder');
+                        }
+                    } else {
+                         // Handle generic text
+                         el.textContent = el.getAttribute('data-' + lang);
+                    }
+                });
+                langToggleBtn.textContent = lang === 'en' ? 'සිංහල' : 'English';
+                currentLang = lang;
+                updateButtons();
+                if(currentStep === 7) generateReview();
+            }
+
+            langToggleBtn.addEventListener('click', () => {
+                setLanguage(currentLang === 'en' ? 'si' : 'en');
+            });
+
+            function updateButtons() {
+                prevBtn.classList.toggle('hidden', currentStep === 1);
+                skipBtn.classList.toggle('hidden', currentStep >= totalSteps - 1);
+                
+                const nextSpan = nextBtn.querySelector('span');
+                if (currentStep === totalSteps - 1) {
+                    nextSpan.textContent = translations.reviewFinish[currentLang];
+                } else if (currentStep === totalSteps) {
+                    nextBtn.classList.add('hidden');
+                    skipBtn.classList.add('hidden');
+                } else {
+                    nextSpan.textContent = translations.next[currentLang];
+                    nextBtn.classList.remove('hidden');
+                }
+            }
+
+            function goToStep(step) {
+                formSteps.forEach(s => s.classList.remove('active'));
+                document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+                
+                stepIndicators.forEach((ind, index) => {
+                    const stepNum = index + 1;
+                    ind.classList.remove('active', 'completed');
+                    if (stepNum < step) ind.classList.add('completed');
+                    if (stepNum === step) ind.classList.add('active');
+                });
+                
+                currentStep = step;
+                updateButtons();
+                if(step === 7) generateReview();
+                window.scrollTo(0, 0);
+            }
+            
+            window.goToStep = goToStep; // Make global for indicator clicks
+
+            nextBtn.addEventListener('click', () => { if (currentStep < totalSteps) goToStep(currentStep + 1); });
+            prevBtn.addEventListener('click', () => { if (currentStep > 1) goToStep(currentStep - 1); });
+            skipBtn.addEventListener('click', () => { if (currentStep < totalSteps - 1) goToStep(currentStep + 1); });
+
+            // --- Dynamic Fields ---
+            let eduCount = 0;
+            document.getElementById('add-education').addEventListener('click', () => {
+                eduCount++;
+                const container = document.getElementById('education-container');
+                const div = document.createElement('div');
+                div.className = "bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 relative animate-fade-in";
+                div.innerHTML = `
+                    <button type="button" class="remove-btn absolute top-2 right-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-1 rounded"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <h5 class="font-bold text-sm mb-3 text-brand-600 dark:text-brand-400">Education #${eduCount}</h5>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <select name="education[${eduCount}][type]" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white"><option>Degree</option><option>A/L</option><option>O/L</option><option>Diploma</option></select>
+                        <input type="text" name="education[${eduCount}][institution]" placeholder="Institution/School" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                        <input type="text" name="education[${eduCount}][course]" placeholder="Course Name" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" name="education[${eduCount}][start]" placeholder="Start Year" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                            <input type="text" name="education[${eduCount}][end]" placeholder="End Year" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                        </div>
+                        <textarea name="education[${eduCount}][results]" placeholder="Results/Grades" rows="2" class="col-span-2 w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white"></textarea>
+                    </div>
+                `;
+                container.appendChild(div);
+                lucide.createIcons();
+            });
+
+            let expCount = 0;
+            document.getElementById('add-experience').addEventListener('click', () => {
+                expCount++;
+                const container = document.getElementById('experience-container');
+                const div = document.createElement('div');
+                div.className = "bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 relative animate-fade-in";
+                div.innerHTML = `
+                     <button type="button" class="remove-btn absolute top-2 right-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-1 rounded"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <h5 class="font-bold text-sm mb-3 text-brand-600 dark:text-brand-400">Experience #${expCount}</h5>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <input type="text" name="experience[${expCount}][company]" placeholder="Company" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                        <input type="text" name="experience[${expCount}][title]" placeholder="Job Title" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" name="experience[${expCount}][from]" placeholder="From" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                            <input type="text" name="experience[${expCount}][to]" placeholder="To" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                        </div>
+                        <textarea name="experience[${expCount}][duties]" placeholder="Duties" rows="2" class="col-span-2 w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white"></textarea>
+                    </div>
+                `;
+                container.appendChild(div);
+                lucide.createIcons();
+            });
+
+            let refCount = 0;
+            document.getElementById('add-reference').addEventListener('click', () => {
+                refCount++;
+                const container = document.getElementById('references-container');
+                const div = document.createElement('div');
+                div.className = "bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 relative animate-fade-in";
+                div.innerHTML = `
+                    <button type="button" class="remove-btn absolute top-2 right-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-1 rounded"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <input type="text" name="reference[${refCount}][name]" placeholder="Name" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                        <input type="text" name="reference[${refCount}][phone]" placeholder="Phone" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                         <input type="text" name="reference[${refCount}][org]" placeholder="Organization" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                    </div>
+                `;
+                container.appendChild(div);
+                lucide.createIcons();
+            });
+
+            document.addEventListener('click', (e) => {
+                if(e.target.closest('.remove-btn')) e.target.closest('.remove-btn').parentElement.remove();
+            });
+
+            // Design Selection
+            document.querySelectorAll('.design-template').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.design-template').forEach(i => i.classList.remove('selected'));
+                    item.classList.add('selected');
+                    document.getElementById('selectedDesign').value = item.getAttribute('data-design-name');
+                });
+            });
+
+            // Review Generation
+            function generateReview() {
+                const reviewDiv = document.getElementById('review-section');
+                const fd = new FormData(cvForm);
+                let html = `<h4 class="font-bold text-lg border-b pb-2 mb-4 dark:border-gray-600">Summary</h4>`;
+                
+                // Helper to get data
+                const get = (name) => fd.get(name) || '-';
+                
+                html += `<div class="grid grid-cols-2 gap-4 mb-4">
+                    <div><span class="text-xs text-gray-500">Name:</span> <div class="font-semibold">${get('fullName')}</div></div>
+                    <div><span class="text-xs text-gray-500">Job:</span> <div class="font-semibold">${get('jobType')}</div></div>
+                    <div><span class="text-xs text-gray-500">Email:</span> <div class="font-semibold">${get('email')}</div></div>
+                    <div><span class="text-xs text-gray-500">Design:</span> <div class="font-semibold text-brand-600">${get('selectedDesign')}</div></div>
+                </div>`;
+                
+                reviewDiv.innerHTML = html;
+            }
+
+            // Submit Logic
+            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6wE-A4hbRsMAJG1eAZo_-K_ub4nQTfj_DvdJipw88qrLk6vqvMjKbxjihWlrQtQteJA/exec';
+
+            cvForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = cvForm.querySelector('button[type="submit"]');
+                const loading = cvForm.querySelector('.loading');
+                const popup = document.getElementById('thank-you-popup');
+                
+                btn.disabled = true;
+                btn.classList.add('opacity-50');
+                loading.classList.remove('hidden');
+                
+                fetch(SCRIPT_URL, { method: 'POST', body: new FormData(cvForm) })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.result === 'success') {
+                            popup.classList.remove('hidden');
+                            setTimeout(() => {
+                                popup.classList.remove('opacity-0'); 
+                                popup.querySelector('div').classList.remove('scale-90');
+                                popup.querySelector('div').classList.add('scale-100');
+                            }, 10);
+                            cvForm.reset();
+                        } else {
+                            throw new Error('Script Error');
+                        }
+                    })
+                    .catch(err => {
+                        alert('Error submitting form. Please try again.');
+                        console.error(err);
+                    })
+                    .finally(() => {
+                        loading.classList.add('hidden');
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50');
+                    });
+            });
+
+            // Init
+            document.getElementById('add-education').click();
+            document.getElementById('add-experience').click();
+            
+            // Cursor Logic
+            const cursor = document.getElementById('customCursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                const t = e.target;
+                if (t.matches('a, button, input, select, textarea, .hoverable, .hoverable *')) cursor.classList.add('hovered');
+                else cursor.classList.remove('hovered');
+            });
+            
+            // Snow Logic
+            const snowContainer = document.getElementById('snowContainer');
+            setInterval(() => {
+                const f = document.createElement('div');
+                f.classList.add('snowflake');
+                const size = Math.random() * 3 + 1; 
+                f.style.width = `${size}px`; f.style.height = `${size}px`;
+                f.style.opacity = `${Math.random() * 0.5 + 0.3}`;
+                f.style.left = `${Math.random() * 100}vw`;
+                f.style.animationDuration = `${Math.random() * 8 + 10}s`;
+                f.style.setProperty('--wind-offset', `${Math.random() * 200 - 100}px`);
+                snowContainer.appendChild(f);
+                setTimeout(() => f.remove(), 15000);
+            }, 200);
+        });
+    </script>
+</body>
+</html>
