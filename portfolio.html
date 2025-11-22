@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | BluePixel</title>
-    <meta name="description" content="Explore our extensive portfolio of graphic design works.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -85,12 +84,10 @@
             <h1 class="text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Our Portfolio</h1>
             <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">A curated collection of our finest work.</p>
             
+            <!-- Dynamic Filters Container -->
             <div class="flex flex-wrap justify-center gap-3" id="filters">
                 <button class="filter-btn active px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('all', this)">All</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('branding', this)">Branding</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('social', this)">Social Media</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('print', this)">Print</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('web', this)">Web</button>
+                <!-- Other buttons will be loaded here from Firebase -->
             </div>
         </div>
     </section>
@@ -116,9 +113,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // --- YOUR CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyDFpP6rzjNe14z8RgarxB-CAK28bHBNBiA",
             authDomain: "propix-lk-web-portfolio.firebaseapp.com",
@@ -128,11 +124,52 @@
             appId: "1:818456575110:web:32cbbdcc2843229fbd2507",
             measurementId: "G-7WW2Z22897"
         };
-        // -------------------------
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // 1. Fetch Categories Dynamically
+        async function loadFilters() {
+            const filterContainer = document.getElementById('filters');
+            try {
+                const q = query(collection(db, "categories"), orderBy("name"));
+                const snapshot = await getDocs(q);
+                
+                if(snapshot.empty) {
+                    // Fallback default filters if none exist
+                    const defaults = [
+                        {id: 'branding', name: 'Branding'},
+                        {id: 'social', name: 'Social Media'},
+                        {id: 'print', name: 'Print'},
+                        {id: 'web', name: 'Web'}
+                    ];
+                    renderButtons(defaults, filterContainer);
+                } else {
+                    const categories = [];
+                    snapshot.forEach(doc => categories.push({ id: doc.data().id, name: doc.data().name }));
+                    renderButtons(categories, filterContainer);
+                }
+            } catch(e) {
+                console.error("Error loading filters", e);
+            }
+        }
+
+        function renderButtons(cats, container) {
+            // Keep the 'All' button, append rest
+            cats.forEach(c => {
+                // check if already exists to avoid duplicates on re-runs
+                if(!document.getElementById(`btn-${c.id}`)) {
+                    const btn = document.createElement('button');
+                    btn.id = `btn-${c.id}`;
+                    btn.className = "filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable";
+                    btn.textContent = c.name;
+                    btn.onclick = function() { filterGallery(c.id, this); };
+                    container.appendChild(btn);
+                }
+            });
+        }
+
+        // 2. Fetch Images
         function initPortfolio() {
             const gallery = document.getElementById('gallery-container');
             const loading = document.getElementById('loading-indicator');
@@ -161,19 +198,13 @@
                 newItems.forEach(item => gallery.appendChild(item));
                 attachHoverEffects();
                 
-                // Re-apply active filter logic
-                const activeBtn = document.querySelector('.filter-btn.active');
-                if(activeBtn && activeBtn.innerText.toLowerCase() !== 'all') {
-                    const cat = activeBtn.innerText.toLowerCase() === 'social media' ? 'social' : activeBtn.innerText.toLowerCase();
-                    window.filterGallery(cat, activeBtn);
-                }
-
             }, (error) => {
                 console.error("Error:", error);
                 loading.textContent = "Failed to load. Check console.";
             });
         }
 
+        loadFilters();
         initPortfolio();
 
         function attachHoverEffects() {
