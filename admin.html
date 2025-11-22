@@ -70,6 +70,13 @@
 
                 <!-- Progress & Actions -->
                 <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-lg md:static md:shadow-none md:border-none md:bg-transparent md:p-0 z-10">
+                    
+                    <!-- Error Message Box -->
+                    <div id="error-box" class="hidden mb-4 bg-red-50 border-l-4 border-red-500 p-4">
+                        <p class="font-bold text-red-700">Error</p>
+                        <p id="error-msg" class="text-sm text-red-600"></p>
+                    </div>
+
                     <!-- Progress Bar -->
                     <div id="progress-container" class="hidden mb-4 bg-white p-4 rounded-lg shadow border md:shadow-sm">
                         <div class="flex justify-between text-sm font-bold text-gray-700 mb-2">
@@ -139,7 +146,7 @@
         let selectedCategory = '';
         let selectedFiles = [];
         let isUploading = false;
-        let uploadTask = null; // To hold current upload task for cancellation
+        let uploadTask = null; 
 
         // --- AUTH ---
         onAuthStateChanged(auth, (user) => {
@@ -223,7 +230,7 @@
             if(confirm('Delete category?')) { await deleteDoc(doc(db, "categories", uid)); loadCategories(); }
         };
 
-        // --- UPLOAD LOGIC (FIXED FOR PROGRESS) ---
+        // --- UPLOAD LOGIC ---
         window.handleFileSelect = (e) => {
             selectedFiles = [...selectedFiles, ...Array.from(e.target.files)];
             updatePreview();
@@ -253,7 +260,7 @@
         window.cancelUpload = () => {
             if (isUploading) {
                 isUploading = false;
-                if (uploadTask) uploadTask.cancel(); // Cancel Firebase task
+                if (uploadTask) uploadTask.cancel(); 
                 document.getElementById('progress-status').innerText = "Cancelled!";
                 document.getElementById('progress-bar').classList.add('bg-red-500');
                 setTimeout(() => {
@@ -271,6 +278,7 @@
             isUploading = true;
             document.getElementById('upload-btn').disabled = true;
             document.getElementById('progress-container').classList.remove('hidden');
+            document.getElementById('error-box').classList.add('hidden'); // Hide prev errors
             
             const progBar = document.getElementById('progress-bar');
             const progText = document.getElementById('progress-percent');
@@ -282,29 +290,29 @@
                     if (!isUploading) break;
 
                     const file = selectedFiles[i];
-                    const storagePath = `portfolio/${Date.now()}_${file.name}`;
+                    // Rename file to be shorter just in case
+                    const ext = file.name.split('.').pop();
+                    const shortName = `img_${Date.now()}_${i}.${ext}`;
+                    const storagePath = `portfolio/${shortName}`;
                     const storageRef = ref(storage, storagePath);
                     
-                    // --- UPDATED: Real-time Progress ---
                     uploadTask = uploadBytesResumable(storageRef, file);
 
                     await new Promise((resolve, reject) => {
                         uploadTask.on('state_changed', 
                             (snapshot) => {
                                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                // Calculate overall progress based on current file progress
                                 const overallProgress = ((i + (progress/100)) / total) * 100;
                                 
-                                statusText.innerText = `Uploading ${i+1}/${total}: ${file.name} (${Math.round(progress)}%)`;
+                                statusText.innerText = `Uploading ${i+1}/${total}: ${file.name.substring(0, 20)}... (${Math.round(progress)}%)`;
                                 progBar.style.width = overallProgress + '%';
                                 progText.innerText = Math.round(overallProgress) + '%';
                             }, 
                             (error) => {
-                                // If cancelled by user, it throws an error we can ignore or handle
                                 if (error.code === 'storage/canceled') {
-                                    console.log('Upload cancelled');
                                     reject(new Error("Cancelled")); 
                                 } else {
+                                    console.error("Upload Error:", error); // Log full error
                                     reject(error);
                                 }
                             }, 
@@ -313,14 +321,13 @@
                     });
 
                     const url = await getDownloadURL(uploadTask.snapshot.ref);
-
                     await addDoc(collection(db, "portfolio_items"), {
                         imageUrl: url, storagePath: storagePath, category: selectedCategory, createdAt: serverTimestamp()
                     });
                 }
 
                 if (isUploading) {
-                    alert('Done!');
+                    alert('Success! All images uploaded.');
                     selectedFiles = [];
                     updatePreview();
                     document.getElementById('progress-container').classList.add('hidden');
@@ -328,8 +335,16 @@
 
             } catch (e) {
                 if(e.message !== "Cancelled") {
-                    console.error(e);
-                    alert('Error: ' + e.message + "\nCheck Firebase Storage Rules if permission denied.");
+                    // Show error in UI
+                    const errorBox = document.getElementById('error-box');
+                    const errorMsg = document.getElementById('error-msg');
+                    errorBox.classList.remove('hidden');
+                    
+                    if(e.code === 'storage/unauthorized') {
+                        errorMsg.innerText = "Permission Denied! Please check Firebase Storage Rules (See Step 1).";
+                    } else {
+                        errorMsg.innerText = e.message;
+                    }
                 }
             } finally {
                 isUploading = false;
