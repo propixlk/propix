@@ -28,16 +28,44 @@
     <style>
         body { cursor: none; }
         @media (pointer: coarse) { body { cursor: auto; } .custom-cursor { display: none; } }
+        
+        /* Cursor Styles */
         .custom-cursor { position: fixed; top: 0; left: 0; width: 20px; height: 20px; border: 2px solid #424cf6; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 9999; transition: transform 0.1s ease; mix-blend-mode: difference; }
         .custom-cursor.hovered { width: 40px; height: 40px; background-color: rgba(66, 76, 246, 0.3); border-color: transparent; }
-        .gallery-column { column-count: 1; column-gap: 0; }
+        
+        /* Masonry Layout - Zero Spacing Configuration */
+        .gallery-column { 
+            column-count: 1; 
+            column-gap: 0; 
+            line-height: 0; /* Removes vertical gaps */
+        }
         @media (min-width: 640px) { .gallery-column { column-count: 2; } }
         @media (min-width: 768px) { .gallery-column { column-count: 3; } }
-        @media (min-width: 1024px) { .gallery-column { column-count: 4; } }
-        .gallery-item { break-inside: avoid; margin-bottom: 0; display: block; width: 100%; line-height: 0; position: relative; overflow: hidden; }
-        .gallery-item img { transition: transform 0.5s ease; width: 100%; height: auto; display: block; }
+        @media (min-width: 1200px) { .gallery-column { column-count: 4; } }
+
+        .gallery-item { 
+            break-inside: avoid; 
+            margin: 0; 
+            padding: 0; 
+            display: block; 
+            width: 100%; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        .gallery-item img { 
+            transition: transform 0.5s ease; 
+            width: 100%; 
+            height: auto; 
+            display: block; /* Removes inline gap */
+        }
+        
         .gallery-item:hover img { transform: scale(1.05); }
+
+        /* UI Elements */
+        .filter-btn { transition: all 0.3s ease; }
         .filter-btn.active { background-color: #424cf6; color: white; border-color: #424cf6; }
+        
         .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); }
         .dark .glass { background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255,255,255,0.05); }
     </style>
@@ -55,7 +83,7 @@
                 </div>
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">Home</a>
-                    <a href="#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">Services</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">Services</a>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hoverable">
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
@@ -79,22 +107,94 @@
         </div>
     </nav>
 
-    <section class="pt-32 pb-12 bg-gray-50 dark:bg-black/20">
+    <section class="pt-32 pb-8 bg-gray-50 dark:bg-black/20">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <h1 class="text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Our Portfolio</h1>
             <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">A curated collection of our finest work.</p>
             
-            <!-- Dynamic Filters Container -->
             <div class="flex flex-wrap justify-center gap-3" id="filters">
                 <button class="filter-btn active px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('all', this)">All</button>
-                <!-- Other buttons will be loaded here from Firebase -->
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('branding', this)">Branding</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('social', this)">Social Media</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('print', this)">Print</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('web', this)">Web Design</button>
             </div>
         </div>
     </section>
 
-    <div class="w-full min-h-[50vh]">
+    <div class="w-full">
         <div class="gallery-column w-full" id="gallery-container">
-            <div id="loading-indicator" class="col-span-full text-center py-10 text-gray-500 w-full">Loading images...</div>
+            
+            <div class="gallery-item group" data-category="branding">
+                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=800&auto=format&fit=crop" alt="Branding" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Corporate Identity</p>
+                </div>
+            </div>
+
+            <div class="gallery-item group" data-category="social">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&h=800&auto=format&fit=crop" alt="Social Media" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Instagram Campaign</p>
+                </div>
+            </div>
+
+            <div class="gallery-item group" data-category="web">
+                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=800&h=600&auto=format&fit=crop" alt="Web Design" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">UI/UX Design</p>
+                </div>
+            </div>
+
+            <div class="gallery-item group" data-category="print">
+                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop" alt="Print" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Brochure Design</p>
+                </div>
+            </div>
+
+             <div class="gallery-item group" data-category="branding">
+                <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?q=80&w=800&h=800&auto=format&fit=crop" alt="Branding" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Logo Design</p>
+                </div>
+            </div>
+
+            <div class="gallery-item group" data-category="web">
+                <img src="https://images.unsplash.com/photo-1559028013-cae75578e945?q=80&w=800&auto=format&fit=crop" alt="Web" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Landing Page</p>
+                </div>
+            </div>
+
+            <div class="gallery-item group" data-category="social">
+                <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?q=80&w=800&h=500&auto=format&fit=crop" alt="Social" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Facebook Ads</p>
+                </div>
+            </div>
+
+             <div class="gallery-item group" data-category="print">
+                <img src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=800&auto=format&fit=crop" alt="Print" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Packaging</p>
+                </div>
+            </div>
+
+             <div class="gallery-item group" data-category="branding">
+                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&h=600&auto=format&fit=crop" alt="Branding" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Stationery</p>
+                </div>
+            </div>
+
+             <div class="gallery-item group" data-category="web">
+                <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=800&h=800&auto=format&fit=crop" alt="Web" loading="lazy">
+                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">App Design</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -111,134 +211,40 @@
         <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-400"><p>&copy; 2023 BluePixel Graphic Design.</p></div>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDFpP6rzjNe14z8RgarxB-CAK28bHBNBiA",
-            authDomain: "propix-lk-web-portfolio.firebaseapp.com",
-            projectId: "propix-lk-web-portfolio",
-            storageBucket: "propix-lk-web-portfolio.firebasestorage.app",
-            messagingSenderId: "818456575110",
-            appId: "1:818456575110:web:32cbbdcc2843229fbd2507",
-            measurementId: "G-7WW2Z22897"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // 1. Fetch Categories Dynamically
-        async function loadFilters() {
-            const filterContainer = document.getElementById('filters');
-            try {
-                const q = query(collection(db, "categories"), orderBy("name"));
-                const snapshot = await getDocs(q);
-                
-                if(snapshot.empty) {
-                    // Fallback default filters if none exist
-                    const defaults = [
-                        {id: 'branding', name: 'Branding'},
-                        {id: 'social', name: 'Social Media'},
-                        {id: 'print', name: 'Print'},
-                        {id: 'web', name: 'Web'}
-                    ];
-                    renderButtons(defaults, filterContainer);
-                } else {
-                    const categories = [];
-                    snapshot.forEach(doc => categories.push({ id: doc.data().id, name: doc.data().name }));
-                    renderButtons(categories, filterContainer);
-                }
-            } catch(e) {
-                console.error("Error loading filters", e);
-            }
-        }
-
-        function renderButtons(cats, container) {
-            // Keep the 'All' button, append rest
-            cats.forEach(c => {
-                // check if already exists to avoid duplicates on re-runs
-                if(!document.getElementById(`btn-${c.id}`)) {
-                    const btn = document.createElement('button');
-                    btn.id = `btn-${c.id}`;
-                    btn.className = "filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable";
-                    btn.textContent = c.name;
-                    btn.onclick = function() { filterGallery(c.id, this); };
-                    container.appendChild(btn);
-                }
-            });
-        }
-
-        // 2. Fetch Images
-        function initPortfolio() {
-            const gallery = document.getElementById('gallery-container');
-            const loading = document.getElementById('loading-indicator');
-            const q = query(collection(db, "portfolio_items"), orderBy("createdAt", "desc"));
-            
-            onSnapshot(q, (snapshot) => {
-                loading.style.display = 'none';
-                if(snapshot.empty) {
-                    loading.style.display = 'block';
-                    loading.textContent = "No images uploaded yet.";
-                    return;
-                }
-                const newItems = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item group animate-fade-in';
-                    item.setAttribute('data-category', data.category);
-                    item.innerHTML = `
-                        <img src="${data.imageUrl}" alt="${data.category}" loading="lazy">
-                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    `;
-                    newItems.push(item);
-                });
-                gallery.innerHTML = ''; 
-                newItems.forEach(item => gallery.appendChild(item));
-                attachHoverEffects();
-                
-            }, (error) => {
-                console.error("Error:", error);
-                loading.textContent = "Failed to load. Check console.";
-            });
-        }
-
-        loadFilters();
-        initPortfolio();
-
-        function attachHoverEffects() {
-            const cursor = document.getElementById('customCursor');
-            document.querySelectorAll('.gallery-item').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-            });
-        }
-    </script>
-
     <script>
         lucide.createIcons();
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
 
+        // Cursor Logic
         const cursor = document.getElementById('customCursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
+        // Add hover effect listeners to static images
+        const items = document.querySelectorAll('.gallery-item');
+        items.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // Static Filtering Logic
         window.filterGallery = function(category, btn) {
+            // 1. Toggle Button Active State
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
+            // 2. Filter Items
             const items = document.querySelectorAll('.gallery-item');
             items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'block';
-                    item.classList.remove('hidden');
+                const itemCategory = item.getAttribute('data-category');
+                
+                if (category === 'all' || itemCategory === category) {
+                    item.style.display = 'block'; // Ensure masonry handles it
                 } else {
                     item.style.display = 'none';
-                    item.classList.add('hidden');
                 }
             });
         }
