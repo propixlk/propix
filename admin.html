@@ -3,391 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Pro Dashboard</title>
+    <title>Propix Admin - Bulk Rename & Code Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
-        .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
-        .tab-btn.active { border-bottom: 2px solid #2563eb; color: #2563eb; }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen font-sans">
+<body class="bg-gray-50 min-h-screen p-4 md:p-10">
 
-    <!-- Auth Wrapper -->
-    <div id="auth-wrapper" class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
-            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Admin Login</h2>
-            <input type="email" id="email" placeholder="Email" class="w-full px-4 py-3 mb-4 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 mb-6 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-            <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">Login</button>
-        </div>
-    </div>
-
-    <!-- Dashboard -->
-    <div id="dashboard" class="hidden min-h-screen flex flex-col">
-        
-        <!-- Navbar -->
-        <nav class="bg-white border-b px-6 py-4 flex justify-between items-center sticky top-0 z-20">
-            <h1 class="text-xl font-bold text-gray-800">Portfolio Manager</h1>
-            <button onclick="logout()" class="text-red-500 hover:text-red-700 font-medium text-sm">Logout</button>
-        </nav>
-
-        <!-- Tabs -->
-        <div class="bg-white border-b px-6 flex gap-8">
-            <button onclick="switchTab('upload')" id="tab-upload" class="tab-btn active py-4 font-medium text-gray-600 hover:text-blue-600 transition">Upload New</button>
-            <button onclick="switchTab('manage')" id="tab-manage" class="tab-btn py-4 font-medium text-gray-600 hover:text-blue-600 transition">Manage Gallery</button>
-            <button onclick="switchTab('categories')" id="tab-categories" class="tab-btn py-4 font-medium text-gray-600 hover:text-blue-600 transition">Categories</button>
+    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100">
+        <div class="bg-blue-600 p-6 text-white">
+            <h1 class="text-2xl font-bold">Bulk Portfolio Generator</h1>
+            <p class="text-blue-100 text-sm">පින්තූර rename කර, Filter සහ Image codes පහසුවෙන් සාදාගන්න.</p>
         </div>
 
-        <!-- Content Area -->
-        <div class="p-6 max-w-5xl mx-auto w-full flex-1">
+        <div class="p-8 space-y-8">
+            <!-- Step 1: Category Selection & Custom Category -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="block font-bold text-gray-700">1. Category එක තෝරන්න</label>
+                        <select id="category" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                            <option value="logo">Logo design</option>
+                            <option value="cv">CV</option>
+                            <option value="post">Post</option>
+                            <option value="tute">Tute Cover</option>
+                            <option value="custom">-- වෙනත් (Add New) --</option>
+                        </select>
+                    </div>
+                    
+                    <div id="customCategoryGroup" class="hidden space-y-2 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                        <label class="block font-bold text-blue-800 text-sm">නව Category නම (ID එක)</label>
+                        <input type="text" id="customCatName" class="w-full p-2 border border-blue-200 rounded-lg outline-none" placeholder="උදා: flyer">
+                        <p class="text-[10px] text-blue-600 italic">* මෙහි දෙන නම Portfolio Filter එකේ data-filter ලෙස භාවිතා වේ.</p>
+                    </div>
+                </div>
 
-            <!-- TAB 1: UPLOAD -->
-            <div id="view-upload" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block font-bold text-gray-700">2. පින්තූරයේ ආරම්භක අංකය (Next ID)</label>
+                    <input type="number" id="startId" value="1" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="උදා: 10">
+                    <p class="text-xs text-gray-400">ෆෝල්ඩරයේ දැනට ඇති පින්තූර ගණනට පසු අංකය මෙහි යොදන්න.</p>
+                </div>
+            </div>
+
+            <!-- Step 2: File Upload -->
+            <div class="space-y-2">
+                <label class="block font-bold text-gray-700">3. පින්තූර සියල්ල තෝරන්න (Bulk Select)</label>
+                <input type="file" id="fileInput" multiple accept="image/*" class="w-full p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-blue-400 cursor-pointer transition">
+            </div>
+
+            <button onclick="generateAll()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition transform active:scale-95">
+                Generate Codes & Rename Guide
+            </button>
+
+            <!-- Results Section -->
+            <div id="results" class="hidden space-y-6 pt-6 border-t">
                 
-                <!-- Category Selector -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border">
-                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">1. Select Category</h3>
-                    <div id="category-buttons" class="flex flex-wrap gap-2">
-                        <div class="text-gray-400 text-sm italic">Loading categories...</div>
-                    </div>
+                <!-- Rename Guide -->
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                    <h3 class="font-bold text-amber-800 mb-2 flex items-center gap-2">
+                        <span>⚠️ Rename Guide (පින්තූර මේ නමින් Rename කරන්න)</span>
+                    </h3>
+                    <ul id="renameList" class="text-sm text-amber-700 space-y-1 font-mono"></ul>
                 </div>
 
-                <!-- File Upload -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border">
-                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">2. Select Images</h3>
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition relative bg-gray-50">
-                        <input type="file" id="fileInput" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleFileSelect(event)">
-                        <i data-lucide="image-plus" class="mx-auto h-12 w-12 text-gray-400 mb-2"></i>
-                        <p class="text-gray-600 font-medium">Drop images here or click to select</p>
+                <!-- Filter Code (If Custom) -->
+                <div id="filterCodeGroup" class="hidden space-y-2">
+                    <div class="flex justify-between items-end">
+                        <label class="font-bold text-gray-700 text-sm">New Filter Button Code (Add to Filter Section)</label>
+                        <button onclick="copyToClipboard('filterOutput')" class="text-[10px] bg-gray-100 px-2 py-1 rounded">Copy</button>
                     </div>
-                    
-                    <!-- Preview Grid -->
-                    <div id="preview-area" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mt-6 hidden"></div>
+                    <textarea id="filterOutput" class="w-full h-16 p-3 bg-slate-800 text-pink-400 font-mono text-xs rounded-xl" readonly></textarea>
                 </div>
 
-                <!-- Progress & Actions -->
-                <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-lg md:static md:shadow-none md:border-none md:bg-transparent md:p-0 z-10">
-                    
-                    <!-- Error Message Box -->
-                    <div id="error-box" class="hidden mb-4 bg-red-50 border-l-4 border-red-500 p-4">
-                        <p class="font-bold text-red-700">Error</p>
-                        <p id="error-msg" class="text-sm text-red-600"></p>
+                <!-- Main Image Items Code -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-end">
+                        <label class="font-bold text-gray-700">Generated Portfolio Items Code</label>
+                        <button onclick="copyToClipboard('output')" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md transition">Copy Items Code</button>
                     </div>
-
-                    <!-- Progress Bar -->
-                    <div id="progress-container" class="hidden mb-4 bg-white p-4 rounded-lg shadow border md:shadow-sm">
-                        <div class="flex justify-between text-sm font-bold text-gray-700 mb-2">
-                            <span id="progress-status">Starting...</span>
-                            <span id="progress-percent">0%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
-                            <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-200" style="width: 0%"></div>
-                        </div>
-                        <button onclick="cancelUpload()" class="w-full py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 text-sm font-bold">Cancel Upload</button>
-                    </div>
-
-                    <button id="upload-btn" onclick="startUpload()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
-                        Start Upload
-                    </button>
+                    <textarea id="output" class="w-full h-64 p-4 bg-gray-900 text-blue-400 font-mono text-sm rounded-xl border-none focus:ring-0" readonly></textarea>
                 </div>
             </div>
-
-            <!-- TAB 2: MANAGE GALLERY -->
-            <div id="view-manage" class="hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-gray-800">All Uploaded Images</h2>
-                    <button onclick="loadGallery()" class="text-blue-600 hover:underline text-sm flex items-center gap-1"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
-                </div>
-                <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    <div class="col-span-full text-center py-10 text-gray-500">Loading images...</div>
-                </div>
-            </div>
-
-            <!-- TAB 3: CATEGORIES -->
-            <div id="view-categories" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm border">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">Manage Categories</h3>
-                    <div class="flex gap-2 mb-6">
-                        <input type="text" id="new-cat-name" placeholder="Enter new category name" class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        <button onclick="addCategory()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold">Add</button>
-                    </div>
-                    <div class="space-y-2" id="category-list-manage"></div>
-                </div>
-            </div>
-
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
-        // --- CONFIGURATION ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyDFpP6rzjNe14z8RgarxB-CAK28bHBNBiA",
-            authDomain: "propix-lk-web-portfolio.firebaseapp.com",
-            projectId: "propix-lk-web-portfolio",
-            storageBucket: "propix-lk-web-portfolio.firebasestorage.app",
-            messagingSenderId: "818456575110",
-            appId: "1:818456575110:web:32cbbdcc2843229fbd2507",
-            measurementId: "G-7WW2Z22897"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
-
-        let selectedCategory = '';
-        let selectedFiles = [];
-        let isUploading = false;
-        let uploadTask = null; 
-
-        // --- AUTH ---
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('auth-wrapper').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                loadCategories();
+    <script>
+        // Toggle Custom Category Input
+        document.getElementById('category').addEventListener('change', function() {
+            const customGroup = document.getElementById('customCategoryGroup');
+            if (this.value === 'custom') {
+                customGroup.classList.remove('hidden');
             } else {
-                document.getElementById('auth-wrapper').classList.remove('hidden');
-                document.getElementById('dashboard').classList.add('hidden');
+                customGroup.classList.add('hidden');
             }
         });
 
-        window.handleLogin = async () => {
-            try { await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value); } 
-            catch (e) { alert(e.message); }
-        };
-        window.logout = () => signOut(auth);
+        function generateAll() {
+            const files = document.getElementById('fileInput').files;
+            const startId = parseInt(document.getElementById('startId').value);
+            const output = document.getElementById('output');
+            const renameList = document.getElementById('renameList');
+            const results = document.getElementById('results');
+            const filterOutput = document.getElementById('filterOutput');
+            const filterCodeGroup = document.getElementById('filterCodeGroup');
 
-        // --- TABS ---
-        window.switchTab = (tab) => {
-            ['upload', 'manage', 'categories'].forEach(t => {
-                document.getElementById(`view-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.remove('active');
-            });
-            document.getElementById(`view-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            if (tab === 'manage') loadGallery();
-        };
+            let category = document.getElementById('category').value;
+            let displayCategoryName = category;
 
-        // --- CATEGORIES ---
-        async function loadCategories() {
-            const catContainer = document.getElementById('category-buttons');
-            const listManage = document.getElementById('category-list-manage');
-            try {
-                const q = query(collection(db, "categories"), orderBy("name"));
-                const snapshot = await getDocs(q);
-                let categories = [];
-                
-                if (snapshot.empty) {
-                    categories = [{id: 'branding', name: 'Branding'}, {id: 'social', name: 'Social Media'}, {id: 'print', name: 'Print'}, {id: 'web', name: 'Web'}];
-                } else {
-                    snapshot.forEach(doc => categories.push({ uid: doc.id, ...doc.data() }));
+            if (category === 'custom') {
+                category = document.getElementById('customCatName').value.trim().toLowerCase();
+                displayCategoryName = document.getElementById('customCatName').value.trim();
+                if (!category) {
+                    alert("කරුණාකර නව Category නම ඇතුළත් කරන්න!");
+                    return;
                 }
-
-                catContainer.innerHTML = categories.map(c => `
-                    <button onclick="selectCategory('${c.id || c.name.toLowerCase()}', this)" 
-                        class="cat-btn px-4 py-2 rounded-lg border text-sm font-medium transition hover:bg-gray-50 ${selectedCategory === (c.id || c.name.toLowerCase()) ? 'bg-blue-600 text-white border-blue-600' : 'text-gray-600 border-gray-200'}">
-                        ${c.name}
-                    </button>
-                `).join('');
-
-                listManage.innerHTML = snapshot.empty 
-                    ? `<p class="text-gray-500 italic">No custom categories yet.</p>` 
-                    : categories.map(c => `
-                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border">
-                            <span class="font-medium text-gray-700">${c.name}</span>
-                            <button onclick="deleteCategory('${c.uid}')" class="text-red-500 hover:text-red-700 text-sm font-bold">Delete</button>
-                        </div>`).join('');
-            } catch (e) { console.error(e); }
-        }
-
-        window.selectCategory = (id, btn) => {
-            selectedCategory = id;
-            document.querySelectorAll('.cat-btn').forEach(b => b.className = "cat-btn px-4 py-2 rounded-lg border text-sm font-medium transition hover:bg-gray-50 text-gray-600 border-gray-200");
-            btn.className = "cat-btn px-4 py-2 rounded-lg border text-sm font-medium transition bg-blue-600 text-white border-blue-600";
-        };
-
-        window.addCategory = async () => {
-            const name = document.getElementById('new-cat-name').value.trim();
-            if (!name) return;
-            try {
-                await addDoc(collection(db, "categories"), { name, id: name.toLowerCase().replace(/\s+/g, '-') });
-                document.getElementById('new-cat-name').value = '';
-                loadCategories();
-                alert('Category added!');
-            } catch (e) { alert(e.message); }
-        };
-
-        window.deleteCategory = async (uid) => {
-            if(confirm('Delete category?')) { await deleteDoc(doc(db, "categories", uid)); loadCategories(); }
-        };
-
-        // --- UPLOAD LOGIC ---
-        window.handleFileSelect = (e) => {
-            selectedFiles = [...selectedFiles, ...Array.from(e.target.files)];
-            updatePreview();
-        };
-
-        function updatePreview() {
-            const area = document.getElementById('preview-area');
-            area.innerHTML = '';
-            if (selectedFiles.length > 0) area.classList.remove('hidden');
-            selectedFiles.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    area.innerHTML += `
-                        <div class="relative aspect-square bg-gray-200 rounded overflow-hidden group">
-                            <img src="${e.target.result}" class="w-full h-full object-cover">
-                            <button onclick="removeFile(${index})" class="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                            </button>
-                        </div>`;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        window.removeFile = (i) => { selectedFiles.splice(i, 1); updatePreview(); };
-
-        window.cancelUpload = () => {
-            if (isUploading) {
-                isUploading = false;
-                if (uploadTask) uploadTask.cancel(); 
-                document.getElementById('progress-status').innerText = "Cancelled!";
-                document.getElementById('progress-bar').classList.add('bg-red-500');
-                setTimeout(() => {
-                    document.getElementById('progress-container').classList.add('hidden');
-                    document.getElementById('upload-btn').disabled = false;
-                    document.getElementById('progress-bar').classList.remove('bg-red-500');
-                }, 2000);
+                // Generate Filter Button Code
+                filterCodeGroup.classList.remove('hidden');
+                filterOutput.value = `<button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="${category}">${displayCategoryName}</button>`;
+            } else {
+                filterCodeGroup.classList.add('hidden');
             }
-        };
 
-        window.startUpload = async () => {
-            if (!selectedCategory) return alert('Select a category first!');
-            if (selectedFiles.length === 0) return alert('No files selected!');
+            if (files.length === 0) {
+                alert("කරුණාකර පින්තූර තෝරන්න!");
+                return;
+            }
 
-            isUploading = true;
-            document.getElementById('upload-btn').disabled = true;
-            document.getElementById('progress-container').classList.remove('hidden');
-            document.getElementById('error-box').classList.add('hidden'); // Hide prev errors
+            results.classList.remove('hidden');
+            let generatedHtml = "";
+            let renameGuide = "";
+            let currentId = startId;
+
+            for (let i = 0; i < files.length; i++) {
+                const extension = files[i].name.split('.').pop();
+                const newFileName = `${currentId}.${extension}`;
+                
+                // Build HTML
+                generatedHtml += `<!-- Item ${currentId} -->\n`;
+                generatedHtml += `<div class="portfolio-item hoverable" data-category="${category}">\n`;
+                generatedHtml += `    <img src="assets/img/portfolio/${newFileName}" alt="Work" class="w-full h-auto block">\n`;
+                generatedHtml += `</div>\n\n`;
+
+                // Build Rename Guide
+                renameGuide += `<li>"${files[i].name}" ➔ <b>${newFileName}</b></li>`;
+
+                currentId++;
+            }
+
+            output.value = generatedHtml;
+            renameList.innerHTML = renameGuide;
             
-            const progBar = document.getElementById('progress-bar');
-            const progText = document.getElementById('progress-percent');
-            const statusText = document.getElementById('progress-status');
-            const total = selectedFiles.length;
-
-            try {
-                for (let i = 0; i < total; i++) {
-                    if (!isUploading) break;
-
-                    const file = selectedFiles[i];
-                    // Rename file to be shorter just in case
-                    const ext = file.name.split('.').pop();
-                    const shortName = `img_${Date.now()}_${i}.${ext}`;
-                    const storagePath = `portfolio/${shortName}`;
-                    const storageRef = ref(storage, storagePath);
-                    
-                    uploadTask = uploadBytesResumable(storageRef, file);
-
-                    await new Promise((resolve, reject) => {
-                        uploadTask.on('state_changed', 
-                            (snapshot) => {
-                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                const overallProgress = ((i + (progress/100)) / total) * 100;
-                                
-                                statusText.innerText = `Uploading ${i+1}/${total}: ${file.name.substring(0, 20)}... (${Math.round(progress)}%)`;
-                                progBar.style.width = overallProgress + '%';
-                                progText.innerText = Math.round(overallProgress) + '%';
-                            }, 
-                            (error) => {
-                                if (error.code === 'storage/canceled') {
-                                    reject(new Error("Cancelled")); 
-                                } else {
-                                    console.error("Upload Error:", error); // Log full error
-                                    reject(error);
-                                }
-                            }, 
-                            () => resolve()
-                        );
-                    });
-
-                    const url = await getDownloadURL(uploadTask.snapshot.ref);
-                    await addDoc(collection(db, "portfolio_items"), {
-                        imageUrl: url, storagePath: storagePath, category: selectedCategory, createdAt: serverTimestamp()
-                    });
-                }
-
-                if (isUploading) {
-                    alert('Success! All images uploaded.');
-                    selectedFiles = [];
-                    updatePreview();
-                    document.getElementById('progress-container').classList.add('hidden');
-                }
-
-            } catch (e) {
-                if(e.message !== "Cancelled") {
-                    // Show error in UI
-                    const errorBox = document.getElementById('error-box');
-                    const errorMsg = document.getElementById('error-msg');
-                    errorBox.classList.remove('hidden');
-                    
-                    if(e.code === 'storage/unauthorized') {
-                        errorMsg.innerText = "Permission Denied! Please check Firebase Storage Rules (See Step 1).";
-                    } else {
-                        errorMsg.innerText = e.message;
-                    }
-                }
-            } finally {
-                isUploading = false;
-                uploadTask = null;
-                document.getElementById('upload-btn').disabled = false;
-            }
-        };
-
-        // --- MANAGE GALLERY ---
-        async function loadGallery() {
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500">Loading...</div>';
-            try {
-                const snapshot = await getDocs(query(collection(db, "portfolio_items"), orderBy("createdAt", "desc")));
-                if (snapshot.empty) { grid.innerHTML = '<div class="col-span-full text-center">No images.</div>'; return; }
-                
-                grid.innerHTML = '';
-                snapshot.forEach(docSnap => {
-                    const data = docSnap.data();
-                    const div = document.createElement('div');
-                    div.className = 'relative aspect-square bg-gray-100 rounded-lg overflow-hidden group border';
-                    div.innerHTML = `
-                        <img src="${data.imageUrl}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-2">
-                            <span class="text-white text-xs font-bold bg-blue-600 px-2 py-1 rounded">${data.category}</span>
-                            <button onclick="deleteImage('${docSnap.id}', '${data.storagePath}')" class="bg-red-600 text-white p-2 rounded-full hover:bg-red-700"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
-                        </div>`;
-                    grid.appendChild(div);
-                });
-                lucide.createIcons();
-            } catch (e) { console.error(e); }
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
-        window.deleteImage = async (docId, storagePath) => {
-            if (!confirm('Delete permanently?')) return;
-            try {
-                if (storagePath) await deleteObject(ref(storage, storagePath)).catch(e => console.warn(e));
-                await deleteDoc(doc(db, "portfolio_items", docId));
-                loadGallery();
-            } catch (e) { alert(e.message); }
-        };
-
-        lucide.createIcons();
+        function copyToClipboard(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            document.execCommand("copy");
+            alert("Code එක Copy කරගත්තා!");
+        }
     </script>
 </body>
 </html>

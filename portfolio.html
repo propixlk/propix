@@ -3,71 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | BluePixel</title>
+    <title>Portfolio | Propix Lk - Creative Graphic Design</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        brand: { 100:'#03abec', 200:'#1590ef', 300:'#1c86f1', 400:'#2e69f4', 500:'#3d53f7', 600:'#424cf6', 900:'#1a237e' },
-                        dark: { bg:'#0b1121', card:'#1e293b', text:'#f8fafc', muted:'#cbd5e1' }
+                        brand: { 100: '#03abec', 200: '#1590ef', 300: '#1c86f1', 400: '#2e69f4', 500: '#3d53f7', 600: '#424cf6', 900: '#1a237e' },
+                        dark: { bg: '#0b1121', card: '#1e293b', text: '#f8fafc', muted: '#cbd5e1' }
                     },
-                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'] },
-                    animation: { 'fade-in': 'fadeIn 0.5s ease-in-out' },
-                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'] }
                 }
             }
         }
     </script>
 
     <style>
-        body { cursor: none; }
+        body { cursor: none; overflow-x: hidden; }
         @media (pointer: coarse) { body { cursor: auto; } .custom-cursor { display: none; } }
-        
-        /* Cursor Styles */
-        .custom-cursor { position: fixed; top: 0; left: 0; width: 20px; height: 20px; border: 2px solid #424cf6; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 9999; transition: transform 0.1s ease; mix-blend-mode: difference; }
-        .custom-cursor.hovered { width: 40px; height: 40px; background-color: rgba(66, 76, 246, 0.3); border-color: transparent; }
-        
-        /* Masonry Layout - Zero Spacing Configuration */
-        .gallery-column { 
-            column-count: 1; 
-            column-gap: 0; 
-            line-height: 0; /* Removes vertical gaps */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px; border: 2px solid #424cf6;
+            border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 9999;
+            transition: transform 0.1s ease; mix-blend-mode: difference;
         }
-        @media (min-width: 640px) { .gallery-column { column-count: 2; } }
-        @media (min-width: 768px) { .gallery-column { column-count: 3; } }
-        @media (min-width: 1200px) { .gallery-column { column-count: 4; } }
+        .custom-cursor.hovered { width: 40px; height: 40px; background: rgba(66, 76, 246, 0.3); border-color: transparent; }
+        
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
+        .dark .glass { background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
-        .gallery-item { 
-            break-inside: avoid; 
-            margin: 0; 
-            padding: 0; 
-            display: block; 
-            width: 100%; 
-            position: relative; 
-            overflow: hidden; 
+        /* Masonry Layout with No Gaps */
+        .portfolio-grid {
+            column-count: 1;
+            column-gap: 0;
         }
-        
-        .gallery-item img { 
-            transition: transform 0.5s ease; 
-            width: 100%; 
-            height: auto; 
-            display: block; /* Removes inline gap */
-        }
-        
-        .gallery-item:hover img { transform: scale(1.05); }
+        @media (min-width: 640px) { .portfolio-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .portfolio-grid { column-count: 3; } }
+        @media (min-width: 1280px) { .portfolio-grid { column-count: 4; } }
 
-        /* UI Elements */
-        .filter-btn { transition: all 0.3s ease; }
-        .filter-btn.active { background-color: #424cf6; color: white; border-color: #424cf6; }
-        
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .dark .glass { background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .portfolio-item {
+            break-inside: avoid;
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Smooth zoom effect without the blue box */
+        .portfolio-item img {
+            transition: transform 0.5s ease;
+        }
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .filter-btn.active {
+            background-color: #424cf6;
+            color: white;
+            border-color: #424cf6;
+        }
     </style>
 </head>
 <body class="antialiased bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
@@ -78,188 +79,328 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
-                   <img src="assets/img/Sitelogo.png" alt="Logo" class="h-[50px] w-[200px] object-contain block dark:hidden"> 
-                   <img src="assets/img/Sitelogow.png" alt="Logo" class="h-[50px] w-[200px] object-contain hidden dark:block"> 
+                    <img src="assets/img/Sitelogo.png" alt="BluePixel Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all"> 
+                    <img src="assets/img/Sitelogow.png" alt="BluePixel Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all"> 
                 </div>
+                
                 <div class="hidden md:flex space-x-8 items-center">
-                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">Home</a>
-                    <a href="#" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">Services</a>
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hoverable">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
+                    <a href="#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">About</a>
+                    <a href="#portfolio" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Work</a>
+                    <a href="#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Services</a>
+                    <a href="#contact" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Contact</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                     </button>
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                        Let's Talk
+                    </a>
                 </div>
-                 <div class="md:hidden flex items-center gap-4">
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-                       <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
-                       <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                   </button>
-                   <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600">
+
+                <div class="md:hidden flex items-center gap-2">
+                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="p-2 text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
                         <i data-lucide="menu" class="w-8 h-8"></i>
-                   </button>
-               </div>
+                    </button>
+                </div>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-800 shadow-lg top-20 left-0">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="index.html" class="block px-3 py-3 font-medium text-gray-700 dark:text-gray-200">Home</a>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-40">
+            <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
+                <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
+                <a href="index.html#about" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">About</a>
+                <a href="#portfolio" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Work</a>
+                <a href="#services" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Services</a>
+                <a href="#contact" class="block w-full px-3 py-4 text-lg font-bold text-white bg-brand-600 rounded-xl shadow-lg shadow-brand-500/30">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <section class="pt-32 pb-8 bg-gray-50 dark:bg-black/20">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Our Portfolio</h1>
-            <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">A curated collection of our finest work.</p>
-            
-            <div class="flex flex-wrap justify-center gap-3" id="filters">
-                <button class="filter-btn active px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('all', this)">All</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('branding', this)">Branding</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('social', this)">Social Media</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('print', this)">Print</button>
-                <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hoverable" onclick="filterGallery('web', this)">Web Design</button>
-            </div>
+    <section class="pt-32 pb-10 px-4 text-center">
+        <h1 class="text-4xl md:text-6xl font-display font-bold mb-6">Our Creative Gallery</h1>
+        <p class="text-gray-500 dark:text-dark-muted max-w-2xl mx-auto mb-12">Exploration of brand identities, digital marketing assets, and professional layouts.</p>
+        
+        <div class="flex flex-wrap justify-center gap-3 mb-10" id="filter-container">
+            <button class="filter-btn active px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="all">All</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="logo">Tute Cover</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="cv">Social Media Posts</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="post">Banner</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="tute">CV</button>
+            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="tute">Class Card</button>
         </div>
     </section>
 
-    <div class="w-full">
-        <div class="gallery-column w-full" id="gallery-container">
-            
-            <div class="gallery-item group" data-category="branding">
-                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=800&auto=format&fit=crop" alt="Branding" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Corporate Identity</p>
-                </div>
-            </div>
+    <main class="portfolio-grid" id="portfolio-items">
+        <!-- Item 1 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/1.jpg" alt="Work" class="w-full h-auto block">
+</div>
 
-            <div class="gallery-item group" data-category="social">
-                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&h=800&auto=format&fit=crop" alt="Social Media" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Instagram Campaign</p>
-                </div>
-            </div>
+<!-- Item 2 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/2.webp" alt="Work" class="w-full h-auto block">
+</div>
 
-            <div class="gallery-item group" data-category="web">
-                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=800&h=600&auto=format&fit=crop" alt="Web Design" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">UI/UX Design</p>
-                </div>
-            </div>
+<!-- Item 3 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/3.jpeg" alt="Work" class="w-full h-auto block">
+</div>
 
-            <div class="gallery-item group" data-category="print">
-                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop" alt="Print" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Brochure Design</p>
-                </div>
-            </div>
+<!-- Item 4 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/4.jpg" alt="Work" class="w-full h-auto block">
+</div>
 
-             <div class="gallery-item group" data-category="branding">
-                <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?q=80&w=800&h=800&auto=format&fit=crop" alt="Branding" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Logo Design</p>
-                </div>
-            </div>
+<!-- Item 5 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/5.jpeg" alt="Work" class="w-full h-auto block">
+</div>
 
-            <div class="gallery-item group" data-category="web">
-                <img src="https://images.unsplash.com/photo-1559028013-cae75578e945?q=80&w=800&auto=format&fit=crop" alt="Web" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Landing Page</p>
-                </div>
-            </div>
+<!-- Item 6 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/6.jpeg" alt="Work" class="w-full h-auto block">
+</div>
 
-            <div class="gallery-item group" data-category="social">
-                <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?q=80&w=800&h=500&auto=format&fit=crop" alt="Social" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Facebook Ads</p>
-                </div>
-            </div>
+<!-- Item 7 -->
+<div class="portfolio-item hoverable" data-category="Social Media Posts">
+    <img src="assets/img/Designs/7.jpeg" alt="Work" class="w-full h-auto block">
+</div>
 
-             <div class="gallery-item group" data-category="print">
-                <img src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=800&auto=format&fit=crop" alt="Print" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Packaging</p>
-                </div>
-            </div>
+<!-- Item 8 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/8.jpeg" alt="Work" class="w-full h-auto block">
+</div>
 
-             <div class="gallery-item group" data-category="branding">
-                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&h=600&auto=format&fit=crop" alt="Branding" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Stationery</p>
-                </div>
-            </div>
+<!-- Item 9 -->
+<div class="portfolio-item hoverable" data-category="Social Media Posts">
+    <img src="assets/img/Designs/9.jpeg" alt="Work" class="w-full h-auto block">
+</div>
 
-             <div class="gallery-item group" data-category="web">
-                <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=800&h=800&auto=format&fit=crop" alt="Web" loading="lazy">
-                <div class="absolute inset-0 bg-brand-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p class="text-white font-display font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">App Design</p>
-                </div>
-            </div>
+<!-- Item 10 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/10.jpg" alt="Work" class="w-full h-auto block">
+</div>
 
-        </div>
-    </div>
+<!-- Item 11 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/11.jpg" alt="Work" class="w-full h-auto block">
+</div>
 
-    <section class="bg-brand-50 dark:bg-brand-900/20 py-12 border-y border-brand-100 dark:border-brand-800/30">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-                <div><h3 class="text-2xl font-bold text-gray-900 dark:text-white">Quick design need?</h3></div>
-                <button onclick="request()" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">Request</button>
-            </div>
-        </div>
+<!-- Item 12 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/12.jpg" alt="Work" class="w-full h-auto block">
+</div>
+
+<!-- Item 13 -->
+<div class="portfolio-item hoverable" data-category="Social Media Posts">
+    <img src="assets/img/Designs/13.jpeg" alt="Work" class="w-full h-auto block">
+</div>
+
+<!-- Item 14 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/14.jpeg" alt="Work" class="w-full h-auto block">
+</div>
+
+<!-- Item 15 -->
+<div class="portfolio-item hoverable" data-category="Social Media Posts">
+    <img src="assets/img/Designs/15.jpg" alt="Work" class="w-full h-auto block">
+</div>
+
+<!-- Item 16 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/16.jpeg" alt="Work" class="w-full h-auto block">
+</div>
+
+<!-- Item 17 -->
+<div class="portfolio-item hoverable" data-category="cv">
+    <img src="assets/img/Designs/17.webp" alt="Work" class="w-full h-auto block">
+</div>
+
+
+        </main>
+
+    <section class="py-20 bg-brand-600 text-white text-center">
+        <h2 class="text-3xl font-display font-bold mb-6">Need a custom design?</h2>
+        <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-10 py-4 bg-white text-brand-600 rounded-full font-bold text-lg hover:scale-105 transition hoverable inline-block">Order Now</a>
     </section>
-    
-    <footer class="bg-gray-900 dark:bg-black text-white pt-16 pb-8 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-400"><p>&copy; 2023 BluePixel Graphic Design.</p></div>
+
+    <footer class="relative bg-gray-900 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-gray-800">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-400/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <div class="space-y-6">
+                    <a href="index.html" class="inline-block hoverable">
+                        <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-9 w-auto">
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+                        Transforming ideas into visual masterpieces. We help brands stand out with strategic design and creative solutions.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/1Bj9wAdLRN/" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="facebook" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@propix_lk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="music-2" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="message-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Quick Links</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="index.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#about" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> About Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#portfolio" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Work
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#services" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Services
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Other Links</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="portfolio.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Portfolio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Price-List.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Branding
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#services" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Print Design
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#services" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Web Assets
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Get in Touch</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 group hoverable">
+                            <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-900/50 transition-colors">
+                                <i data-lucide="mail" class="w-5 h-5 text-brand-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Email</p>
+                                <a href="mailto:propixlk@gmail.com" class="text-gray-300 hover:text-white transition-colors">propixlk@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 group hoverable">
+                            <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-900/50 transition-colors">
+                                <i data-lucide="message-square" class="w-5 h-5 text-brand-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">WhatsApp</p>
+                                <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="text-gray-300 hover:text-white transition-colors">Chat with us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500 text-center md:text-left">
+                    &copy; 2024 - 2026 <span class="text-brand-400 font-bold">Propix LK</span>. All rights reserved.
+                </p>
+                <div class="flex gap-6 text-sm">
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors hoverable">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors hoverable">Terms of Service</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script>
+        // Initialize Lucide Icons
         lucide.createIcons();
-        function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
 
-        // Cursor Logic
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Custom Cursor
         const cursor = document.getElementById('customCursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Add hover effect listeners to static images
-        const items = document.querySelectorAll('.gallery-item');
-        items.forEach(el => {
+        const hoverables = document.querySelectorAll('.hoverable, a, button');
+        hoverables.forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        // Static Filtering Logic
-        window.filterGallery = function(category, btn) {
-            // 1. Toggle Button Active State
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // Portfolio Filtering Logic
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-            // 2. Filter Items
-            const items = document.querySelectorAll('.gallery-item');
-            items.forEach(item => {
-                const itemCategory = item.getAttribute('data-category');
-                
-                if (category === 'all' || itemCategory === category) {
-                    item.style.display = 'block'; // Ensure masonry handles it
-                } else {
-                    item.style.display = 'none';
-                }
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
             });
-        }
-        
-        function request() {
-            window.open(`https://wa.me/94768294496?text=Hi,%20I%20want%20to%20design..`, '_blank');
-        }
+        });
 
-        // Mobile Menu
-        const mBtn = document.getElementById('mobile-menu-btn');
-        const mMenu = document.getElementById('mobile-menu');
-        if(mBtn && mMenu) {
-            mBtn.addEventListener('click', () => mMenu.classList.toggle('hidden'));
-            mMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => mMenu.classList.add('hidden')));
-        }
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
     </script>
 </body>
 </html>
