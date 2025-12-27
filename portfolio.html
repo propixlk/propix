@@ -27,8 +27,9 @@
     </script>
 
     <style>
-        body { cursor: none; overflow-x: hidden; }
+        body { cursor: none; overflow-x: hidden; user-select: none; -webkit-user-select: none; }
         @media (pointer: coarse) { body { cursor: auto; } .custom-cursor { display: none; } }
+        
         .custom-cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px; border: 2px solid #424cf6;
             border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 9999;
@@ -39,591 +40,196 @@
         .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
         .dark .glass { background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
-        /* Masonry Layout with No Gaps */
-        .portfolio-grid {
-            column-count: 1;
-            column-gap: 0;
+        /* Custom Scrollbar for Filter Bar */
+        .filter-scroll-container::-webkit-scrollbar { height: 4px; }
+        .filter-scroll-container::-webkit-scrollbar-track { background: transparent; }
+        .filter-scroll-container::-webkit-scrollbar-thumb { 
+            background: #424cf6; 
+            border-radius: 10px;
         }
-        @media (min-width: 640px) { .portfolio-grid { column-count: 2; } }
-        @media (min-width: 1024px) { .portfolio-grid { column-count: 3; } }
-        @media (min-width: 1280px) { .portfolio-grid { column-count: 4; } }
+        .dark .filter-scroll-container::-webkit-scrollbar-thumb { background: #1590ef; }
 
+        /* Masonry Item Styles */
         .portfolio-item {
             break-inside: avoid;
-            display: block;
-            width: 100%;
-            overflow: hidden;
+            margin-bottom: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
+        .portfolio-item.hidden-item { display: none; }
 
-        /* Smooth zoom effect without the blue box */
-        .portfolio-item img {
-            transition: transform 0.5s ease;
+        /* Watermark Styles */
+        .watermark-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+            opacity: 0.03; /* Extremely faint, almost invisible to human eye but captured in screenshots */
+            mix-blend-mode: overlay;
         }
-        .portfolio-item:hover img {
-            transform: scale(1.05);
+        .watermark-text {
+            font-size: 2rem;
+            font-weight: 900;
+            transform: rotate(-45deg);
+            white-space: nowrap;
+            color: gray;
         }
 
-        .filter-btn.active {
-            background-color: #424cf6;
-            color: white;
-            border-color: #424cf6;
+        /* Protection against right-click save */
+        .img-guard {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
         }
+
+        /* Fading Gradient for Scroll Indication */
+        .scroll-gradient {
+            pointer-events: none;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            background: linear-gradient(to left, white, transparent);
+            z-index: 10;
+        }
+        .dark .scroll-gradient { background: linear-gradient(to left, #0b1121, transparent); }
+
+        #lightbox { z-index: 100; backdrop-filter: blur(10px); }
     </style>
 </head>
 <body class="antialiased bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
 
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
 
-    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+    <!-- Original Navbar -->
+    <nav class="fixed w-full z-50 glass" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
-                    <img src="assets/img/Sitelogo.png" alt="BluePixel Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all"> 
-                    <img src="assets/img/Sitelogow.png" alt="BluePixel Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all"> 
+                    <img src="assets/img/Sitelogo.png" alt="Logo" class="h-8 md:h-10 dark:hidden"> 
+                    <img src="assets/img/Sitelogow.png" alt="Logo" class="h-8 md:h-10 hidden dark:block"> 
                 </div>
                 
                 <div class="hidden md:flex space-x-8 items-center">
-                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
-                    <a href="#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">About</a>
-                    <a href="#portfolio" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Work</a>
-                    <a href="#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Services</a>
-                    <a href="#contact" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Contact</a>
+                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">Home</a>
+                    <a href="index.html#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">About</a>
+                    <a href="portfolio.html" class="text-brand-600 font-bold hoverable underline decoration-2 underline-offset-8">Work</a>
+                    <a href="index.html#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 font-medium hoverable">Services</a>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                     </button>
-                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
-                        Let's Talk
-                    </a>
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg hoverable">Let's Talk</a>
                 </div>
 
                 <div class="md:hidden flex items-center gap-2">
-                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                     <button onclick="toggleDarkMode()" class="p-2 rounded-full text-gray-600 dark:text-brand-400">
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                     </button>
-                    <button id="mobile-menu-btn" class="p-2 text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
+                    <button id="mobile-menu-btn" class="p-2 text-gray-700 dark:text-white">
                         <i data-lucide="menu" class="w-8 h-8"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-40">
-            <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
-                <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
-                <a href="index.html#about" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">About</a>
-                <a href="#portfolio" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Work</a>
-                <a href="#services" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Services</a>
-                <a href="#contact" class="block w-full px-3 py-4 text-lg font-bold text-white bg-brand-600 rounded-xl shadow-lg shadow-brand-500/30">Contact Us</a>
+        <div id="mobile-menu" class="hidden bg-white dark:bg-dark-card absolute w-full border-b shadow-xl">
+            <div class="px-4 py-8 space-y-3 flex flex-col items-center">
+                <a href="index.html" class="text-lg font-medium py-2">Home</a>
+                <a href="index.html#about" class="text-lg font-medium py-2">About</a>
+                <a href="portfolio.html" class="text-lg font-bold text-brand-600 py-2">Work</a>
+                <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="w-full py-4 text-center font-bold text-white bg-brand-600 rounded-xl">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <section class="pt-32 pb-10 px-4 text-center">
-        <h1 class="text-4xl md:text-6xl font-display font-bold mb-6">Our Creative Gallery</h1>
-        <p class="text-gray-500 dark:text-dark-muted max-w-2xl mx-auto mb-12">Exploration of brand identities, digital marketing assets, and professional layouts.</p>
+    <!-- Header Section -->
+    <section class="pt-32 pb-6 px-4 text-center">
+        <h1 class="text-4xl md:text-6xl font-display font-bold mb-4">Our Creative Gallery</h1>
+        <p class="text-gray-500 dark:text-dark-muted max-w-2xl mx-auto mb-10">Professional graphic designs tailored for your brand growth.</p>
         
-        <div class="flex flex-wrap justify-center gap-3 mb-10" id="filter-container">
-            <button class="filter-btn active px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="all">All</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="tute">Tute Cover</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="Social Media Posts">Social Media Posts</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="Banner">Banner</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="cv">cv</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="Class Card">Class Card</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="flyer">Flyer</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="labal">Labal</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="visiting card">Visiting Card</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="book mark">Book Mark</button>
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="logo">Logo</button>
+        <!-- Filter Container with Scroll Indication -->
+        <div class="sticky top-20 z-30 bg-white dark:bg-dark-bg py-4 border-b dark:border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 relative flex items-center">
+                
+                <!-- Scroll Indication Arrow (Mobile Only) -->
+                <div class="md:hidden absolute right-2 animate-bounce-horizontal text-brand-600 z-20 pointer-events-none">
+                    <i data-lucide="chevron-right" class="w-6 h-6 bg-white dark:bg-dark-bg rounded-full shadow-lg"></i>
+                </div>
 
+                <!-- Gradient Fade -->
+                <div class="scroll-gradient"></div>
 
-            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 font-medium transition hoverable" data-filter="Other">Other</button>
+                <div class="flex items-center gap-2 overflow-x-auto filter-scroll-container pb-2 w-full" id="filter-container">
+                    <button class="filter-btn active hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all bg-brand-600 text-white shadow-lg" data-filter="all">All Projects</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="tute">Tute Covers</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="Social Media Posts">Social Media</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="Banner">Banners</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="cv">CV / Resume</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="Class Card">Class Cards</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="flyer">Flyers</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="logo">Logos</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="visiting card">Visiting Cards</button>
+                    <button class="filter-btn hoverable whitespace-nowrap px-6 py-2 rounded-full font-medium transition-all text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border dark:border-gray-700" data-filter="Other">Other Designs</button>
+                </div>
+            </div>
         </div>
     </section>
 
-    <main class="portfolio-grid" id="portfolio-items">
-        <!-- Item 1 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/1.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 2 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/2.webp" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 3 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/3.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 4 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/4.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 5 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/5.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 6 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/6.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 7 -->
-<div class="portfolio-item hoverable" data-category="Social Media Posts">
-    <img src="assets/img/Designs/7.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 8 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/8.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 9 -->
-<div class="portfolio-item hoverable" data-category="Social Media Posts">
-    <img src="assets/img/Designs/9.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 10 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/10.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 11 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/11.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 12 -->
-<div class="portfolio-item hoverable" data-category="Class Card">
-    <img src="assets/img/Designs/12.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 13 -->
-<div class="portfolio-item hoverable" data-category="Social Media Posts">
-    <img src="assets/img/Designs/13.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 14 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/14.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 15 -->
-<div class="portfolio-item hoverable" data-category="Social Media Posts">
-    <img src="assets/img/Designs/15.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 16 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/16.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 17 -->
-<div class="portfolio-item hoverable" data-category="Other">
-    <img src="assets/img/Designs/17.webp" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 18 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/18.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 19 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/19.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 20 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/20.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 21 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/21.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 22 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/22.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 23 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/23.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 24 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/24.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 25 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/25.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 26 -->
-<div class="portfolio-item hoverable" data-category="flyer">
-    <img src="assets/img/Designs/26.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 27 -->
-<div class="portfolio-item hoverable" data-category="flyer">
-    <img src="assets/img/Designs/27.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 28 -->
-<div class="portfolio-item hoverable" data-category="flyer">
-    <img src="assets/img/Designs/28.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 29 -->
-<div class="portfolio-item hoverable" data-category="flyer">
-    <img src="assets/img/Designs/29.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 30 -->
-<div class="portfolio-item hoverable" data-category="flyer">
-    <img src="assets/img/Designs/30.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 31 -->
-<div class="portfolio-item hoverable" data-category="flyer">
-    <img src="assets/img/Designs/31.webp" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 32 -->
-<div class="portfolio-item hoverable" data-category="Class Card">
-    <img src="assets/img/Designs/32.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 33 -->
-<div class="portfolio-item hoverable" data-category="Class Card">
-    <img src="assets/img/Designs/33.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 34 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/34.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 35 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/35.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 36 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/36.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 37 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/37.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 38 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/38.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 39 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/39.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 40 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/40.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 41 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/41.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 42 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/42.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 43 -->
-<div class="portfolio-item hoverable" data-category="labal">
-    <img src="assets/img/Designs/43.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 48 -->
-<div class="portfolio-item hoverable" data-category="logo">
-    <img src="assets/img/Designs/44.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 49 -->
-<div class="portfolio-item hoverable" data-category="logo">
-    <img src="assets/img/Designs/45.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 50 -->
-<div class="portfolio-item hoverable" data-category="logo">
-    <img src="assets/img/Designs/46.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 51 -->
-<div class="portfolio-item hoverable" data-category="logo">
-    <img src="assets/img/Designs/47.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 52 -->
-<div class="portfolio-item hoverable" data-category="logo">
-    <img src="assets/img/Designs/48.jpg" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 49 -->
-<div class="portfolio-item hoverable" data-category="visiting card">
-    <img src="assets/img/Designs/49.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 50 -->
-<div class="portfolio-item hoverable" data-category="visiting card">
-    <img src="assets/img/Designs/50.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 51 -->
-<div class="portfolio-item hoverable" data-category="visiting card">
-    <img src="assets/img/Designs/51.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 52 -->
-<div class="portfolio-item hoverable" data-category="visiting card">
-    <img src="assets/img/Designs/52.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 53 -->
-<div class="portfolio-item hoverable" data-category="visiting card">
-    <img src="assets/img/Designs/53.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 54 -->
-<div class="portfolio-item hoverable" data-category="visiting card">
-    <img src="assets/img/Designs/54.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 57 -->
-<div class="portfolio-item hoverable" data-category="book mark">
-    <img src="assets/img/Designs/55.webp" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 58 -->
-<div class="portfolio-item hoverable" data-category="book mark">
-    <img src="assets/img/Designs/56.webp" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 59 -->
-<div class="portfolio-item hoverable" data-category="book mark">
-    <img src="assets/img/Designs/57.webp" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 58 -->
-<div class="portfolio-item hoverable" data-category="book mark">
-    <img src="assets/img/Designs/58.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 59 -->
-<div class="portfolio-item hoverable" data-category="book mark">
-    <img src="assets/img/Designs/59.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 60 -->
-<div class="portfolio-item hoverable" data-category="book mark">
-    <img src="assets/img/Designs/60.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 61 -->
-<div class="portfolio-item hoverable" data-category="book mark">
-    <img src="assets/img/Designs/61.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 62 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/62.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 63 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/63.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 64 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/64.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 65 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/65.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 66 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/66.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 67 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/67.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 68 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/68.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 69 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/69.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 70 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/70.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 71 -->
-<div class="portfolio-item hoverable" data-category="cv">
-    <img src="assets/img/Designs/71.jpg" alt="Work" class="w-full h-auto block">
-</div>
-<!-- Item 72 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/72.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 73 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/73.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 74 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/74.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 75 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/75.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 76 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/76.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 77 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/77.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 78 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/78.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 79 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/79.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 80 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/80.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 81 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/81.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 82 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/82.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 83 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/83.jpg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 84 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/84.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 85 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/85.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 86 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/86.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 87 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/87.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 88 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/88.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 89 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/89.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 90 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/90.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 91 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/91.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 92 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/92.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-<!-- Item 93 -->
-<div class="portfolio-item hoverable" data-category="tute">
-    <img src="assets/img/Designs/93.jpeg" alt="Work" class="w-full h-auto block">
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </main>
-
-    <section class="py-20 bg-brand-600 text-white text-center">
-        <h2 class="text-3xl font-display font-bold mb-6">Need a custom design?</h2>
-        <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-10 py-4 bg-white text-brand-600 rounded-full font-bold text-lg hover:scale-105 transition hoverable inline-block">Order Now</a>
+    <!-- Main Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 mt-6">
+        <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4" id="portfolio-items">
+            <!-- Items 1 to 93 -->
+            <script>
+                const categories = ['Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Social Media Posts', 'Other', 'Social Media Posts', 'cv', 'Other', 'Class Card', 'Social Media Posts', 'Other', 'Social Media Posts', 'Other', 'Other', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'flyer', 'flyer', 'flyer', 'flyer', 'flyer', 'flyer', 'Class Card', 'Class Card', 'labal', 'labal', 'labal', 'labal', 'labal', 'labal', 'labal', 'labal', 'labal', 'labal', 'logo', 'logo', 'logo', 'logo', 'logo', 'visiting card', 'visiting card', 'visiting card', 'visiting card', 'visiting card', 'visiting card', 'book mark', 'book mark', 'book mark', 'book mark', 'book mark', 'book mark', 'book mark', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'cv', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute', 'tute'];
+                const extensions = { 2: 'webp', 3: 'jpeg', 5: 'jpeg', 6: 'jpeg', 7: 'jpeg', 8: 'jpeg', 9: 'jpeg', 13: 'jpeg', 14: 'jpeg', 16: 'jpeg', 17: 'webp', 18: 'jpeg', 19: 'jpeg', 20: 'jpeg', 21: 'jpeg', 22: 'jpeg', 23: 'jpeg', 24: 'jpeg', 25: 'jpeg', 30: 'jpeg', 31: 'webp', 33: 'jpeg', 34: 'jpeg', 35: 'jpeg', 36: 'jpeg', 37: 'jpeg', 38: 'jpeg', 39: 'jpeg', 40: 'jpeg', 41: 'jpeg', 42: 'jpeg', 43: 'jpeg', 45: 'jpeg', 46: 'jpeg', 50: 'jpeg', 52: 'jpeg', 53: 'jpeg', 54: 'jpeg', 55: 'webp', 56: 'webp', 57: 'webp', 58: 'jpeg', 59: 'jpeg', 60: 'jpeg', 61: 'jpeg', 72: 'jpeg', 73: 'jpeg', 74: 'jpeg', 75: 'jpeg', 76: 'jpeg', 78: 'jpeg', 82: 'jpeg', 84: 'jpeg', 85: 'jpeg', 86: 'jpeg', 87: 'jpeg', 88: 'jpeg', 89: 'jpeg', 90: 'jpeg', 91: 'jpeg', 92: 'jpeg', 93: 'jpeg' };
+
+                const container = document.getElementById('portfolio-items');
+                for (let i = 1; i <= 93; i++) {
+                    const ext = extensions[i] || 'jpg';
+                    const cat = categories[i-1] || 'Other';
+                    const div = document.createElement('div');
+                    div.className = 'portfolio-item group relative rounded-xl overflow-hidden cursor-pointer bg-gray-100 dark:bg-gray-800';
+                    div.setAttribute('data-category', cat);
+                    div.innerHTML = `
+                        <div class="img-guard"></div>
+                        <div class="watermark-overlay">
+                            <span class="watermark-text">PROPIX LK</span>
+                        </div>
+                        <img src="assets/img/Designs/${i}.${ext}" alt="Propix Design" loading="lazy" class="w-full h-auto block transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-brand-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
+                            <div class="bg-white text-brand-600 p-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i data-lucide="zoom-in" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                }
+            </script>
+        </div>
+    </main>
+
+    <section id="Quick" class="bg-brand-50 dark:bg-brand-900/20 py-12 border-y border-brand-100 dark:border-brand-800/30">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Quick design need?</h3>
+                    <p class="text-gray-600 dark:text-dark-muted">Instant quote, discount now.</p>
+                </div>
+                <button onclick="request()" class="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-lg hover:scale-105 transition transform shadow-lg hoverable">
+                    Request
+                </button>
+            </div>
+        </div>
     </section>
 
+    <!-- Original Footer -->
     <footer class="relative bg-gray-900 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-gray-800">
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
@@ -744,15 +350,44 @@
         </div>
     </footer>
 
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 hidden bg-black/95 flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <button class="absolute top-4 right-4 text-white p-3 hover:bg-white/10 rounded-full z-50" onclick="closeLightbox()">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <button class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white p-3 md:block hidden z-50" onclick="changeSlide(-1)">
+            <i data-lucide="chevron-left" class="w-10 h-10"></i>
+        </button>
+        <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white p-3 md:block hidden z-50" onclick="changeSlide(1)">
+            <i data-lucide="chevron-right" class="w-10 h-10"></i>
+        </button>
+        <div class="max-w-5xl max-h-[85vh] px-4 relative">
+             <div class="watermark-overlay opacity-10 scale-150">
+                <span class="watermark-text text-white">PROPIX LK</span>
+            </div>
+            <img id="lightbox-img" src="" class="max-h-[80vh] w-auto mx-auto rounded-lg shadow-2xl pointer-events-none">
+            <p id="lightbox-caption" class="text-center text-gray-400 mt-4 font-medium uppercase tracking-widest"></p>
+        </div>
+    </div>
+
     <script>
-        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Dark Mode Toggle
+        // Anti-Save & Anti-Screenshot protection
+        window.addEventListener('contextmenu', e => e.preventDefault());
+        
+        document.addEventListener('keydown', function(e) {
+            // Disable PrintScreen, Ctrl+S, Ctrl+U, F12
+            if (e.key === 'PrintScreen' || 
+                (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'p')) || 
+                e.key === 'F12') {
+                e.preventDefault();
+            }
+        });
+
+        // Dark Mode
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
         // Custom Cursor
@@ -762,40 +397,105 @@
             cursor.style.top = e.clientY + 'px';
         });
 
-        const hoverables = document.querySelectorAll('.hoverable, a, button');
+        const hoverables = document.querySelectorAll('.hoverable, a, button, .portfolio-item');
         hoverables.forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        // Portfolio Filtering Logic
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        // Mobile Menu
+        document.getElementById('mobile-menu-btn').onclick = () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        };
 
-        filterButtons.forEach(btn => {
+        // Filter Functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const filterValue = btn.getAttribute('data-filter');
-
-                portfolioItems.forEach(item => {
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                        item.style.display = 'block';
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-brand-600', 'text-white', 'shadow-lg', 'active');
+                    b.classList.add('text-gray-600', 'dark:text-gray-300');
+                });
+                btn.classList.add('bg-brand-600', 'text-white', 'shadow-lg', 'active');
+                
+                const cat = btn.dataset.filter;
+                items.forEach(item => {
+                    if (cat === 'all' || item.dataset.category === cat) {
+                        item.classList.remove('hidden-item');
                     } else {
-                        item.style.display = 'none';
+                        item.classList.add('hidden-item');
                     }
                 });
             });
         });
 
-        // Mobile Menu Toggle
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        // Hide Indicator Arrow on Scroll
+        const filterContainer = document.getElementById('filter-container');
+        const indicator = document.querySelector('.animate-bounce-horizontal');
+        filterContainer.addEventListener('scroll', () => {
+            if (filterContainer.scrollLeft > 20) {
+                indicator.style.opacity = '0';
+            } else {
+                indicator.style.opacity = '1';
+            }
         });
+
+        // Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        const lbCap = document.getElementById('lightbox-caption');
+        let currentIdx = 0;
+
+        function openLightbox(idx) {
+            currentIdx = idx;
+            const visible = Array.from(document.querySelectorAll('.portfolio-item:not(.hidden-item)'));
+            const target = items[idx];
+            const vIdx = visible.indexOf(target);
+            if(vIdx === -1) return;
+            
+            updateLightbox(visible[vIdx]);
+            lightbox.classList.remove('hidden');
+            setTimeout(() => lightbox.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateLightbox(item) {
+            const img = item.querySelector('img');
+            lbImg.src = img.src;
+            lbCap.innerText = item.dataset.category;
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => { lightbox.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+
+        function changeSlide(dir) {
+            const visible = Array.from(document.querySelectorAll('.portfolio-item:not(.hidden-item)'));
+            const currentImg = lbImg.src;
+            let vIdx = visible.findIndex(item => item.querySelector('img').src === currentImg);
+            
+            vIdx += dir;
+            if(vIdx < 0) vIdx = visible.length - 1;
+            if(vIdx >= visible.length) vIdx = 0;
+            
+            updateLightbox(visible[vIdx]);
+        }
+
+        items.forEach((item, i) => item.onclick = () => openLightbox(i));
+        
+        // Add animation for horizontal bounce
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce-h {
+                0%, 100% { transform: translateX(0); }
+                50% { transform: translateX(-10px); }
+            }
+            .animate-bounce-horizontal { animation: bounce-h 1.5s infinite; transition: opacity 0.5s ease; }
+        `;
+        document.head.append(style);
     </script>
 </body>
 </html>
