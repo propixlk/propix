@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV Builder | Propix Lk</title>
     <meta name="description" content="Create your professional CV with our step-by-step builder.">
+    <meta name="keywords" content="cv builder, resume builder, professional cv, propix lk">
     
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/Favicon/favicon-16x16.png">
     <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
     <meta name="theme-color" content="#ffffff">
     
@@ -42,15 +47,6 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         display: ['Space Grotesk', 'sans-serif'],
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
                     }
                 }
             }
@@ -58,425 +54,633 @@
     </script>
 
     <style>
-        /* Custom Cursor & Snow */
-        body { cursor: none; }
-        @media (pointer: coarse) {
-            body { cursor: auto; }
-            .custom-cursor { display: none; }
-        }
-        .custom-cursor {
-            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
-            border: 2px solid #424cf6; border-radius: 50%;
-            pointer-events: none; transform: translate(-50%, -50%);
-            z-index: 9999; transition: transform 0.1s ease; mix-blend-mode: difference;
-        }
-        .custom-cursor.hovered {
-            width: 40px; height: 40px; background-color: rgba(66, 76, 246, 0.3); border-color: transparent;
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .dark .glass {
-            background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        /* Wizard Styles */
-        .form-step { display: none; }
-        .form-step.active { display: block; animation: fadeIn 0.5s ease-out; }
-        
-        .step-indicator-item.active .step-circle { background-color: #424cf6; color: white; border-color: #424cf6; }
-        .step-indicator-item.completed .step-circle { background-color: #10b981; color: white; border-color: #10b981; }
-        
-        /* Design Selection */
-        .design-template.selected {
-            border-color: #424cf6;
-            box-shadow: 0 0 0 4px rgba(66, 76, 246, 0.2);
+        /* Custom Styles */
+        body {
+            overflow-x: hidden;
         }
 
-        /* Snow Container */
-        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
-        .snowflake {
-            position: absolute; background: white; border-radius: 50%; pointer-events: none;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); animation: snowfall linear infinite;
+        /* Wizard Styles */
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
-        @keyframes snowfall {
-            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
-            5% { opacity: 0.8; }
-            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; }
+        .form-step.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-indicator-item.active .step-bubble {
+            background-color: #424cf6;
+            color: white;
+            border-color: #424cf6;
+        }
+        .step-indicator-item.completed .step-bubble {
+            background-color: #10b981; /* Green */
+            color: white;
+            border-color: #10b981;
+        }
+        .step-indicator-item.completed::after {
+            background-color: #10b981;
+        }
+        
+        /* Custom Scrollbar for review section if needed */
+        .review-paper {
+            background: white;
+            color: #333;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .dark .review-paper {
+            background: #e5e5e5; /* Keep paper light even in dark mode for readability preview */
+            color: #1a1a1a;
+        }
+
+        /* Design Selection */
+        .design-template {
+            cursor: pointer;
+            border: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .design-template.selected {
+            border-color: #424cf6;
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(66, 76, 246, 0.3);
+        }
+
+        /* Popup Styles */
+        .popup-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+        .popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #10b981;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 4;
+            stroke: #fff;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #10b981;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+        @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 40px #10b981; } }
+
+        /* Custom Cursor from Index */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #424cf6;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        .custom-cursor.hovered {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(66, 76, 246, 0.3);
+            border-color: transparent;
+        }
+        @media (pointer: coarse) {
+            .custom-cursor { display: none; }
         }
     </style>
 </head>
-<body class="antialiased relative bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
 
-    <div class="snow-container" id="snowContainer"></div>
+    <!-- Cursor -->
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
 
-    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-lg border-b border-gray-100 dark:border-gray-800" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
-                    <img src="assets/img/Sitelogo.png" alt="Logo" class="h-[50px] w-[200px] object-contain block dark:hidden transition-all"> 
-                    <img src="assets/img/Sitelogow.png" alt="Logo" class="h-[50px] w-[200px] object-contain hidden dark:block transition-all"> 
+                    <img src="assets/img/Sitelogo.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all"> 
+                    <img src="assets/img/Sitelogow.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all"> 
                 </div>
                 
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
-                    <a href="#" class="text-brand-600 dark:text-brand-400 font-bold transition hoverable">CV Builder</a>
+                    <a href="index.html#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">About</a>
+                    <a href="index.html#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Services</a>
+                    <a href="buy.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Order</a>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
                     </button>
-                    <button id="lang-toggle" class="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium text-sm hoverable">
-                        සිංහල
-                    </button>
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                        Let's Talk
+                    </a>
                 </div>
 
-                <div class="md:hidden flex items-center gap-4">
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
-                       <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
-                       <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                   </button>
-                   <button id="mobile-menu-btn" class="text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
+                <div class="md:hidden flex items-center gap-2">
+                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="p-2 text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
                         <i data-lucide="menu" class="w-8 h-8"></i>
-                   </button>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-800 shadow-lg left-0 top-20">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="index.html" class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">Home</a>
-                <a href="#" class="block px-3 py-3 text-base font-medium text-brand-600 dark:text-brand-400 font-bold hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">CV Builder</a>
-                <button id="lang-toggle-mobile" class="w-full text-left block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">
-                    සිංහල
-                </button>
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-40">
+            <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
+                <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
+                <a href="index.html#about" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">About</a>
+                <a href="buy.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Order</a>
+                <a href="index.html#contact" class="block w-full px-3 py-4 text-lg font-bold text-white bg-brand-600 rounded-xl shadow-lg shadow-brand-500/30">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <section class="pt-32 pb-10 px-4 text-center">
-        <h1 class="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-4" data-en="CV Builder" data-si="CV නිර්මාපකය">
-            CV Builder
-        </h1>
-        <p class="text-lg text-gray-600 dark:text-dark-muted max-w-2xl mx-auto" data-en="Create your professional CV step-by-step." data-si="ඔබේ වෘත්තීය CV එක පියවරෙන් පියවර සකසා ගන්න.">
-            Create your professional CV step-by-step.
-        </p>
+    <!-- Header Section -->
+    <section class="pt-32 pb-12 bg-gray-50 dark:bg-black/20 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-brand-100/10 blur-3xl rounded-full pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-left">
+                    <h1 class="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-2" data-en="CV Builder" data-si="CV නිර්මාපකය">
+                        CV Builder
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl" data-en="Fill in your details step-by-step to create a professional CV." data-si="ඔබේ CV එක නිර්මාණය කිරීමට, ඔබට අවශ්‍ය විස්තර පමණක් පහතින් සපයන්න.">
+                        Fill in your details step-by-step to create a professional CV.
+                    </p>
+                </div>
+                <button id="lang-toggle" class="px-6 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium">
+                    සිංහල
+                </button>
+            </div>
+        </div>
     </section>
 
-    <section class="px-4 pb-20 max-w-5xl mx-auto">
-        <div class="bg-white dark:bg-dark-card rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-6 md:p-10 relative overflow-hidden">
-            
-            <div class="flex justify-between mb-10 relative z-10 overflow-x-auto pb-4 no-scrollbar">
-                <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 -z-10 transform -translate-y-1/2"></div>
-                <div class="flex justify-between w-full min-w-[600px]">
-                    <div class="step-indicator-item active flex flex-col items-center cursor-pointer" onclick="goToStep(1)">
-                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">1</div>
-                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Personal" data-si="පුද්ගලික">Personal</span>
-                    </div>
-                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(2)">
-                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">2</div>
-                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Edu" data-si="අධ්‍යාපනය">Edu</span>
-                    </div>
-                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(3)">
-                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">3</div>
-                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Work" data-si="පළපුරුද්ද">Work</span>
-                    </div>
-                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(4)">
-                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">4</div>
-                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Skills" data-si="කුසලතා">Skills</span>
-                    </div>
-                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(5)">
-                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">5</div>
-                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Extra" data-si="අමතර">Extra</span>
-                    </div>
-                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(6)">
-                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10">6</div>
-                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Design" data-si="නිර්මාණය">Design</span>
-                    </div>
-                    <div class="step-indicator-item flex flex-col items-center cursor-pointer" onclick="goToStep(7)">
-                        <div class="step-circle w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center font-bold transition-colors duration-300 z-10"><i data-lucide="check" class="w-5 h-5"></i></div>
-                        <span class="text-xs font-medium mt-2 text-gray-500 dark:text-gray-400 bg-white dark:bg-dark-card px-2" data-en="Review" data-si="සමාලෝචනය">Review</span>
-                    </div>
-                </div>
-            </div>
+    <!-- Main Content -->
+    <main class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Step Indicator -->
+        <div class="mb-12 overflow-x-auto pb-4 no-scrollbar">
+            <ul class="step-indicator flex justify-between min-w-[600px] md:min-w-0 relative">
+                <!-- Line background -->
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 -translate-y-1/2 -z-10 rounded-full"></div>
+                
+                <li class="step-indicator-item active flex flex-col items-center gap-2 cursor-pointer z-10" data-step="1">
+                    <div class="step-bubble w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-brand-600 text-brand-600 flex items-center justify-center font-bold transition-all shadow-sm">1</div>
+                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-white dark:bg-dark-bg px-2" data-en="Personal" data-si="පුද්ගලික">Personal</span>
+                </li>
+                <li class="step-indicator-item flex flex-col items-center gap-2 cursor-pointer z-10" data-step="2">
+                    <div class="step-bubble w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 text-gray-500 flex items-center justify-center font-bold transition-all shadow-sm">2</div>
+                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-white dark:bg-dark-bg px-2" data-en="Education" data-si="අධ්‍යාපනය">Education</span>
+                </li>
+                <li class="step-indicator-item flex flex-col items-center gap-2 cursor-pointer z-10" data-step="3">
+                    <div class="step-bubble w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 text-gray-500 flex items-center justify-center font-bold transition-all shadow-sm">3</div>
+                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-white dark:bg-dark-bg px-2" data-en="Experience" data-si="පළපුරුද්ද">Experience</span>
+                </li>
+                <li class="step-indicator-item flex flex-col items-center gap-2 cursor-pointer z-10" data-step="4">
+                    <div class="step-bubble w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 text-gray-500 flex items-center justify-center font-bold transition-all shadow-sm">4</div>
+                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-white dark:bg-dark-bg px-2" data-en="Skills" data-si="කුසලතා">Skills</span>
+                </li>
+                <li class="step-indicator-item flex flex-col items-center gap-2 cursor-pointer z-10" data-step="5">
+                    <div class="step-bubble w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 text-gray-500 flex items-center justify-center font-bold transition-all shadow-sm">5</div>
+                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-white dark:bg-dark-bg px-2" data-en="Extra" data-si="අමතර">Extra</span>
+                </li>
+                <li class="step-indicator-item flex flex-col items-center gap-2 cursor-pointer z-10" data-step="6">
+                    <div class="step-bubble w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 text-gray-500 flex items-center justify-center font-bold transition-all shadow-sm">6</div>
+                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-white dark:bg-dark-bg px-2" data-en="Design" data-si="නිර්මාණය">Design</span>
+                </li>
+                <li class="step-indicator-item flex flex-col items-center gap-2 cursor-pointer z-10" data-step="7">
+                    <div class="step-bubble w-10 h-10 rounded-full bg-white dark:bg-dark-card border-2 border-gray-300 dark:border-gray-600 text-gray-500 flex items-center justify-center font-bold transition-all shadow-sm"><i data-lucide="check" class="w-5 h-5"></i></div>
+                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide bg-white dark:bg-dark-bg px-2" data-en="Review" data-si="සමාලෝචනය">Review</span>
+                </li>
+            </ul>
+        </div>
 
+        <!-- Form Container -->
+        <div class="bg-white dark:bg-dark-card rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 p-6 md:p-10">
             <form id="cv-form" class="space-y-6">
+                
+                <!-- Step 1: Personal -->
                 <div class="form-step active" data-step="1">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Personal Details" data-si="පුද්ගලික තොරතුරු">Personal Details</h3>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Full Name" data-si="සම්පූර්ණ නම">Full Name</label>
-                            <input type="text" name="fullName" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                    <h4 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white" data-en="Step 1: Personal Details" data-si="පියවර 1: පුද්ගලික තොරතුරු">Step 1: Personal Details</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Full Name" data-si="සම්පූර්ණ නම">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="NIC Number" data-si="ජාතික හැඳුනුම්පත් අංකය">NIC Number</label>
-                            <input type="text" name="nic" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="National Identity Card (NIC) Number" data-si="ජාතික හැඳුනුම්පත් අංකය">National Identity Card (NIC)</label>
+                            <input type="text" id="nic" name="nic" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
                         </div>
-                        <div class="col-span-2 space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="About You (Short Bio)" data-si="ඔබ ගැන (කෙටි හැඳින්වීමක්)">About You (Short Bio)</label>
-                            <textarea name="aboutYou" rows="3" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
+                        <div class="md:col-span-2">
+                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="About You (Short Introduction)" data-si="ඔබ ගැන (කෙටි හැඳින්වීමක්)">About You (Short Introduction)</label>
+                             <textarea id="aboutYou" name="aboutYou" rows="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable"></textarea>
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Email" data-si="විද්‍යුත් තැපෑල">Email</label>
-                            <input type="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Email Address" data-si="විද්‍යුත් තැපෑල">Email Address</label>
+                            <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Phone" data-si="දුරකථන අංකය">Phone</label>
-                            <input type="tel" name="phone" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Phone Number" data-si="දුරකථන අංකය">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
                         </div>
-                         <div class="col-span-2 space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Address" data-si="ලිපිනය">Address</label>
-                            <textarea name="address" rows="2" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
+                         <div class="md:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="LinkedIn / Portfolio Link" data-si="LinkedIn / Portfolio සබැඳිය">LinkedIn / Portfolio Link</label>
+                            <input type="url" id="portfolioLink" name="portfolioLink" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
                         </div>
-                         <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Date of Birth" data-si="උපන්දිනය">Date of Birth</label>
-                            <input type="date" name="dob" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                        <div class="md:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Address & Postal Code" data-si="ලිපිනය සහ තැපැල් කේතය">Address & Postal Code</label>
+                            <textarea id="address" name="address" rows="2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable"></textarea>
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Gender" data-si="ස්ත්‍රී/පුරුෂ භාවය">Gender</label>
-                            <select name="gender" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
-                                <option value="" disabled selected>Select...</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Date of Birth" data-si="උපන්දිනය">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Gender" data-si="ස්ත්‍රී/පුරුෂ භාවය">Gender</label>
+                            <select id="gender" name="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
+                              <option selected disabled value="" data-en="Choose..." data-si="තෝරන්න...">Choose...</option>
+                              <option data-en="Male" data-si="පිරිමි">Male</option>
+                              <option data-en="Female" data-si="ගැහැණු">Female</option>
+                              <option data-en="Prefer not to say" data-si="පැවසීමට අකමැතියි">Prefer not to say</option>
                             </select>
                         </div>
-                         <div class="col-span-2 space-y-2">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="LinkedIn / Portfolio Link" data-si="LinkedIn / Portfolio සබැඳිය">LinkedIn / Portfolio Link</label>
-                            <input type="url" name="portfolioLink" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
+                         <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Marital Status" data-si="විවාහක අවිවාහක බව">Marital Status</label>
+                            <select id="maritalStatus" name="maritalStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
+                              <option selected disabled value="" data-en="Choose..." data-si="තෝරන්න...">Choose...</option>
+                              <option data-en="Single" data-si="අවිවාහක">Single</option>
+                              <option data-en="Married" data-si="විවාහක">Married</option>
+                              <option data-en="Divorced" data-si="දික්කසාද වූ">Divorced</option>
+                              <option data-en="Widowed" data-si="වැන්දඹු">Widowed</option>
+                            </select>
+                        </div>
+                         <div class="md:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Nationality" data-si="ජාතිය">Nationality</label>
+                            <input type="text" id="nationality" name="nationality" value="Sri Lankan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable">
                         </div>
                     </div>
                 </div>
 
+                <!-- Step 2: Education -->
                 <div class="form-step" data-step="2">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Education" data-si="අධ්‍යාපන සුදුසුකම්">Education</h3>
-                    <div id="education-container" class="space-y-4"></div>
-                    <button type="button" id="add-education" class="mt-4 w-full py-3 border-2 border-dashed border-brand-300 dark:border-brand-700 rounded-xl text-brand-600 dark:text-brand-400 font-bold hover:bg-brand-50 dark:hover:bg-brand-900/20 transition flex items-center justify-center gap-2 hoverable">
-                        <i data-lucide="plus-circle"></i> <span data-en="Add Education" data-si="අධ්‍යාපනයක් එක් කරන්න">Add Education</span>
+                    <h4 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white" data-en="Step 2: Educational Qualifications" data-si="පියවර 2: අධ්‍යාපන සුදුසුකම්">Step 2: Educational Qualifications</h4>
+                    <div id="education-container" class="space-y-6"></div>
+                    <button type="button" class="mt-4 flex items-center gap-2 px-6 py-3 border-2 border-dashed border-brand-300 rounded-xl text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition hoverable w-full justify-center" id="add-education">
+                      <i data-lucide="plus-circle" class="w-5 h-5"></i> <span data-en="Add Education" data-si="අධ්‍යාපනයක් එක් කරන්න">Add Education</span>
                     </button>
                 </div>
 
+                <!-- Step 3: Experience -->
                 <div class="form-step" data-step="3">
-                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Work Experience" data-si="සේවා පළපුරුද්ද">Work Experience</h3>
-                    <div id="experience-container" class="space-y-4"></div>
-                    <button type="button" id="add-experience" class="mt-4 w-full py-3 border-2 border-dashed border-brand-300 dark:border-brand-700 rounded-xl text-brand-600 dark:text-brand-400 font-bold hover:bg-brand-50 dark:hover:bg-brand-900/20 transition flex items-center justify-center gap-2 hoverable">
-                        <i data-lucide="plus-circle"></i> <span data-en="Add Experience" data-si="පළපුරුද්දක් එක් කරන්න">Add Experience</span>
+                    <h4 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white" data-en="Step 3: Work Experience" data-si="පියවර 3: සේවා පළපුරුද්ද">Step 3: Work Experience</h4>
+                    <div id="experience-container" class="space-y-6"></div>
+                    <button type="button" class="mt-4 flex items-center gap-2 px-6 py-3 border-2 border-dashed border-brand-300 rounded-xl text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition hoverable w-full justify-center" id="add-experience">
+                      <i data-lucide="plus-circle" class="w-5 h-5"></i> <span data-en="Add Experience" data-si="පළපුරුද්දක් එක් කරන්න">Add Experience</span>
                     </button>
                 </div>
 
+                <!-- Step 4: Skills -->
                 <div class="form-step" data-step="4">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Skills" data-si="කුසලතා">Skills</h3>
+                    <h4 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white" data-en="Step 4: Skills" data-si="පියවර 4: කුසලතා">Step 4: Skills</h4>
                     
-                    <div class="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-xl mb-6">
-                        <h4 class="font-bold text-lg mb-4 text-gray-800 dark:text-white" data-en="Languages" data-si="භාෂා">Languages</h4>
-                        <div class="grid md:grid-cols-3 gap-6">
-                            <div>
-                                <p class="font-medium mb-2 dark:text-gray-300">Sinhala</p>
-                                <div class="space-y-2">
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="Sinhala - Reading" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Reading</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="Sinhala - Writing" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Writing</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="Sinhala - Speaking" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Speaking</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="font-medium mb-2 dark:text-gray-300">English</p>
-                                <div class="space-y-2">
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="English - Reading" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Reading</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="English - Writing" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Writing</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="English - Speaking" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Speaking</span>
-                                    </label>
-                                </div>
-                            </div>
-                             <div>
-                                <p class="font-medium mb-2 dark:text-gray-300">Tamil</p>
-                                <div class="space-y-2">
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="Tamil - Reading" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Reading</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="Tamil - Writing" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Writing</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 hoverable cursor-pointer">
-                                        <input type="checkbox" name="languageSkills[]" value="Tamil - Speaking" class="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Speaking</span>
-                                    </label>
-                                </div>
+                    <h5 class="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200" data-en="Language Skills" data-si="භාෂා කුසලතා">Language Skills</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <strong class="block mb-3 text-brand-600 dark:text-brand-400">සිංහල:</strong>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="Sinhala - Reading" name="languageSkills[]" id="sinhalaRead" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Reading" data-si="කියවීම">Reading</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="Sinhala - Writing" name="languageSkills[]" id="sinhalaWrite" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Writing" data-si="ලිවීම">Writing</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="Sinhala - Speaking" name="languageSkills[]" id="sinhalaSpeak" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Speaking" data-si="කථනය">Speaking</span>
+                                </label>
                             </div>
                         </div>
-                        <div class="mt-4">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Other Languages" data-si="වෙනත් භාෂා">Other Languages</label>
-                            <input type="text" name="otherLanguages" class="w-full mt-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <strong class="block mb-3 text-brand-600 dark:text-brand-400">English:</strong>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="English - Reading" name="languageSkills[]" id="englishRead" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Reading" data-si="කියවීම">Reading</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="English - Writing" name="languageSkills[]" id="englishWrite" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Writing" data-si="ලිවීම">Writing</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="English - Speaking" name="languageSkills[]" id="englishSpeak" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Speaking" data-si="කථනය">Speaking</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <strong class="block mb-3 text-brand-600 dark:text-brand-400">Tamil:</strong>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="Tamil - Reading" name="languageSkills[]" id="tamilRead" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Reading" data-si="කියවීම">Reading</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="Tamil - Writing" name="languageSkills[]" id="tamilWrite" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Writing" data-si="ලිවීම">Writing</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" value="Tamil - Speaking" name="languageSkills[]" id="tamilSpeak" class="rounded text-brand-600 focus:ring-brand-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300" data-en="Speaking" data-si="කථනය">Speaking</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Other Skills (Soft & Technical)" data-si="වෙනත් කුසලතා">Other Skills (Soft & Technical)</label>
-                        <textarea name="otherSkills" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable" data-en-placeholder="e.g., Microsoft Office, Public Speaking, Java..." data-si-placeholder="උදා: Microsoft Office, Public Speaking, Java..."></textarea>
+                     <div class="mb-6">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Other Languages" data-si="වෙනත් භාෂා">Other Languages</label>
+                        <input type="text" id="otherLanguages" name="otherLanguages" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-en-placeholder="e.g., French, Japanese" data-si-placeholder="උදා: ප්‍රංශ, ජපන්">
+                    </div>
+
+                    <h5 class="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200" data-en="Other Skills" data-si="වෙනත් කුසලතා">Other Skills</h5>
+                     <div class="mb-3">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="List your other professional or technical skills" data-si="ඔබේ අනෙකුත් වෘත්තීය හෝ තාක්ෂණික කුසලතා ලැයිස්තුගත කරන්න">List your other professional or technical skills</label>
+                        <textarea id="otherSkills" name="otherSkills" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-en-placeholder="e.g., Microsoft Office, Adobe Photoshop, Public Speaking..." data-si-placeholder="උදා: Microsoft Office, Adobe Photoshop, Public Speaking..."></textarea>
                     </div>
                 </div>
 
+                <!-- Step 5: Extra -->
                 <div class="form-step" data-step="5">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Extra Info" data-si="අමතර තොරතුරු">Extra Info</h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Awards & Achievements" data-si="සම්මාන සහ ජයග්‍රහණ">Awards & Achievements</label>
-                            <textarea name="awards" rows="3" class="w-full mt-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
-                        </div>
-                        <div>
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Additional Information" data-si="වෙනත් තොරතුරු">Additional Information</label>
-                            <textarea name="additionalInfo" rows="3" class="w-full mt-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable"></textarea>
-                        </div>
-                        <div>
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-en="Target Job Field" data-si="බලාපොරොත්තු වන රැකියා ක්ෂේත්‍රය">Target Job Field</label>
-                            <input type="text" name="jobType" class="w-full mt-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition hoverable">
-                        </div>
+                    <h4 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white" data-en="Step 5: Awards, Achievements & More" data-si="පියවර 5: සම්මාන, ජයග්‍රහණ සහ තවත් දේ">Step 5: Awards, Achievements & More</h4>
+                     <div class="mb-6">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Awards and Achievements" data-si="සම්මාන සහ ජයග්‍රහණ">Awards and Achievements</label>
+                        <textarea id="awards" name="awards" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-en-placeholder="List any special awards or achievements from school, university, or work." data-si-placeholder="පාසලෙන්, විශ්ව විද්‍යාලයෙන් හෝ රැකියාවෙන් ලැබුණු විශේෂ සම්මාන හෝ ජයග්‍රහණ ලැයිස්තුගත කරන්න."></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Additional Information" data-si="අමතර තොරතුරු">Additional Information</label>
+                        <textarea id="additionalInfo" name="additionalInfo" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-en-placeholder="Any other information you want to include in the CV." data-si-placeholder="CV පත්‍රිකාවට ඇතුළත් කිරීමට අවශ්‍ය වෙනත් ඕනෑම තොරතුරක්."></textarea>
+                    </div>
+                     <div class="mb-8">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" data-en="Job Type or Field You Are Looking For" data-si="ඔබ සොයන රැකියා වර්ගය හෝ ක්ෂේත්‍රය">Job Type or Field You Are Looking For</label>
+                        <input type="text" id="jobType" name="jobType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-en-placeholder="e.g., Software Engineering, Marketing Manager" data-si-placeholder="උදා: මෘදුකාංග ඉංජිනේරු, අලෙවි කළමනාකරු">
                     </div>
                     
-                    <hr class="my-6 border-gray-200 dark:border-gray-700">
-                    
-                    <h4 class="font-bold text-lg mb-4 text-gray-800 dark:text-white" data-en="References (Optional)" data-si="නිර්දේශ (විකල්ප)">References (Optional)</h4>
-                    <div id="references-container" class="space-y-4"></div>
-                    <button type="button" id="add-reference" class="mt-4 w-full py-2 border border-brand-300 dark:border-brand-700 rounded-lg text-brand-600 dark:text-brand-400 text-sm font-bold hover:bg-brand-50 dark:hover:bg-brand-900/20 transition flex items-center justify-center gap-2 hoverable">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i> <span data-en="Add Reference" data-si="නිර්දේශයක් එක් කරන්න">Add Reference</span>
+                    <h5 class="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200" data-en="References" data-si="නිර්දේශ">References</h5>
+                    <p class="text-sm text-gray-500 mb-4" data-en='Provide only if necessary. Will be stated as "Available upon request" if left blank.' data-si='අවශ්‍ය නම් පමණක් ලබා දෙන්න. හිස්ව තැබුවහොත් "ඉල්ලීම මත ලබා ගත හැක" ලෙස සඳහන් වේ.'>Provide only if necessary. Will be stated as "Available upon request" if left blank.</p>
+                     <div id="references-container" class="space-y-6"></div>
+                    <button type="button" class="mt-4 flex items-center gap-2 px-6 py-3 border-2 border-dashed border-brand-300 rounded-xl text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition hoverable w-full justify-center" id="add-reference">
+                      <i data-lucide="plus-circle" class="w-5 h-5"></i> <span data-en="Add Reference" data-si="නිර්දේශයක් එක් කරන්න">Add Reference</span>
                     </button>
                 </div>
 
+                <!-- Step 6: Design -->
                 <div class="form-step" data-step="6">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Choose Template" data-si="සැකිල්ලක් තෝරන්න">Choose Template</h3>
+                    <h4 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white" data-en="Step 6: Choose Your CV Design" data-si="පියවර 6: ඔබේ CV නිර්මාණය තෝරන්න">Step 6: Choose Your CV Design</h4>
                     <input type="hidden" id="selectedDesign" name="selectedDesign" value="Template 1">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="text-center cursor-pointer group design-template selected p-2 rounded-lg transition" data-design-name="Template 1">
-                            <img src="assets/img/cv/1.jpg" alt="T1" class="rounded-md shadow-sm group-hover:shadow-md transition">
-                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 1</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/1.jpg" alt="Template 1" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template selected w-full h-auto object-cover" data-design-name="Template 1">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 1</p>
                         </div>
-                         <div class="text-center cursor-pointer group design-template p-2 rounded-lg transition" data-design-name="Template 2">
-                            <img src="assets/img/cv/2.jpg" alt="T2" class="rounded-md shadow-sm group-hover:shadow-md transition">
-                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 2</p>
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/2.jpg" alt="Template 2" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 2">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 2</p>
                         </div>
-                         <div class="text-center cursor-pointer group design-template p-2 rounded-lg transition" data-design-name="Template 3">
-                            <img src="assets/img/cv/3.jpg" alt="T3" class="rounded-md shadow-sm group-hover:shadow-md transition">
-                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 3</p>
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/3.jpg" alt="Template 3" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 3">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 3</p>
                         </div>
-                         <div class="text-center cursor-pointer group design-template p-2 rounded-lg transition" data-design-name="Template 4">
-                            <img src="assets/img/cv/4.jpg" alt="T4" class="rounded-md shadow-sm group-hover:shadow-md transition">
-                            <p class="mt-2 text-sm font-bold dark:text-gray-300">Template 4</p>
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/4.jpg" alt="Template 4" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 4">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 4</p>
                         </div>
-                         <div class="col-span-2 md:col-span-4 mt-4">
-                             <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center cursor-pointer hover:border-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900/10 transition design-template" data-design-name="My Own Design">
-                                 <i data-lucide="upload-cloud" class="w-10 h-10 mx-auto text-brand-500 mb-2"></i>
-                                 <h5 class="font-bold text-gray-900 dark:text-white" data-en="Use My Own Design" data-si="මගේම නිර්මාණයක් භාවිතා කරන්න">Use My Own Design</h5>
-                             </div>
-                         </div>
+                         <div class="group cursor-pointer">
+                            <img src="assets/img/cv/5.jpg" alt="Template 5" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 5">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 5</p>
+                        </div>
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/6.jpg" alt="Template 6" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 6">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 6</p>
+                        </div>
+                         <div class="group cursor-pointer">
+                            <img src="assets/img/cv/7.jpg" alt="Template 7" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 7">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 7</p>
+                        </div>
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/8.jpg" alt="Template 8" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 8">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 8</p>
+                        </div>
+                         <div class="group cursor-pointer">
+                            <img src="assets/img/cv/9.jpg" alt="Template 5" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 5">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 9</p>
+                        </div>
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/10.jpg" alt="Template 6" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 6">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 10</p>
+                        </div>
+                         <div class="group cursor-pointer">
+                            <img src="assets/img/cv/11.jpg" alt="Template 7" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 7">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 11</p>
+                        </div>
+                        <div class="group cursor-pointer">
+                            <img src="assets/img/cv/12.jpg" alt="Template 8" class="rounded-xl shadow-md group-hover:shadow-xl transition design-template w-full h-auto object-cover" data-design-name="Template 8">
+                            <p class="mt-2 text-sm font-medium text-gray-600 dark:text-gray-400">Template 12</p>
+                        </div>
+                        <!-- Add more templates or My Own Design logic here -->
+                        <div class="col-span-2 md:col-span-4">
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 hover:bg-brand-50 dark:hover:bg-brand-900/10 transition design-template flex flex-col items-center justify-center cursor-pointer" data-design-name="My Own Design">
+                                <i data-lucide="upload-cloud" class="w-10 h-10 text-brand-500 mb-3"></i>
+                                <h5 class="font-bold text-gray-900 dark:text-white" data-en="Use My Own Design" data-si="මගේම නිර්මාණයක් භාවිතා කරන්න">Use My Own Design</h5>
+                                <p class="text-sm text-gray-500" data-en="Select this if you will provide your own template." data-si="ඔබ ඔබේම සැකිල්ලක් ලබා දෙන්නේ නම් මෙය තෝරන්න.">Select this if you will provide your own template.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Step 7: Review -->
                 <div class="form-step" data-step="7">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-en="Review & Submit" data-si="සමාලෝචනය සහ ඉදිරිපත් කිරීම">Review & Submit</h3>
+                    <h4 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center" data-en="Step 7: Review Your Information" data-si="පියවර 7: ඔබගේ තොරතුරු සමාලෝචනය කරන්න">Step 7: Review Your Information</h4>
                     
-                    <div id="review-section" class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 mb-6 text-sm text-gray-700 dark:text-gray-300 font-sans">
-                        </div>
-
-                    <div class="loading hidden text-center py-4">
-                        <div class="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mx-auto mb-2"></div>
-                        <p class="text-gray-500 dark:text-gray-400">Submitting...</p>
+                    <div id="review-section" class="review-paper rounded-xl p-8 mb-8 text-sm leading-relaxed">
+                        <!-- Content will be injected via JS -->
                     </div>
-                    <div class="error-message hidden bg-red-100 text-red-700 p-4 rounded-lg mb-4 text-center"></div>
 
+                    <div class="my-4 text-center">
+                      <div class="loading hidden text-brand-600 font-bold animate-pulse">Processing...</div>
+                      <div class="error-message hidden text-red-500 font-bold p-3 bg-red-100 rounded-lg"></div>
+                    </div>
                     <div class="flex justify-center">
-                        <button type="submit" class="px-8 py-4 bg-brand-600 text-white font-bold rounded-full hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable transform hover:scale-105">
-                            <span data-en="Submit CV Order" data-si="ඇණවුම ඉදිරිපත් කරන්න">Submit CV Order</span>
+                        <button type="submit" class="px-8 py-4 bg-green-600 text-white font-bold rounded-full hover:bg-green-500 shadow-lg shadow-green-600/30 transform hover:scale-105 transition hoverable">
+                            <span data-en="Submit CV Details" data-si="CV තොරතුරු ඉදිරිපත් කරන්න">Submit CV Details</span>
                         </button>
                     </div>
                 </div>
 
-                <div class="flex justify-between mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-                    <button type="button" id="prev-btn" class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition hidden hoverable" data-en="Previous" data-si="පෙර">Previous</button>
-                    
-                    <div class="flex gap-2 ml-auto">
-                        <button type="button" id="skip-btn" class="px-6 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition hoverable" data-en="Skip" data-si="මඟහරින්න">Skip</button>
-                        <button type="button" id="next-btn" class="px-6 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-500 transition shadow-lg hoverable">
-                            <span data-en="Next" data-si="ඊළඟ">Next</span>
-                        </button>
-                    </div>
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-10 pt-6 border-t border-gray-100 dark:border-gray-700">
+                    <button type="button" id="prev-btn" class="hidden px-6 py-2.5 rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium hoverable" data-en="Previous" data-si="පෙර">Previous</button>
+                    <div class="flex-grow"></div> <!-- Spacer -->
+                    <button type="button" id="skip-btn" class="px-6 py-2.5 rounded-full text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition font-medium mr-2 hoverable" data-en="Skip" data-si="මඟහරින්න">Skip</button>
+                    <button type="button" id="next-btn" class="px-8 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                        <span data-en="Next" data-si="ඊළඟ">Next</span>
+                    </button>
                 </div>
+
             </form>
         </div>
-    </section>
+    </main>
 
-    <div id="thank-you-popup" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 transition-opacity duration-300">
-        <div class="bg-white dark:bg-dark-card p-8 rounded-2xl shadow-2xl max-w-md w-full text-center transform scale-90 transition-transform duration-300 border border-gray-100 dark:border-gray-700">
-            <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="check" class="w-10 h-10 text-green-600 dark:text-green-400"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2" data-en="Success!" data-si="සාර්ථකයි!">Success!</h2>
-            <p class="text-gray-600 dark:text-dark-muted mb-6" data-en="Your details have been submitted. We will contact you shortly." data-si="ඔබගේ තොරතුරු ඉදිරිපත් කර ඇත. අපි ඉක්මනින් ඔබව අමතන්නෙමු.">Your details have been submitted. We will contact you shortly.</p>
-            <a href="index.html" class="inline-block px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 transition hoverable">
-                <span data-en="Back to Home" data-si="මුල් පිටුවට">Back to Home</span>
-            </a>
+    <!-- Footer -->
+    <footer class="relative bg-gray-900 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-gray-800">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-400/10 rounded-full blur-3xl"></div>
         </div>
-    </div>
 
-    <footer class="bg-gray-900 dark:bg-black text-white pt-16 pb-8 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-                <div class="flex items-center mb-4 md:mb-0 hoverable">
-                    <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-8 w-auto mr-2">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <div class="space-y-6">
+                    <a href="index.html" class="inline-block hoverable">
+                        <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-9 w-auto">
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+                        Transforming ideas into visual masterpieces. We help brands stand out with strategic design and creative solutions.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/1Bj9wAdLRN/" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="facebook" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@propix_lk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="music-2" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="message-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="flex space-x-6">
-                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="hover:text-brand-400 transition hoverable"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
-                    <a href="Mailto:propixlk@gmail.com" class="hover:text-brand-400 transition hoverable"><i data-lucide="mail" class="w-5 h-5"></i></a>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Quick Links</h3>
+                    <ul class="space-y-4">
+                        <li><a href="index.html" class="text-gray-400 hover:text-brand-400 transition hoverable">Home</a></li>
+                        <li><a href="index.html#about" class="text-gray-400 hover:text-brand-400 transition hoverable">About Us</a></li>
+                        <li><a href="index.html#portfolio" class="text-gray-400 hover:text-brand-400 transition hoverable">Work</a></li>
+                        <li><a href="index.html#services" class="text-gray-400 hover:text-brand-400 transition hoverable">Services</a></li>
+                    </ul>
                 </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Other Links</h3>
+                    <ul class="space-y-4">
+                        <li><a href="buy.html" class="text-gray-400 hover:text-brand-400 transition hoverable">Order</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-brand-400 transition hoverable">Ad Packs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-brand-400 transition hoverable">Edu Hub</a></li>
+                        <li><a href="portfolio.html" class="text-gray-400 hover:text-brand-400 transition hoverable">Portfolio</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Contact Us</h3>
+                    <div class="space-y-4">
+                        <p class="text-gray-400">Monaragala, Sri Lanka</p>
+                        <p><a href="https://wa.me/message/JGOBR5KKO5UAF1" class="text-brand-400 hover:text-white transition">+94 76 829 44 96</a></p>
+                        <p><a href="mailto:propixlk@gmail.com" class="text-brand-400 hover:text-white transition">propixlk@gmail.com</a></p>
+                    </div>
+                </div>
+
             </div>
-            <div class="border-t border-gray-800 pt-8 text-center md:text-left text-sm text-gray-400">
-                <p>&copy; Propix LK. All rights reserved. 2024 - 2026</p>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500 text-center md:text-left">
+                    &copy; 2024 - 2026 <span class="text-brand-400 font-bold">Propix LK</span>. All rights reserved.
+                </p>
             </div>
         </div>
     </footer>
 
+    <!-- Success Popup -->
+    <div id="thank-you-popup" class="popup-overlay fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="popup-content bg-white dark:bg-dark-card p-8 rounded-2xl shadow-2xl text-center max-w-md w-full mx-4 transform scale-90 transition-transform">
+            <div class="popup-icon mx-auto mb-4">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white" data-en="Thank You!" data-si="ස්තූතියි!">Thank You!</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-6" data-en="Your CV details have been submitted successfully. We will contact you shortly." data-si="ඔබගේ CV තොරතුරු සාර්ථකව ඉදිරිපත් කරන ලදී. අපි ඔබව ඉක්මනින් සම්බන්ධ කර ගන්නෙමු.">Your CV details have been submitted successfully. We will contact you shortly.</p>
+            <a href="index.html" class="inline-block px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 transition shadow-lg shadow-brand-500/30">
+                <span data-en="Go to Home" data-si="මුල් පිටුවට යන්න">Go to Home</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Script Logic -->
     <script>
         lucide.createIcons();
 
-        function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
+        // --- Dark Mode Logic (From Index) ---
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+        
+        // --- Cursor Logic (From Index) ---
+        const cursor = document.getElementById('customCursor');
+        const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select');
+        document.addEventListener('mousemove', (e) => {
+            if(cursor) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }
+        });
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor?.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor?.classList.remove('hovered'));
+        });
 
-        // --- Mobile Menu Logic ---
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLangToggle = document.getElementById('lang-toggle-mobile');
-
-        if (menuBtn && mobileMenu) {
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-            
-            // Close menu when clicking a link
-            const menuLinks = mobileMenu.querySelectorAll('a');
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                });
+        // --- Mobile Menu ---
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if(btn) {
+            btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => { menu.classList.add('hidden'); });
             });
         }
 
-        // --- Logic ---
+        // --- Wizard Logic (Adapted from CV.html) ---
         document.addEventListener('DOMContentLoaded', function() {
             let currentStep = 1;
             const totalSteps = 7;
@@ -491,54 +695,87 @@
 
             const translations = {
                 next: { en: 'Next', si: 'ඊළඟ' },
-                reviewFinish: { en: 'Finish', si: 'අවසන් කරන්න' },
+                reviewFinish: { en: 'Review & Finish', si: 'සමාලෝචනය කර අවසන් කරන්න' },
                 addEducation: { en: 'Add Education', si: 'අධ්‍යාපනයක් එක් කරන්න' },
                 addExperience: { en: 'Add Experience', si: 'පළපුරුද්දක් එක් කරන්න' },
-                addReference: { en: 'Add Reference', si: 'නිර්දේශයක් එක් කරන්න' }
+                addReference: { en: 'Add Reference', si: 'නිර්දේශයක් එක් කරන්න' },
+                educationHeading: { en: 'Education', si: 'අධ්‍යාපන සුදුසුකම්' },
+                qualType: { en: 'Qualification Type', si: 'සුදුසුකම් වර්ගය' },
+                degreePG: { en: 'Degree / Post-Graduate', si: 'උපාධිය / පශ්චාත් උපාධිය' },
+                al: { en: 'A/L (Advanced Level)', si: 'උ/පෙළ (උසස් පෙළ)' },
+                ol: { en: 'O/L (Ordinary Level)', si: 'සා/පෙළ (සාමාන්‍ය පෙළ)' },
+                profQual: { en: 'Professional Qualification / Diploma', si: 'වෘත්තීය සුදුසුකම / ඩිප්ලෝමාව' },
+                institutionPlaceholder: { en: 'Name of Institution / School', si: 'ආයතනයේ / පාසලේ නම' },
+                coursePlaceholder: { en: 'Name of Course / Examination', si: 'පාඨමාලාවේ / විභාගයේ නම' },
+                degreePlaceholder: { en: 'Degree / Diploma Obtained', si: 'ලබාගත් උපාධිය / ඩිප්ලෝමාව' },
+                specializationPlaceholder: { en: 'Specialization (if any)', si: 'විශේෂීකරණය (ඇත්නම්)' },
+                startYearPlaceholder: { en: 'Start Year', si: 'ආරම්භක වර්ෂය' },
+                endYearPlaceholder: { en: 'End Year', si: 'අවසාන වර්ෂය' },
+                indexPlaceholder: { en: 'Index Number (for A/L, O/L)', si: 'විභාග අංකය (උ/පෙළ, සා/පෙළ සඳහා)' },
+                resultsPlaceholder: { en: 'Subjects and Grades / Results', si: 'විෂයයන් සහ ශ්‍රේණි / ප්‍රතිඵල' },
+                experienceHeading: { en: 'Experience', si: 'සේවා පළපුරුද්ද' },
+                companyPlaceholder: { en: 'Company Name', si: 'සමාගමේ නම' },
+                jobTitlePlaceholder: { en: 'Job Title', si: 'රැකියාවේ තනතුර' },
+                fromPlaceholder: { en: 'From Date (e.g., Jan 2020)', si: 'සිට (උදා: ජන 2020)' },
+                toPlaceholder: { en: 'To Date (e.g., Present)', si: 'දක්වා (උදා: වර්තමාන)' },
+                dutiesPlaceholder: { en: 'Responsibilities and Duties', si: 'වගකීම් සහ රාජකාරි' },
+                referenceHeading: { en: 'Reference', si: 'නිර්දේශය' },
+                refNamePlaceholder: { en: 'Name', si: 'නම' },
+                refTitlePlaceholder: { en: 'Job Title', si: 'රැකියාවේ තනතුර' },
+                refOrgPlaceholder: { en: 'Organization', si: 'සංවිධානය' },
+                refPhonePlaceholder: { en: 'Phone Number', si: 'දුරකථන අංකය' },
             };
 
             function setLanguage(lang) {
-                document.querySelectorAll('[data-' + lang + ']').forEach(el => {
-                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                        if(el.hasAttribute('data-' + lang + '-placeholder')) {
-                             el.placeholder = el.getAttribute('data-' + lang + '-placeholder');
+                document.querySelectorAll('[data-en]').forEach(el => {
+                    const text = el.getAttribute(`data-${lang}`);
+                    if (text) {
+                        if (el.tagName === 'BUTTON' && el.querySelector('span[data-en]')) {
+                            el.querySelector('span[data-en]').innerHTML = text;
+                        } else {
+                            el.innerHTML = text;
                         }
-                    } else {
-                         el.textContent = el.getAttribute('data-' + lang);
                     }
                 });
+                document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+                    const text = el.getAttribute(`data-${lang}-placeholder`);
+                    if(text) {
+                        el.placeholder = text;
+                    }
+                });
+
                 langToggleBtn.textContent = lang === 'en' ? 'සිංහල' : 'English';
-                if(mobileLangToggle) mobileLangToggle.textContent = lang === 'en' ? 'සිංහල' : 'English';
-                
                 currentLang = lang;
-                updateButtons();
-                if(currentStep === 7) generateReview();
+                updateButtons(); 
+                if(currentStep === totalSteps) {
+                    generateReview();
+                }
             }
 
             langToggleBtn.addEventListener('click', () => {
-                setLanguage(currentLang === 'en' ? 'si' : 'en');
+                const newLang = currentLang === 'en' ? 'si' : 'en';
+                setLanguage(newLang);
             });
 
-            if(mobileLangToggle) {
-                mobileLangToggle.addEventListener('click', () => {
-                    setLanguage(currentLang === 'en' ? 'si' : 'en');
-                    mobileMenu.classList.add('hidden'); // Close menu after toggle
-                });
+            function T(key) {
+                return translations[key] ? translations[key][currentLang] : key;
             }
 
             function updateButtons() {
-                prevBtn.classList.toggle('hidden', currentStep === 1);
-                skipBtn.classList.toggle('hidden', currentStep >= totalSteps - 1);
+                prevBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
+                prevBtn.classList.toggle('hidden', currentStep <= 1);
                 
-                const nextSpan = nextBtn.querySelector('span');
+                skipBtn.style.display = currentStep < totalSteps - 1 ? 'inline-block' : 'none';
+                
                 if (currentStep === totalSteps - 1) {
-                    nextSpan.textContent = translations.reviewFinish[currentLang];
+                    nextBtn.querySelector('span').textContent = T('reviewFinish');
+                    nextBtn.style.display = 'inline-block';
                 } else if (currentStep === totalSteps) {
-                    nextBtn.classList.add('hidden');
-                    skipBtn.classList.add('hidden');
+                    nextBtn.style.display = 'none';
+                    skipBtn.style.display = 'none';
                 } else {
-                    nextSpan.textContent = translations.next[currentLang];
-                    nextBtn.classList.remove('hidden');
+                    nextBtn.querySelector('span').textContent = T('next');
+                    nextBtn.style.display = 'inline-block';
                 }
             }
 
@@ -546,47 +783,80 @@
                 formSteps.forEach(s => s.classList.remove('active'));
                 document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
                 
-                stepIndicators.forEach((ind, index) => {
-                    const stepNum = index + 1;
-                    ind.classList.remove('active', 'completed');
-                    if (stepNum < step) ind.classList.add('completed');
-                    if (stepNum === step) ind.classList.add('active');
+                stepIndicators.forEach(ind => {
+                    const indStep = parseInt(ind.dataset.step);
+                    if (indStep < step) {
+                        ind.classList.add('completed');
+                        ind.classList.remove('active');
+                    } else if (indStep === step) {
+                        ind.classList.add('active');
+                        ind.classList.remove('completed');
+                    } else {
+                        ind.classList.remove('active', 'completed');
+                    }
                 });
                 
                 currentStep = step;
                 updateButtons();
-                if(step === 7) generateReview();
-                window.scrollTo(0, 0);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < totalSteps) {
+                    if(currentStep === totalSteps - 1) { 
+                        generateReview();
+                    }
+                    goToStep(currentStep + 1);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    goToStep(currentStep - 1);
+                }
+            });
             
-            window.goToStep = goToStep; // Make global for indicator clicks
+            skipBtn.addEventListener('click', () => {
+                if (currentStep < totalSteps - 1) {
+                    goToStep(currentStep + 1);
+                }
+            });
 
-            nextBtn.addEventListener('click', () => { if (currentStep < totalSteps) goToStep(currentStep + 1); });
-            prevBtn.addEventListener('click', () => { if (currentStep > 1) goToStep(currentStep - 1); });
-            skipBtn.addEventListener('click', () => { if (currentStep < totalSteps - 1) goToStep(currentStep + 1); });
+            // Dynamic Fields with Tailwind Classes
+            const inputClass = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-3 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition hoverable";
 
-            // --- Dynamic Fields ---
             let eduCount = 0;
             document.getElementById('add-education').addEventListener('click', () => {
                 eduCount++;
                 const container = document.getElementById('education-container');
-                const div = document.createElement('div');
-                div.className = "bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 relative animate-fade-in";
-                div.innerHTML = `
-                    <button type="button" class="remove-btn absolute top-2 right-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-1 rounded"><i data-lucide="x" class="w-4 h-4"></i></button>
-                    <h5 class="font-bold text-sm mb-3 text-brand-600 dark:text-brand-400">Education #${eduCount}</h5>
-                    <div class="grid md:grid-cols-2 gap-3">
-                        <select name="education[${eduCount}][type]" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white"><option>Degree</option><option>A/L</option><option>O/L</option><option>Diploma</option></select>
-                        <input type="text" name="education[${eduCount}][institution]" placeholder="Institution/School" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                        <input type="text" name="education[${eduCount}][course]" placeholder="Course Name" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" name="education[${eduCount}][start]" placeholder="Start Year" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                            <input type="text" name="education[${eduCount}][end]" placeholder="End Year" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                const newEdu = document.createElement('div');
+                newEdu.classList.add('relative', 'p-6', 'bg-gray-50', 'dark:bg-gray-800/50', 'rounded-xl', 'border', 'border-gray-200', 'dark:border-gray-700');
+                newEdu.innerHTML = `
+                    <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition remove-btn">
+                        <i data-lucide="x-circle" class="w-6 h-6"></i>
+                    </button>
+                    <h5 class="text-lg font-bold mb-4 text-brand-600 dark:text-brand-400">${T('educationHeading')} #${eduCount}</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">${T('qualType')}</label>
+                            <select name="education[${eduCount}][type]" class="${inputClass}">
+                                <option>${T('degreePG')}</option>
+                                <option>${T('al')}</option>
+                                <option>${T('ol')}</option>
+                                <option>${T('profQual')}</option>
+                            </select>
                         </div>
-                        <textarea name="education[${eduCount}][results]" placeholder="Results/Grades" rows="2" class="col-span-2 w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white"></textarea>
+                        <div><input type="text" class="${inputClass}" name="education[${eduCount}][institution]" placeholder="${T('institutionPlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="education[${eduCount}][course]" placeholder="${T('coursePlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="education[${eduCount}][degree]" placeholder="${T('degreePlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="education[${eduCount}][specialization]" placeholder="${T('specializationPlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="education[${eduCount}][startYear]" placeholder="${T('startYearPlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="education[${eduCount}][endYear]" placeholder="${T('endYearPlaceholder')}"></div>
+                        <div class="md:col-span-2"><input type="text" class="${inputClass}" name="education[${eduCount}][indexNumber]" placeholder="${T('indexPlaceholder')}"></div>
+                        <div class="md:col-span-2"><textarea class="${inputClass}" name="education[${eduCount}][results]" rows="3" placeholder="${T('resultsPlaceholder')}"></textarea></div>
                     </div>
                 `;
-                container.appendChild(div);
+                container.appendChild(newEdu);
                 lucide.createIcons();
             });
 
@@ -594,142 +864,237 @@
             document.getElementById('add-experience').addEventListener('click', () => {
                 expCount++;
                 const container = document.getElementById('experience-container');
-                const div = document.createElement('div');
-                div.className = "bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 relative animate-fade-in";
-                div.innerHTML = `
-                     <button type="button" class="remove-btn absolute top-2 right-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-1 rounded"><i data-lucide="x" class="w-4 h-4"></i></button>
-                    <h5 class="font-bold text-sm mb-3 text-brand-600 dark:text-brand-400">Experience #${expCount}</h5>
-                    <div class="grid md:grid-cols-2 gap-3">
-                        <input type="text" name="experience[${expCount}][company]" placeholder="Company" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                        <input type="text" name="experience[${expCount}][title]" placeholder="Job Title" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" name="experience[${expCount}][from]" placeholder="From" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                            <input type="text" name="experience[${expCount}][to]" placeholder="To" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                        </div>
-                        <textarea name="experience[${expCount}][duties]" placeholder="Duties" rows="2" class="col-span-2 w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white"></textarea>
+                const newExp = document.createElement('div');
+                newExp.classList.add('relative', 'p-6', 'bg-gray-50', 'dark:bg-gray-800/50', 'rounded-xl', 'border', 'border-gray-200', 'dark:border-gray-700');
+                newExp.innerHTML = `
+                    <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition remove-btn">
+                         <i data-lucide="x-circle" class="w-6 h-6"></i>
+                    </button>
+                    <h5 class="text-lg font-bold mb-4 text-brand-600 dark:text-brand-400">${T('experienceHeading')} #${expCount}</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div><input type="text" class="${inputClass}" name="experience[${expCount}][company]" placeholder="${T('companyPlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="experience[${expCount}][title]" placeholder="${T('jobTitlePlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="experience[${expCount}][from]" placeholder="${T('fromPlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="experience[${expCount}][to]" placeholder="${T('toPlaceholder')}"></div>
+                        <div class="md:col-span-2"><textarea class="${inputClass}" name="experience[${expCount}][duties]" rows="3" placeholder="${T('dutiesPlaceholder')}"></textarea></div>
                     </div>
                 `;
-                container.appendChild(div);
+                container.appendChild(newExp);
                 lucide.createIcons();
             });
-
+            
             let refCount = 0;
             document.getElementById('add-reference').addEventListener('click', () => {
                 refCount++;
                 const container = document.getElementById('references-container');
-                const div = document.createElement('div');
-                div.className = "bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 relative animate-fade-in";
-                div.innerHTML = `
-                    <button type="button" class="remove-btn absolute top-2 right-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-1 rounded"><i data-lucide="x" class="w-4 h-4"></i></button>
-                    <div class="grid md:grid-cols-2 gap-3">
-                        <input type="text" name="reference[${refCount}][name]" placeholder="Name" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                        <input type="text" name="reference[${refCount}][phone]" placeholder="Phone" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
-                         <input type="text" name="reference[${refCount}][org]" placeholder="Organization" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm dark:text-white">
+                const newRef = document.createElement('div');
+                newRef.classList.add('relative', 'p-6', 'bg-gray-50', 'dark:bg-gray-800/50', 'rounded-xl', 'border', 'border-gray-200', 'dark:border-gray-700');
+                newRef.innerHTML = `
+                    <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition remove-btn">
+                         <i data-lucide="x-circle" class="w-6 h-6"></i>
+                    </button>
+                    <h5 class="text-lg font-bold mb-4 text-brand-600 dark:text-brand-400">${T('referenceHeading')} #${refCount}</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div><input type="text" class="${inputClass}" name="reference[${refCount}][name]" placeholder="${T('refNamePlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="reference[${refCount}][title]" placeholder="${T('refTitlePlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="reference[${refCount}][org]" placeholder="${T('refOrgPlaceholder')}"></div>
+                        <div><input type="text" class="${inputClass}" name="reference[${refCount}][phone]" placeholder="${T('refPhonePlaceholder')}"></div>
                     </div>
                 `;
-                container.appendChild(div);
+                container.appendChild(newRef);
                 lucide.createIcons();
             });
 
-            document.addEventListener('click', (e) => {
-                if(e.target.closest('.remove-btn')) e.target.closest('.remove-btn').parentElement.remove();
+            document.addEventListener('click', function(e) {
+                if (e.target && (e.target.classList.contains('remove-btn') || e.target.closest('.remove-btn'))) {
+                    e.target.closest('.relative').remove(); // The container has class 'relative'
+                }
             });
-
-            // Design Selection
+            
             document.querySelectorAll('.design-template').forEach(item => {
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.design-template').forEach(i => i.classList.remove('selected'));
                     item.classList.add('selected');
-                    document.getElementById('selectedDesign').value = item.getAttribute('data-design-name');
+                    document.getElementById('selectedDesign').value = item.dataset.designName;
+                });
+            });
+            
+            function generateReview() {
+                const reviewSection = document.getElementById('review-section');
+                const formData = new FormData(cvForm);
+                const entries = {};
+                for (let [key, value] of formData.entries()) {
+                    if (value) {
+                        const match = key.match(/(\w+)\[(\d+)\]\[(\w+)\]/);
+                        if (match) {
+                            const [, section, index, field] = match;
+                            if (!entries[section]) entries[section] = {};
+                            if (!entries[section][index]) entries[section][index] = {};
+                            entries[section][index][field] = value;
+                        } else if (key.endsWith('[]')) {
+                            const cleanKey = key.slice(0, -2);
+                            if (!entries[cleanKey]) entries[cleanKey] = [];
+                            entries[cleanKey].push(value);
+                        } else {
+                            entries[key] = value;
+                        }
+                    }
+                }
+                
+                const t_review = (en, si) => currentLang === 'si' ? si : en;
+
+                // Simple HTML structure for review - Clean and minimal
+                let reviewHTML = `
+                <div class="max-w-3xl mx-auto font-sans">
+                    <header class="border-b-4 border-brand-600 pb-6 mb-6 text-center">
+                        <h1 class="text-3xl font-bold uppercase tracking-wider text-gray-900">${entries.fullName || 'Your Name'}</h1>
+                        <p class="text-lg text-gray-600 mt-2">${entries.jobType || 'Job Title'}</p>
+                    </header>
+                    
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="flex-grow space-y-8">
+                            ${entries.aboutYou ? `
+                            <section>
+                                <h4 class="text-lg font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Profile', 'පුද්ගලික තොරතුරු')}</h4>
+                                <p class="text-gray-700 whitespace-pre-line">${(entries.aboutYou || '')}</p>
+                            </section>` : ''}
+
+                            ${entries.experience ? `
+                            <section>
+                                <h4 class="text-lg font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Work Experience', 'සේවා පළපුරුද්ද')}</h4>
+                                ${Object.values(entries.experience).map(exp => `
+                                    <div class="mb-4">
+                                        <h5 class="font-bold text-gray-800">${exp.title || ''}</h5>
+                                        <div class="text-sm text-gray-600 italic mb-1">${exp.company || ''} | ${exp.from || ''} - ${exp.to || ''}</div>
+                                        <p class="text-gray-700 text-sm whitespace-pre-line">${(exp.duties || '')}</p>
+                                    </div>
+                                `).join('')}
+                            </section>` : ''}
+
+                            ${entries.education ? `
+                            <section>
+                                <h4 class="text-lg font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Education', 'අධ්‍යාපනය')}</h4>
+                                ${Object.values(entries.education).map(edu => `
+                                    <div class="mb-4">
+                                        <h5 class="font-bold text-gray-800">${edu.degree || edu.course || ''}</h5>
+                                        <div class="text-sm text-gray-600 italic mb-1">${edu.institution || ''} | ${edu.startYear || ''} - ${edu.endYear || ''}</div>
+                                        <p class="text-gray-700 text-sm whitespace-pre-line">${(edu.results || '')}</p>
+                                    </div>
+                                `).join('')}
+                            </section>` : ''}
+                            
+                            ${entries.awards ? `
+                            <section>
+                                <h4 class="text-lg font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Awards & Achievements', 'සම්මාන හා ජයග්‍රහණ')}</h4>
+                                <p class="text-gray-700 whitespace-pre-line">${(entries.awards || '')}</p>
+                            </section>` : ''}
+                        </div>
+
+                        <div class="w-full md:w-1/3 bg-gray-50 p-6 rounded-lg space-y-8 h-fit">
+                            <section>
+                                <h4 class="text-base font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Contact', 'සම්බන්ධ කරගැනීමට')}</h4>
+                                <div class="space-y-2 text-sm text-gray-700 break-words">
+                                    ${entries.phone ? `<div class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> ${entries.phone}</div>` : ''}
+                                    ${entries.email ? `<div class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> ${entries.email}</div>` : ''}
+                                    ${entries.address ? `<div class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> ${entries.address}</div>` : ''}
+                                    ${entries.portfolioLink ? `<div class="flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4"></i> <a href="${entries.portfolioLink}" target="_blank" class="text-blue-600 hover:underline">Portfolio</a></div>` : ''}
+                                </div>
+                            </section>
+
+                            ${(entries.otherSkills) ? `
+                            <section>
+                                <h4 class="text-base font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Skills', 'කුසලතා')}</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    ${(entries.otherSkills).split(/[,\n]/).map(skill => skill.trim() ? `<li>${skill.trim()}</li>` : '').join('')}
+                                </ul>
+                            </section>` : ''}
+                            
+                            ${(entries.languageSkills || entries.otherLanguages) ? `
+                            <section>
+                                <h4 class="text-base font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Languages', 'භාෂා')}</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    ${entries.languageSkills ? `<li>${entries.languageSkills.join(', ')}</li>` : ''}
+                                    ${entries.otherLanguages ? `<li>${entries.otherLanguages}</li>` : ''}
+                                </ul>
+                            </section>` : ''}
+                            
+                            <section>
+                                <h4 class="text-base font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('References', 'නිර්දේශ')}</h4>
+                                ${entries.reference ? Object.values(entries.reference).map(ref => `
+                                    <div class="mb-3 text-sm">
+                                        <div class="font-bold text-gray-800">${ref.name || ''}</div>
+                                        <div class="text-gray-600">${ref.title || ''}</div>
+                                        <div class="text-gray-600">${ref.org || ''}</div>
+                                        <div class="text-gray-600">${ref.phone || ''}</div>
+                                    </div>
+                                `).join('') : `<p class="text-sm text-gray-500 italic">${t_review('Available upon request.', 'ඉල්ලීම මත ලබා ගත හැක.')}</p>`}
+                            </section>
+
+                            <section>
+                                <h4 class="text-base font-bold uppercase text-brand-600 mb-3 border-b border-gray-200 pb-1">${t_review('Design Choice', 'නිර්මාණ තේරීම')}</h4>
+                                <p class="text-sm font-medium text-gray-800 bg-brand-100 inline-block px-2 py-1 rounded">${entries.selectedDesign || 'Not Selected'}</p>
+                            </section>
+                        </div>
+                    </div>
+                </div>`;
+                
+                reviewSection.innerHTML = reviewHTML;
+                lucide.createIcons();
+            }
+            
+            // Submission Logic (Unchanged URL)
+            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6wE-A4hbRsMAJG1eAZo_-K_ub4nQTfj_DvdJipw88qrLk6vqvMjKbxjihWlrQtQteJA/exec'; 
+
+            cvForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const form = e.target;
+                const submitButton = form.querySelector('button[type="submit"]');
+                const loading = document.querySelector('.loading');
+                const errorMessage = document.querySelector('.error-message');
+                const thankYouPopup = document.getElementById('thank-you-popup');
+
+                submitButton.disabled = true;
+                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+                loading.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+
+                const formData = new FormData(form);
+
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.result === "success") {
+                        setLanguage(currentLang); 
+                        thankYouPopup.classList.add('show');
+                        
+                        // Close popup after 3 seconds or via user action could be added here
+                        // For now it has a "Go to Home" button
+                        
+                        form.reset();
+                    } else {
+                        throw new Error(data.error || 'An unknown error occurred in the script.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Submission Error!', error);
+                    errorMessage.textContent = 'Oops! There was a problem submitting your form. ' + error.message;
+                    errorMessage.classList.remove('hidden');
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    loading.classList.add('hidden');
                 });
             });
 
-            // Review Generation
-            function generateReview() {
-                const reviewDiv = document.getElementById('review-section');
-                const fd = new FormData(cvForm);
-                let html = `<h4 class="font-bold text-lg border-b pb-2 mb-4 dark:border-gray-600">Summary</h4>`;
-                
-                // Helper to get data
-                const get = (name) => fd.get(name) || '-';
-                
-                html += `<div class="grid grid-cols-2 gap-4 mb-4">
-                    <div><span class="text-xs text-gray-500">Name:</span> <div class="font-semibold">${get('fullName')}</div></div>
-                    <div><span class="text-xs text-gray-500">Job:</span> <div class="font-semibold">${get('jobType')}</div></div>
-                    <div><span class="text-xs text-gray-500">Email:</span> <div class="font-semibold">${get('email')}</div></div>
-                    <div><span class="text-xs text-gray-500">Design:</span> <div class="font-semibold text-brand-600">${get('selectedDesign')}</div></div>
-                </div>`;
-                
-                reviewDiv.innerHTML = html;
-            }
-
-            // Submit Logic
-            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6wE-A4hbRsMAJG1eAZo_-K_ub4nQTfj_DvdJipw88qrLk6vqvMjKbxjihWlrQtQteJA/exec';
-
-            cvForm.addEventListener('submit', e => {
-                e.preventDefault();
-                const btn = cvForm.querySelector('button[type="submit"]');
-                const loading = cvForm.querySelector('.loading');
-                const popup = document.getElementById('thank-you-popup');
-                
-                btn.disabled = true;
-                btn.classList.add('opacity-50');
-                loading.classList.remove('hidden');
-                
-                fetch(SCRIPT_URL, { method: 'POST', body: new FormData(cvForm) })
-                    .then(res => res.json())
-                    .then(data => {
-                        if(data.result === 'success') {
-                            popup.classList.remove('hidden');
-                            setTimeout(() => {
-                                popup.classList.remove('opacity-0'); 
-                                popup.querySelector('div').classList.remove('scale-90');
-                                popup.querySelector('div').classList.add('scale-100');
-                            }, 10);
-                            cvForm.reset();
-                        } else {
-                            throw new Error('Script Error');
-                        }
-                    })
-                    .catch(err => {
-                        alert('Error submitting form. Please try again.');
-                        console.error(err);
-                    })
-                    .finally(() => {
-                        loading.classList.add('hidden');
-                        btn.disabled = false;
-                        btn.classList.remove('opacity-50');
-                    });
-            });
-
-            // Init
+            // Initialize
+            goToStep(1);
             document.getElementById('add-education').click();
             document.getElementById('add-experience').click();
-            
-            // Cursor Logic
-            const cursor = document.getElementById('customCursor');
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-                const t = e.target;
-                if (t.matches('a, button, input, select, textarea, .hoverable, .hoverable *')) cursor.classList.add('hovered');
-                else cursor.classList.remove('hovered');
-            });
-            
-            // Snow Logic
-            const snowContainer = document.getElementById('snowContainer');
-            setInterval(() => {
-                const f = document.createElement('div');
-                f.classList.add('snowflake');
-                const size = Math.random() * 3 + 1; 
-                f.style.width = `${size}px`; f.style.height = `${size}px`;
-                f.style.opacity = `${Math.random() * 0.5 + 0.3}`;
-                f.style.left = `${Math.random() * 100}vw`;
-                f.style.animationDuration = `${Math.random() * 8 + 10}s`;
-                f.style.setProperty('--wind-offset', `${Math.random() * 200 - 100}px`);
-                snowContainer.appendChild(f);
-                setTimeout(() => f.remove(), 15000);
-            }, 200);
+            setLanguage(currentLang);
         });
     </script>
 </body>
