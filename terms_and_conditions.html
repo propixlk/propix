@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - Propix LK</title>
+    <meta name="description" content="Terms and Conditions - Propix LK">
+    
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Chatling & Analytics -->
+    <script> window.chtlConfig = { chatbotId: "8449492451" } </script>
+    <script async data-id="8449492451" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJY9PMY14W"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JJY9PMY14W');
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            100: '#03abec',
+                            200: '#1590ef',
+                            300: '#1c86f1',
+                            400: '#2e69f4',
+                            500: '#3d53f7',
+                            600: '#424cf6',
+                            900: '#1a237e', 
+                        },
+                        dark: {
+                            bg: '#0b1121', 
+                            card: '#1e293b',
+                            text: '#f8fafc',
+                            muted: '#cbd5e1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'scroll': 'scroll 30s linear infinite',
+                        'flow': 'flow 2s infinite ease-in-out',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        flow: {
+                            '0%': { transform: 'scale(1)', opacity: '0.5' },
+                            '50%': { transform: 'scale(1.5)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '0.5' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles matching Index.html */
+        body {
+            cursor: none;
+            overflow-x: hidden;
+        }
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .custom-cursor { display: none; }
+        }
+
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #424cf6;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        .custom-cursor.hovered {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(66, 76, 246, 0.3);
+            border-color: transparent;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .dark .glass {
+            background: rgba(11, 17, 33, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Real Snow Effect CSS */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); 
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+            5% { opacity: 0.8; } 
+            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; } 
+        }
+
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+            transform-origin: top;
+        }
+        #mobile-menu.hidden {
+            opacity: 0;
+            transform: scaleY(0);
+            display: none;
+        }
+        #mobile-menu:not(.hidden) {
+            opacity: 1;
+            transform: scaleY(1);
+            display: block;
+        }
+        
+        /* Content specific styles */
+        .terms-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        .dark .terms-content h2 { color: #fff; }
+        
+        .terms-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #374151;
+        }
+        .dark .terms-content h3 { color: #e2e8f0; }
+
+        .terms-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .terms-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .terms-content li {
+            margin-bottom: 0.5rem;
+        }
+        .terms-content a {
+            color: #424cf6;
+            text-decoration: underline;
+        }
+        .terms-content a:hover {
+            color: #2e69f4;
+        }
+
+    </style>
+</head>
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 overflow-x-hidden">
+
+    <div class="snow-container" id="snowContainer"></div>
+    <div class="custom-cursor hidden md:block" id="customCursor"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
+                    <img src="assets/img/Sitelogo.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all"> 
+                    <img src="assets/img/Sitelogow.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all"> 
+                </div>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
+                    <a href="index.html#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">About</a>
+                    <a href="index.html#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Services</a>
+                    <a href="portfolio.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Work</a>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="px-6 py-2.5 bg-brand-600 text-white rounded-full font-medium hover:bg-brand-500 transition shadow-lg shadow-brand-500/30 hoverable">
+                        Let's Talk
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center gap-2">
+                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="p-2 text-gray-700 dark:text-white hover:text-brand-600 focus:outline-none">
+                        <i data-lucide="menu" class="w-8 h-8"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-40">
+            <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
+                <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
+                <a href="index.html#about" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">About</a>
+                <a href="index.html#services" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Services</a>
+                <a href="index.html#contact" class="block w-full px-3 py-4 text-lg font-bold text-white bg-brand-600 rounded-xl shadow-lg shadow-brand-500/30">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-32 pb-12 lg:pt-40 lg:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center relative overflow-hidden">
+        <div class="reveal active relative z-10">
+            <h1 class="text-4xl sm:text-5xl font-display font-bold text-gray-900 dark:text-white mb-6">
+                Terms and Conditions
+            </h1>
+            <nav class="flex justify-center" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="index.html" class="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition hoverable">Home</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                            <span class="ml-1 text-gray-700 dark:text-brand-200 md:ml-2">Terms and Conditions</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <section class="pb-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <div class="bg-white dark:bg-dark-card/50 backdrop-blur-sm p-8 md:p-12 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl reveal active terms-content text-gray-600 dark:text-dark-muted">
+            
+            <p class="text-sm text-brand-600 dark:text-brand-400 font-semibold mb-6">Last updated: May 09, 2025</p>
+            
+            <p>Please read these terms and conditions carefully before using Our Service.</p>
+
+            <h2>Interpretation and Definitions</h2>
+            <h3>Interpretation</h3>
+            <p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
+            
+            <h3>Definitions</h3>
+            <p>For the purposes of these Terms and Conditions:</p>
+            <ul>
+                <li><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</li>
+                <li><strong>Country</strong> refers to: Sri Lanka</li>
+                <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Propix LK.</li>
+                <li><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.</li>
+                <li><strong>Service</strong> refers to the Website.</li>
+                <li><strong>Terms and Conditions</strong> (also referred as "Terms") mean these Terms and Conditions that form the entire agreement between You and the Company regarding the use of the Service.</li>
+                <li><strong>Third-party Social Media Service</strong> means any services or content (including data, information, products or services) provided by a third-party that may be displayed, included or made available by the Service.</li>
+                <li><strong>Website</strong> refers to Propix LK, accessible from <a href="https://propix.work.gd">https://propix.work.gd</a></li>
+                <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
+            </ul>
+
+            <h2>Acknowledgment</h2>
+            <p>These are the Terms and Conditions governing the use of this Service and the agreement that operates between You and the Company. These Terms and Conditions set out the rights and obligations of all users regarding the use of the Service.</p>
+            <p>Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms and Conditions. These Terms and Conditions apply to all visitors, users and others who access or use the Service.</p>
+            <p>By accessing or using the Service You agree to be bound by these Terms and Conditions. If You disagree with any part of these Terms and Conditions then You may not access the Service.</p>
+            <p>You represent that you are over the age of 18. The Company does not permit those under 18 to use the Service.</p>
+            <p>Your access to and use of the Service is also conditioned on Your acceptance of and compliance with the Privacy Policy of the Company. Our Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your personal information when You use the Application or the Website and tells You about Your privacy rights and how the law protects You. Please read Our Privacy Policy carefully before using Our Service.</p>
+
+            <h2>Links to Other Websites</h2>
+            <p>Our Service may contain links to third-party web sites or services that are not owned or controlled by the Company.</p>
+            <p>The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>
+            <p>We strongly advise You to read the terms and conditions and privacy policies of any third-party web sites or services that You visit.</p>
+
+            <h2>Termination</h2>
+            <p>We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation if You breach these Terms and Conditions.</p>
+            <p>Upon termination, Your right to use the Service will cease immediately.</p>
+
+            <h2>Limitation of Liability</h2>
+            <p>Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers under any provision of this Terms and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the Service.</p>
+            <p>To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms), even if the Company or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.</p>
+            <p>Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply. In these states, each party's liability will be limited to the greatest extent permitted by law.</p>
+
+            <h2>"AS IS" and "AS AVAILABLE" Disclaimer</h2>
+            <p>The Service is provided to You "AS IS" and "AS AVAILABLE" and with all faults and defects without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the Service, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that may arise out of course of dealing, course of performance, usage or trade practice. Without limitation to the foregoing, the Company provides no warranty or undertaking, and makes no representation of any kind that the Service will meet Your requirements, achieve any intended results, be compatible or work with any other software, applications, systems or services, operate without interruption, meet any performance or reliability standards or be error free or that any errors or defects can or will be corrected.</p>
+            <p>Without limiting the foregoing, neither the Company nor any of the company's provider makes any representation or warranty of any kind, express or implied: (i) as to the operation or availability of the Service, or the information, content, and materials or products included thereon; (ii) that the Service will be uninterrupted or error-free; (iii) as to the accuracy, reliability, or currency of any information or content provided through the Service; or (iv) that the Service, its servers, the content, or e-mails sent from or on behalf of the Company are free of viruses, scripts, trojan horses, worms, malware, timebombs or other harmful components.</p>
+            <p>Some jurisdictions do not allow the exclusion of certain types of warranties or limitations on applicable statutory rights of a consumer, so some or all of the above exclusions and limitations may not apply to You. But in such a case the exclusions and limitations set forth in this section shall be applied to the greatest extent enforceable under applicable law.</p>
+
+            <h2>Governing Law</h2>
+            <p>The laws of the Country, excluding its conflicts of law rules, shall govern this Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws.</p>
+
+            <h2>Disputes Resolution</h2>
+            <p>If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.</p>
+
+            <h2>For European Union (EU) Users</h2>
+            <p>If You are a European Union consumer, you will benefit from any mandatory provisions of the law of the country in which You are resident.</p>
+
+            <h2>United States Legal Compliance</h2>
+            <p>You represent and warrant that (i) You are not located in a country that is subject to the United States government embargo, or that has been designated by the United States government as a "terrorist supporting" country, and (ii) You are not listed on any United States government list of prohibited or restricted parties.</p>
+
+            <h2>Severability and Waiver</h2>
+            <h3>Severability</h3>
+            <p>If any provision of these Terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect.</p>
+            <h3>Waiver</h3>
+            <p>Except as provided herein, the failure to exercise a right or to require performance of an obligation under these Terms shall not affect a party's ability to exercise such right or require such performance at any time thereafter nor shall the waiver of a breach constitute a waiver of any subsequent breach.</p>
+
+            <h2>Translation Interpretation</h2>
+            <p>These Terms and Conditions may have been translated if We have made them available to You on our Service. You agree that the original English text shall prevail in the case of a dispute.</p>
+
+            <h2>Changes to These Terms and Conditions</h2>
+            <p>We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material We will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at Our sole discretion.</p>
+            <p>By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the Service.</p>
+
+            <h2>Contact Us</h2>
+            <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
+            <ul>
+                <li>By email: <a href="mailto:propixlk@gmail.com">propixlk@gmail.com</a></li>
+            </ul>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative bg-gray-900 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-gray-800">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-400/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <div class="space-y-6">
+                    <a href="index.html" class="inline-block hoverable">
+                        <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-9 w-auto">
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+                        Smart Design. Sharp Pixels. Offering expert Graphic Design Services to elevate your brand.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/1Bj9wAdLRN/" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="facebook" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@propix_lk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="music-2" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="message-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://t.me/propixlk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="send" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Quick Links</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="index.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#about" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> About Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="terms-and-conditions.html" class="text-brand-400 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-brand-500 transition-colors"></i> Terms of Service
+                            </a>
+                        </li>
+                        <li>
+                            <a href="privacy-policy.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Privacy Policy
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Other Links</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="portfolio.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Portfolio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Price-List.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Branding
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Contact Us</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 group hoverable">
+                            <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-900/50 transition-colors">
+                                <i data-lucide="mail" class="w-5 h-5 text-brand-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Email</p>
+                                <a href="mailto:propixlk@gmail.com" class="text-gray-300 hover:text-white transition-colors">propixlk@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group hoverable">
+                            <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-900/50 transition-colors">
+                                <i data-lucide="message-square" class="w-5 h-5 text-brand-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">WhatsApp</p>
+                                <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="text-gray-300 hover:text-white transition-colors">Chat with us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500 text-center md:text-left">
+                    &copy; 2024 - 2026 <span class="text-brand-400 font-bold">Propix LK</span>. All rights reserved.
+                </p>
+                <div class="flex gap-6 text-sm">
+                    <a href="terms-and-conditions.html" class="text-white font-medium transition-colors hoverable">Terms of Service</a>
+                    <a href="privacy-policy.html" class="text-gray-500 hover:text-white transition-colors hoverable">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
+        
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 50;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+        
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+
+        const cursor = document.getElementById('customCursor');
+        const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // ☃️ Real Snowfall Generator
+        const snowContainer = document.getElementById('snowContainer');
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = Math.random() * 3 + 1; 
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.opacity = `${Math.random() * 0.5 + 0.3}`;
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            const duration = Math.random() * 8 + 10; 
+            snowflake.style.animationDuration = `${duration}s`;
+            const delay = Math.random() * 5; 
+            snowflake.style.animationDelay = `${delay}s`;
+            const windOffset = Math.random() * 200 - 100; 
+            snowflake.style.setProperty('--wind-offset', `${windOffset}px`);
+            snowContainer.appendChild(snowflake);
+            setTimeout(() => {
+                snowflake.remove();
+            }, (duration + delay) * 1000);
+        }
+        setInterval(createSnowflake, 150);
+
+    </script>
+    
+</body>
+</html>
