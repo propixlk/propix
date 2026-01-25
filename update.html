@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Packages | Propix Lk</title>
-    <meta name="description" content="Choose the perfect design plan for your business needs.">
+    <title>Update In Progress | Propix Lk</title>
+    <meta name="description" content="We are currently updating this page. Check back soon.">
     
     <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
     <meta name="theme-color" content="#ffffff">
@@ -44,6 +44,7 @@
                         display: ['Space Grotesk', 'sans-serif'],
                     },
                     animation: {
+                        'spin-slow': 'spin 3s linear infinite',
                         'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
@@ -62,6 +63,9 @@
         body {
             cursor: none;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         @media (pointer: coarse) {
             body { cursor: auto; }
@@ -87,16 +91,6 @@
             height: 40px;
             background-color: rgba(66, 76, 246, 0.3);
             border-color: transparent;
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .glass {
@@ -153,7 +147,7 @@
         }
     </style>
 </head>
-<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 overflow-x-hidden">
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
 
     <div class="snow-container" id="snowContainer"></div>
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
@@ -204,94 +198,42 @@
         </div>
     </nav>
 
-    <main class="pt-32 pb-20 overflow-hidden min-h-screen">
-        <section id="plans" class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-brand-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+    <main class="flex-grow flex items-center justify-center pt-32 pb-20 relative overflow-hidden">
+        
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-brand-500/10 rounded-full blur-3xl -z-10 pointer-events-none animate-pulse"></div>
 
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Design <span class="text-brand-600 dark:text-brand-400">Packages</span></h2>
-                <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto text-lg">Choose the perfect plan for your business needs. Professional results for every scale.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8 reveal">
-                
-                <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Starter Pack</h3>
-                    <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">LKR.3000 <span class="text-base font-normal text-gray-500">/project</span></div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Perfect for individuals and small startups.</p>
-                    
-                    <ul class="space-y-4 mb-8 flex-grow">
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 2 Social Media Posts
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Basic Logo Design
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 3 Revisions
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-400 opacity-50">
-                            <i data-lucide="circle-x" class="w-5 h-5 text-red-400"></i> Unlimited Revisions
-                        </li>
-                    </ul>
-
-                    <button onclick="buyPlan('Starter Pack')" class="w-full py-3 rounded-xl border border-brand-200 dark:border-gray-600 text-brand-600 dark:text-white font-bold hover:bg-brand-600 hover:text-white hover:border-brand-600 transition hoverable">
-                        Get Started
-                    </button>
-                </div>
-
-                <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border-2 border-brand-500 shadow-2xl shadow-brand-500/20 transform md:-translate-y-4 flex flex-col relative group hoverable z-10">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-wider">MOST POPULAR</div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 pt-2">Professional</h3>
-                    <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">LKR.8500 <span class="text-base font-normal text-gray-500">/project</span></div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Best for growing businesses needing branding.</p>
-                    
-                    <ul class="space-y-4 mb-8 flex-grow">
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> 5 Social Media Posts
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Premium Logo + Source File
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Unlimited Revisions
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Priority Support
-                        </li>
-                    </ul>
-
-                    <button onclick="buyPlan('Professional Pack')" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-400 text-white font-bold shadow-lg hover:shadow-brand-500/50 hover:scale-105 transition transform hoverable">
-                        Get Professional
-                    </button>
-                </div>
-
-                <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Business</h3>
-                    <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">LKR.15000 <span class="text-base font-normal text-gray-500">/month</span></div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Complete design solution for companies.</p>
-                    
-                    <ul class="space-y-4 mb-8 flex-grow">
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Unlimited Designs
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Full Branding Kit
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 24/7 Dedicated Support
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Web UI Assets
-                        </li>
-                    </ul>
-
-                    <button onclick="buyPlan('Business Pack')" class="w-full py-3 rounded-xl border border-brand-200 dark:border-gray-600 text-brand-600 dark:text-white font-bold hover:bg-brand-600 hover:text-white hover:border-brand-600 transition hoverable">
-                        Contact Sales
-                    </button>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            
+            <div class="animate-float">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-brand-50 dark:bg-brand-900/20 rounded-full mb-8 relative group hoverable">
+                    <i data-lucide="hammer" class="w-10 h-10 text-brand-600 animate-pulse"></i>
+                    <div class="absolute inset-0 border-2 border-brand-200 dark:border-brand-700 rounded-full animate-ping opacity-20"></div>
                 </div>
             </div>
-        </section>
+            
+            <h1 class="text-5xl md:text-7xl font-display font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+                Update <br class="md:hidden" />
+                <span class="text-brand-600 dark:text-brand-400">Coming Soon</span>
+            </h1>
+            
+            <p class="text-xl text-gray-600 dark:text-dark-muted max-w-lg mx-auto mb-10 leading-relaxed">
+                We are crafting something amazing! This page is currently undergoing scheduled maintenance and improvements.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html" class="px-8 py-4 bg-brand-600 text-white rounded-full font-bold text-lg hover:bg-brand-500 transition shadow-xl shadow-brand-600/20 hoverable flex items-center justify-center gap-2 group">
+                    <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i> Back to Home
+                </a>
+                <a href="mailto:propixlk@gmail.com" class="px-8 py-4 bg-white dark:bg-dark-card text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-full font-bold text-lg hover:border-brand-300 hover:text-brand-600 transition hoverable">
+                    Get Support
+                </a>
+            </div>
+            
+            <p class="mt-12 text-sm text-gray-400 dark:text-gray-600 font-medium">
+                Estimated time remaining: <span class="text-brand-500">Few Days</span>
+            </p>
+
+        </div>
     </main>
 
     <footer class="relative bg-gray-900 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-gray-800">
@@ -441,21 +383,6 @@
             }
         });
 
-        // Reveal Animation
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
-            }
-        }
-        window.addEventListener("scroll", reveal);
-        reveal();
-
         // Custom Cursor
         const cursor = document.getElementById('customCursor');
         const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select');
@@ -494,14 +421,6 @@
             }, (duration + delay) * 1000);
         }
         setInterval(createSnowflake, 150);
-
-        // WhatsApp Function
-        function buyPlan(planName) {
-            const phoneNumber = "94768294496"; 
-            const message = `Hi, I want to buy "${planName}"`;
-            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
     </script>
 </body>
 </html>
