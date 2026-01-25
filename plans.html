@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Packages | Propix Lk</title>
+    <meta name="description" content="Choose the perfect design plan for your business needs.">
+    
+    <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
+    <meta name="theme-color" content="#ffffff">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            100: '#03abec',
+                            200: '#1590ef',
+                            300: '#1c86f1',
+                            400: '#217df3',
+                            500: '#2575f5',
+                            600: '#2e69f8',
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            text: '#f1f5f9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        #custom-cursor {
+            width: 20px; height: 20px;
+            background: rgba(37, 117, 245, 0.3);
+            border: 1px solid rgba(37, 117, 245, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease-out, background 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+        #custom-cursor.hovered { transform: translate(-50%, -50%) scale(2.5); background: rgba(37, 117, 245, 0.1); }
+
+        .snowflake {
+            position: fixed; top: -10px; z-index: 1;
+            background: white; border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(105vh) translateX(var(--wind-offset)); }
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-dark-bg transition-colors duration-300 font-sans selection:bg-brand-500 selection:text-white">
+
+    <div id="custom-cursor" class="hidden md:block"></div>
+    <div id="snowContainer"></div>
+
+    <!-- Navigation (Same as Price-List) -->
+    <nav class="fixed top-0 w-full z-50 glass-nav border-b border-gray-100 dark:border-gray-800 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-2 group hoverable">
+                    <img src="assets/img/Propix%20Lk%20Logo.png" alt="Logo" class="h-10 w-auto">
+                </a>
+                
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="hidden md:flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-brand-500 font-semibold px-4 py-2 transition hoverable">
+                        <i data-lucide="home" class="w-4 h-4"></i> Home
+                    </a>
+                    <button id="themeToggle" class="p-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all hoverable">
+                        <i data-lucide="moon" id="themeIcon" class="w-5 h-5"></i>
+                    </button>
+                    <a href="https://wa.me/94760596328" class="bg-brand-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-brand-700 shadow-lg shadow-brand-500/25 transition-all hover:scale-105 active:scale-95 hoverable">
+                        Hire Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 overflow-hidden">
+        <section id="plans" class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+            <!-- Background Glow -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-brand-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">Design <span class="text-brand-600 dark:text-brand-400">Packages</span></h2>
+                <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto text-lg">Choose the perfect plan for your business needs. Professional results for every scale.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 reveal">
+                
+                <!-- Starter Pack -->
+                <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Starter Pack</h3>
+                    <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">LKR.3000 <span class="text-base font-normal text-gray-500">/project</span></div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Perfect for individuals and small startups.</p>
+                    
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 2 Social Media Posts
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Basic Logo Design
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 3 Revisions
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-400 opacity-50">
+                            <i data-lucide="circle-x" class="w-5 h-5 text-red-400"></i> Unlimited Revisions
+                        </li>
+                    </ul>
+
+                    <button onclick="buyPlan('Starter Pack')" class="w-full py-3 rounded-xl border border-brand-200 dark:border-gray-600 text-brand-600 dark:text-white font-bold hover:bg-brand-600 hover:text-white hover:border-brand-600 transition hoverable">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Professional Pack (Featured) -->
+                <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border-2 border-brand-500 shadow-2xl shadow-brand-500/20 transform md:-translate-y-4 flex flex-col relative group hoverable z-10">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-wider">MOST POPULAR</div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 pt-2">Professional</h3>
+                    <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">LKR.8500 <span class="text-base font-normal text-gray-500">/project</span></div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Best for growing businesses needing branding.</p>
+                    
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> 5 Social Media Posts
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Premium Logo + Source File
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Unlimited Revisions
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i> Priority Support
+                        </li>
+                    </ul>
+
+                    <button onclick="buyPlan('Professional Pack')" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-400 text-white font-bold shadow-lg hover:shadow-brand-500/50 hover:scale-105 transition transform hoverable">
+                        Get Professional
+                    </button>
+                </div>
+
+                <!-- Business Pack -->
+                <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative group hoverable">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Business</h3>
+                    <div class="text-4xl font-display font-bold text-brand-600 dark:text-brand-400 mb-6">LKR.15000 <span class="text-base font-normal text-gray-500">/month</span></div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Complete design solution for companies.</p>
+                    
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Unlimited Designs
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Full Branding Kit
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> 24/7 Dedicated Support
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i> Web UI Assets
+                        </li>
+                    </ul>
+
+                    <button onclick="buyPlan('Business Pack')" class="w-full py-3 rounded-xl border border-brand-200 dark:border-gray-600 text-brand-600 dark:text-white font-bold hover:bg-brand-600 hover:text-white hover:border-brand-600 transition hoverable">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer (Same as Price-List) -->
+    <footer class="bg-white dark:bg-dark-card border-t border-gray-100 dark:border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="text-gray-400 hover:text-brand-500 transition hoverable"><i data-lucide="facebook"></i></a>
+                <a href="#" class="text-gray-400 hover:text-brand-500 transition hoverable"><i data-lucide="instagram"></i></a>
+                <a href="#" class="text-gray-400 hover:text-brand-500 transition hoverable"><i data-lucide="linkedin"></i></a>
+            </div>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">
+                &copy; 2024 Propix Lk. All rights reserved. Professional Graphic Design & Meta Ads.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        function updateThemeIcon(isDark) {
+            themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            updateThemeIcon(true);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+            updateThemeIcon(isDark);
+        });
+
+        // Reveal Animation
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Custom Cursor
+        const cursor = document.getElementById('custom-cursor');
+        const snowContainer = document.getElementById('snowContainer');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            const target = e.target;
+            if (target.matches('a, button, input, .hoverable, .hoverable *')) {
+                cursor.classList.add('hovered');
+            } else {
+                cursor.classList.remove('hovered');
+            }
+        });
+
+        // Snowflakes Effect
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = Math.random() * 3 + 1; 
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.opacity = `${Math.random() * 0.5 + 0.3}`;
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            const duration = Math.random() * 8 + 10;
+            snowflake.style.animationDuration = `${duration}s`;
+            const delay = Math.random() * 5; 
+            snowflake.style.animationDelay = `${delay}s`;
+            const windOffset = Math.random() * 200 - 100; 
+            snowflake.style.setProperty('--wind-offset', `${windOffset}px`);
+            snowContainer.appendChild(snowflake);
+            setTimeout(() => { snowflake.remove(); }, (duration + delay) * 1000);
+        }
+
+        setInterval(createSnowflake, 200);
+
+        function buyPlan(planName) {
+            const message = `Hi Propix LK, I am interested in the ${planName} package. Could you provide more details?`;
+            window.location.href = `https://wa.me/94760596328?text=${encodeURIComponent(message)}`;
+        }
+    </script>
+</body>
+</html>
