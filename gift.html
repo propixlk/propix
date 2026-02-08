@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Propix LK</title>
-    <meta name="description" content="Privacy Policy - Propix LK">
+    <title>Gift Section | Propix Lk</title>
+    <meta name="description" content="Download free Gift packs from Propix Lk's Gift Section. Get your free design resources today!">
+    <meta name="keywords" content="free fonts, font packs, Sinhala fonts, English fonts, download fonts, graphic design resources, Propix Lk, gift section">
     
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/Favicon/favicon-16x16.png">
     <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
     <meta name="theme-color" content="#ffffff">
     
@@ -17,13 +21,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-JJY9PMY14W');
-    </script>
 
     <script>
         tailwind.config = {
@@ -52,20 +49,9 @@
                         display: ['Space Grotesk', 'sans-serif'],
                     },
                     animation: {
-                        'scroll': 'scroll 30s linear infinite',
-                        'flow': 'flow 2s infinite ease-in-out',
                         'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
-                        scroll: {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-100%)' },
-                        },
-                        flow: {
-                            '0%': { transform: 'scale(1)', opacity: '0.5' },
-                            '50%': { transform: 'scale(1.5)', opacity: '0' },
-                            '100%': { transform: 'scale(1)', opacity: '0.5' },
-                        },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
@@ -77,35 +63,9 @@
     </script>
 
     <style>
-        /* Custom Styles matching Index.html */
+        /* Essential Styles Only */
         body {
-            cursor: none;
             overflow-x: hidden;
-        }
-        @media (pointer: coarse) {
-            body { cursor: auto; }
-            .custom-cursor { display: none; }
-        }
-
-        .custom-cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #424cf6;
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            transition: transform 0.1s ease, width 0.2s, height 0.2s, background-color 0.2s;
-            mix-blend-mode: difference;
-        }
-        .custom-cursor.hovered {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(66, 76, 246, 0.3);
-            border-color: transparent;
         }
 
         .reveal {
@@ -127,35 +87,28 @@
             background: rgba(11, 17, 33, 0.9);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        /* Real Snow Effect CSS */
-        .snow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            overflow: hidden;
+        
+        .glow-card {
+            position: relative;
         }
-
-        .snowflake {
+        .glow-card::before {
+            content: '';
             position: absolute;
-            background: white;
-            border-radius: 50%;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 1.5rem;
+            padding: 2px;
+            background: linear-gradient(45deg, #424cf6, transparent, #03abec);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+            transition: opacity 0.3s;
             pointer-events: none;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); 
-            animation: snowfall linear infinite;
+        }
+        .glow-card:hover::before {
+            opacity: 1;
         }
 
-        @keyframes snowfall {
-            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
-            5% { opacity: 0.8; } 
-            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; } 
-        }
-
-        /* Mobile Menu Animation */
         #mobile-menu {
             transition: all 0.3s ease-in-out;
             transform-origin: top;
@@ -170,65 +123,22 @@
             transform: scaleY(1);
             display: block;
         }
-        
-        /* Content specific styles */
-        .policy-content h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: #111827;
-        }
-        .dark .policy-content h2 { color: #fff; }
-        
-        .policy-content h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            color: #374151;
-        }
-        .dark .policy-content h3 { color: #e2e8f0; }
 
-        .policy-content h4 {
-            font-weight: 600;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            color: #4b5563;
+        /* Gift Item Specifics */
+        .password-display-box {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
         }
-        .dark .policy-content h4 { color: #cbd5e1; }
-
-        .policy-content p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .policy-content ul {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .policy-content li {
-            margin-bottom: 0.5rem;
-        }
-        .policy-content a {
-            color: #424cf6;
-            text-decoration: underline;
-        }
-        .policy-content a:hover {
-            color: #2e69f4;
-        }
-
     </style>
 </head>
-<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 overflow-x-hidden">
 
-    <!--Snow Effec
-    
-    <div class="snow-container" id="snowContainer"></div> -->
-    <div class="custom-cursor hidden md:block" id="customCursor"></div>
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
 
+    <!-- Navigation -->
     <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -275,127 +185,115 @@
         </div>
     </nav>
 
-    <section class="pt-32 pb-12 lg:pt-40 lg:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center relative overflow-hidden">
-        <div class="reveal active relative z-10">
-            <h1 class="text-4xl sm:text-5xl font-display font-bold text-gray-900 dark:text-white mb-6">
-                Privacy Policy
-            </h1>
-            <nav class="flex justify-center" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <a href="index.html" class="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition hoverable">Home</a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-                            <span class="ml-1 text-gray-700 dark:text-brand-200 md:ml-2">Privacy Policy</span>
+    <!-- Main Content -->
+    <main class="pt-32 pb-12 lg:pt-48 lg:pb-20">
+        
+        <!-- Page Title Section -->
+        <section class="text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-12">
+            
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Gift <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-brand-400 to-brand-100">Section</span>
+                </h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-dark-muted">
+                    Download free premium design resources tailored for your creative projects.
+                </p>
+            </div>
+        </section>
+
+        <!-- Gifts Grid -->
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-8 justify-center">
+
+                <!-- Sinhala Font Pack -->
+                <div class="reveal">
+                    <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:shadow-2xl transition-all duration-300 glow-card h-full flex flex-col relative group">
+                        <!-- Toggle Button -->
+                        <button class="show-password-btn absolute top-6 right-6 p-2 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 hover:bg-brand-600 hover:text-white transition-colors z-10" data-target="sinhalaPassword">
+                            <i data-lucide="eye" class="w-5 h-5"></i>
+                        </button>
+
+                        <div class="mb-6 flex justify-center">
+                            <div class="w-24 h-24 bg-brand-100/20 rounded-full flex items-center justify-center text-brand-600 animate-float">
+                                <i data-lucide="gift" class="w-12 h-12"></i>
+                            </div>
                         </div>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </section>
 
-    <section class="pb-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <div class="bg-white dark:bg-dark-card/50 backdrop-blur-sm p-8 md:p-12 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl reveal active policy-content text-gray-600 dark:text-dark-muted">
-            
-            <p class="text-sm text-brand-600 dark:text-brand-400 font-semibold mb-6">Last updated: May 09, 2025</p>
-            
-            <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-            <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.</p>
+                        <div class="text-center flex-grow">
+                            <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-3">Sinhala Font Pack</h3>
+                            <p class="text-gray-600 dark:text-dark-muted leading-relaxed mb-6">
+                                A curated collection of beautiful <strong class="text-brand-600 dark:text-brand-400">500+ Sinhala fonts</strong> for all your design needs. Perfect for print, web, and creative projects.
+                            </p>
+                        </div>
 
-            <h2>Interpretation and Definitions</h2>
-            <h3>Interpretation</h3>
-            <p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
+                        <!-- Hidden Password Area -->
+                        <div id="sinhalaPassword" class="password-display-box bg-gray-50 dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                                <p class="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    Password: <span class="font-bold text-brand-600 text-lg ml-1 select-all">pro123</span>
+                                </p>
+                                <div class="flex items-center gap-2">
+                                    <button class="copy-btn px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-brand-600 text-white rounded-lg hover:bg-brand-500 transition shadow-md" data-text="pro123">
+                                        Copy
+                                    </button>
+                                    <span class="copy-status text-xs font-medium text-green-500 h-4 w-12 text-center"></span>
+                                </div>
+                            </div>
+                        </div>
 
-            <h3>Definitions</h3>
-            <p>For the purposes of this Privacy Policy:</p>
-            <ul>
-                <li><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</li>
-                <li><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</li>
-                <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Propix LK.</li>
-                <li><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.</li>
-                <li><strong>Country</strong> refers to: Sri Lanka</li>
-                <li><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.</li>
-                <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
-                <li><strong>Service</strong> refers to the Website.</li>
-                <li><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company.</li>
-                <li><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself.</li>
-                <li><strong>Website</strong> refers to Propix LK, accessible from <a href="https://propix.work.gd/">https://propix.work.gd</a></li>
-                <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
-            </ul>
+                        <a href="https://drive.google.com/uc?export=download&id=1qW5wQPmsDSk72G25HwtMb2AHxcAc1RRr" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-400 text-white font-bold text-center shadow-lg hover:shadow-brand-500/50 hover:scale-[1.02] transition transform flex items-center justify-center gap-2">
+                            <i data-lucide="download" class="w-5 h-5"></i> Free Download
+                        </a>
+                    </div>
+                </div>
 
-            <h2>Collecting and Using Your Personal Data</h2>
-            <h3>Types of Data Collected</h3>
-            
-            <h4>Personal Data</h4>
-            <p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
-            <ul>
-                <li>First name and last name</li>
-                <li>Phone number</li>
-                <li>Usage Data</li>
-            </ul>
+                <!-- English Font Pack -->
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <div class="bg-white dark:bg-dark-card rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl hover:shadow-2xl transition-all duration-300 glow-card h-full flex flex-col relative group">
+                        
+                        <button class="show-password-btn absolute top-6 right-6 p-2 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 hover:bg-brand-600 hover:text-white transition-colors z-10" data-target="englishPassword">
+                            <i data-lucide="eye" class="w-5 h-5"></i>
+                        </button>
 
-            <h4>Usage Data</h4>
-            <p>Usage Data is collected automatically when using the Service. It may include information such as Your Device's IP address, browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, and other diagnostic data.</p>
-            <p>When You access the Service by or through a mobile device, We may collect certain information automatically, including the type of mobile device, unique ID, IP address, and operating system.</p>
+                        <div class="mb-6 flex justify-center">
+                             <div class="w-24 h-24 bg-brand-100/20 rounded-full flex items-center justify-center text-brand-600 animate-float" style="animation-delay: 1s;">
+                                <i data-lucide="gift" class="w-12 h-12"></i>
+                            </div>
+                        </div>
 
-            <h4>Tracking Technologies and Cookies</h4>
-            <p>We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. The technologies We use may include:</p>
-            <ul>
-                <li><strong>Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent.</li>
-                <li><strong>Web Beacons.</strong> Small electronic files known as web beacons that permit the Company to count users who have visited those pages.</li>
-            </ul>
-            <p>We use both Session and Persistent Cookies for purposes such as Necessary/Essential Cookies, Cookies Policy Acceptance, and Functionality Cookies.</p>
+                        <div class="text-center flex-grow">
+                            <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-3">English Font Pack</h3>
+                            <p class="text-gray-600 dark:text-dark-muted leading-relaxed mb-6">
+                                A handpicked selection of stylish and professional English fonts. Ideal for branding, presentations, and modern design work.
+                            </p>
+                        </div>
 
-            <h3>Use of Your Personal Data</h3>
-            <p>The Company may use Personal Data for the following purposes:</p>
-            <ul>
-                <li><strong>To provide and maintain our Service</strong>, including to monitor the usage of our Service.</li>
-                <li><strong>To manage Your Account:</strong> to manage Your registration as a user of the Service.</li>
-                <li><strong>For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased.</li>
-                <li><strong>To contact You:</strong> To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication.</li>
-                <li><strong>To provide You</strong> with news, special offers and general information.</li>
-                <li><strong>To manage Your requests:</strong> To attend and manage Your requests to Us.</li>
-                <li><strong>For business transfers:</strong> We may use Your information to evaluate or conduct a merger, divestiture, restructuring, or dissolution.</li>
-            </ul>
+                        <!-- Hidden Password Area -->
+                        <div id="englishPassword" class="password-display-box bg-gray-50 dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                                <p class="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    Password: <span class="font-bold text-brand-600 text-lg ml-1 select-all"></span>
+                                </p>
+                                <div class="flex items-center gap-2">
+                                    <button class="copy-btn px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-brand-600 text-white rounded-lg hover:bg-brand-500 transition shadow-md" data-text="">
+                                        Copy
+                                    </button>
+                                    <span class="copy-status text-xs font-medium text-green-500 h-4 w-12 text-center"></span>
+                                </div>
+                            </div>
+                        </div>
 
-            <h3>Retention of Your Personal Data</h3>
-            <p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy.</p>
+                        <a href="#" class="w-full py-4 rounded-xl bg-white dark:bg-dark-bg border border-brand-200 dark:border-brand-900 text-brand-600 dark:text-brand-400 font-bold text-center shadow-sm hover:border-brand-500 transition flex items-center justify-center gap-2">
+                             <i data-lucide="download" class="w-5 h-5"></i> Free Download
+                        </a>
+                    </div>
+                </div>
 
-            <h3>Transfer of Your Personal Data</h3>
-            <p>Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located.</p>
+            </div>
+        </section>
 
-            <h3>Delete Your Personal Data</h3>
-            <p>You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.</p>
+    </main>
 
-            <h3>Disclosure of Your Personal Data</h3>
-            <h4>Business Transactions</h4>
-            <p>If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred.</p>
-            <h4>Law enforcement</h4>
-            <p>Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law.</p>
-
-            <h3>Security of Your Personal Data</h3>
-            <p>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure.</p>
-
-            <h2>Children's Privacy</h2>
-            <p>Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13.</p>
-
-            <h2>Links to Other Websites</h2>
-            <p>Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site.</p>
-
-            <h2>Changes to this Privacy Policy</h2>
-            <p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
-
-            <h2>Contact Us</h2>
-            <p>If you have any questions about this Privacy Policy, You can contact us:</p>
-            <ul>
-                <li>By Telegram: <a href="https://t.me/propixlk">propixlk</a></li>
-            </ul>
-
-        </div>
-    </section>
-
+    <!-- Footer -->
     <footer class="relative bg-gray-900 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-gray-800">
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
@@ -526,23 +424,32 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script>
         lucide.createIcons();
 
+        // Dark Mode
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
         }
 
+        // Mobile Menu
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
-        btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
-        
+        if (btn && menu) {
+            btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => { menu.classList.add('hidden'); });
+            });
+        }
+
+        // Scroll Reveal
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 50;
+                var elementVisible = 100;
                 if (elementTop < windowHeight - elementVisible) {
                     reveals[i].classList.add("active");
                 }
@@ -551,51 +458,61 @@
         window.addEventListener("scroll", reveal);
         reveal();
         
+        // Navbar Shadow
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-md');
-            } else {
-                navbar.classList.remove('shadow-md');
+            if (navbar) {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-md');
+                } else {
+                    navbar.classList.remove('shadow-md');
+                }
             }
         });
 
-        const cursor = document.getElementById('customCursor');
-        const hoverables = document.querySelectorAll('.hoverable, a, button, input, textarea, select');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-        hoverables.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        // --- Gift Section Specific Logic ---
+
+        // Show Password Toggle
+        document.querySelectorAll('.show-password-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const passwordBox = document.getElementById(targetId);
+                const icon = this.querySelector('svg');
+                
+                if (passwordBox.style.display === 'block') {
+                    passwordBox.style.display = 'none';
+                    // Reset icon to Eye
+                    this.innerHTML = '<i data-lucide="eye" class="w-5 h-5"></i>';
+                } else {
+                    passwordBox.style.display = 'block';
+                    // Change icon to Eye Off
+                    this.innerHTML = '<i data-lucide="eye-off" class="w-5 h-5"></i>';
+                }
+                lucide.createIcons(); // Re-render new icons
+            });
         });
 
-        // ☃️ Real Snowfall Generator
-        const snowContainer = document.getElementById('snowContainer');
+        // Copy Password Logic
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const text = this.dataset.text;
+                const statusSpan = this.nextElementSibling;
+                
+                if(!text) return;
 
-        function createSnowflake() {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            const size = Math.random() * 3 + 1; 
-            snowflake.style.width = `${size}px`;
-            snowflake.style.height = `${size}px`;
-            snowflake.style.opacity = `${Math.random() * 0.5 + 0.3}`;
-            snowflake.style.left = `${Math.random() * 100}vw`;
-            const duration = Math.random() * 8 + 10; 
-            snowflake.style.animationDuration = `${duration}s`;
-            const delay = Math.random() * 5; 
-            snowflake.style.animationDelay = `${delay}s`;
-            const windOffset = Math.random() * 200 - 100; 
-            snowflake.style.setProperty('--wind-offset', `${windOffset}px`);
-            snowContainer.appendChild(snowflake);
-            setTimeout(() => {
-                snowflake.remove();
-            }, (duration + delay) * 1000);
-        }
-        setInterval(createSnowflake, 150);
+                navigator.clipboard.writeText(text).then(() => {
+                    statusSpan.textContent = "Copied!";
+                    statusSpan.style.opacity = 1;
+                    setTimeout(() => {
+                        statusSpan.style.opacity = 0;
+                        setTimeout(() => statusSpan.textContent = "", 300);
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            });
+        });
 
     </script>
-    
 </body>
 </html>

@@ -190,16 +190,16 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
-                    <img src="assets/img/Sitelogo.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all protected-img"> 
-                    <img src="assets/img/Sitelogow.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all protected-img"> 
+                    <img src="assets/img/Sitelogo.png" alt="BluePixel Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all"> 
+                    <img src="assets/img/Sitelogow.png" alt="BluePixel Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all"> 
                 </div>
                 
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="index.html" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Home</a>
-                    <a href="index.html#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">About</a>
-                    <a href="portfolio.html" class="text-brand-600 dark:text-brand-400 font-bold transition hoverable">Work</a>
-                    <a href="index.html#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Services</a>
-                    <a href="index.html#contact" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Contact</a>
+                    <a href="#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">About</a>
+                    <a href="#portfolio" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Work</a>
+                    <a href="#services" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Services</a>
+                    <!--<a href="#contact" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">Contact</a> -->
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-brand-400 hoverable">
                         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
                         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
@@ -221,13 +221,13 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-49">
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-40">
             <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
                 <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
-                <a href="index.html#about" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition hoverable">About</a>
-                <a href="portfolio.html" class="block w-full px-3 py-4 text-lg font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/20 rounded-xl">Work</a>
-                <a href="index.html#services" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Services</a>
-                <a href="index.html#contact" class="block w-full px-3 py-4 text-lg font-bold text-white bg-brand-600 rounded-xl shadow-lg shadow-brand-500/30">Contact Us</a>
+                <a href="index.html#about" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">About</a>
+                <a href="#portfolio" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Work</a>
+                <a href="#services" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Services</a>
+                <a href="#contact" class="block w-full px-3 py-4 text-lg font-bold text-white bg-brand-600 rounded-xl shadow-lg shadow-brand-500/30">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -258,7 +258,7 @@
                 <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="bookmark">Book-Mark</button>
                 <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="label">Label</button>
                 <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="card">Card</button>
-                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="other">Other</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="other">View More</button>
             </div>
         </div>
     </section>
@@ -356,6 +356,11 @@
                                 <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Services
                             </a>
                         </li>
+                        <li>
+                            <a href="index.html#faq" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> FAQ
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -368,12 +373,17 @@
                             </a>
                         </li>
                         <li>
-                            <a href="index.html#faq" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> FAQ
+                            <a href='Price-List.html'" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Price List
                             </a>
                         </li>
                         <li>
-                            <a href='update.html'" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                            <a href="gift.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Gift Section
+                            </a>
+                        </li>
+                        <li>
+                            <a href="update.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
                                 <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Packages
                             </a>
                         </li>
@@ -572,7 +582,7 @@
             { src: "assets/img/Designs/card/9.jpeg", category: "card", title: "Custom Card Design" },
 
             // Other
-            { src: "assets/img/Designs/other/1.jpg", category: "other", title: "Miscellaneous Design" }
+            { src: "assets/img/Designs/other/1.jpg", category: "other", title: "Miscellaneous Design" },
             { src: "assets/img/Designs/other/2.jpg", category: "other", title: "Miscellaneous Design" },
             { src: "assets/img/Designs/other/3.jpeg", category: "other", title: "Miscellaneous Design" },
             { src: "assets/img/Designs/other/4.jpg", category: "other", title: "Miscellaneous Design" },
