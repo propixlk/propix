@@ -63,6 +63,10 @@
         body { cursor: none; overflow-x: hidden; }
         @media (pointer: coarse) { body { cursor: auto; } .custom-cursor { display: none; } }
 
+        /* Hide Scrollbar for Filter Section */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         /* Security: Prevent Selection and Dragging */
         .no-select {
             -webkit-user-select: none;
@@ -102,6 +106,7 @@
         }
 
         /* Filter Styles */
+        .filter-btn { white-space: nowrap; } /* Prevents text wrapping inside buttons */
         .filter-btn.active { background-color: #424cf6; color: white; border-color: #424cf6; }
         
         /* Masonry & Layout Optimization */
@@ -174,7 +179,8 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-40">
+        <!-- Updated z-index to 49 to stay above filter bar -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-49">
             <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
                 <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
                 <a href="portfolio.html" class="block w-full px-3 py-4 text-lg font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/20 rounded-xl">Work</a>
@@ -185,7 +191,7 @@
     </nav>
 
     <!-- Header -->
-    <section class="pt-32 pb-6 lg:pt-40 lg:pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center relative overflow-hidden">
+    <section class="pt-32 pb-4 lg:pt-40 lg:pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center relative overflow-hidden">
         <div class="relative z-10 animate-fade-in">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                 Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-brand-400 to-brand-100">Work</span>
@@ -196,34 +202,36 @@
         </div>
     </section>
 
-    <!-- Filter Buttons -->
-    <section class="sticky top-20 z-30 bg-white/95 dark:bg-dark-bg/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 py-4 mb-0 shadow-sm transition-all duration-300">
+    <!-- Filter Buttons (Updated z-index to 45 to be above gallery items but below nav) -->
+    <section class="sticky top-[75px] md:top-20 z-45 bg-white/95 dark:bg-dark-bg/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 py-3 mb-0 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-wrap justify-center gap-2" id="filter-container">
-                <button class="filter-btn active px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="all">All</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="social">Social Media</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="logo">Logo</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="tute">Tute-cover</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="cv">CV</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="banner">Banner</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="flyer">Flyer & Brochure</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="bookmark">Book-Mark</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="label">Label</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="card">Card</button>
-                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="other">Other</button>
+            <!-- Used overflow-x-auto and flex-nowrap for mobile horizontal scrolling -->
+            <div class="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-x-visible justify-start md:justify-center gap-2 pb-2 md:pb-0 no-scrollbar" id="filter-container">
+                <button class="filter-btn active px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="all">All</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="social">Social Media</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="logo">Logo</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="tute">Tute-cover</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="cv">CV</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="banner">Banner</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="flyer">Flyer & Brochure</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="bookmark">Book-Mark</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="label">Label</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="card">Card</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="other">Other</button>
             </div>
         </div>
     </section>
 
     <!-- Gallery Grid -->
-    <section class="flex-grow pb-20 pt-0">
+    <!-- Added min-h-[50vh] to prevent layout collapse when filtering -->
+    <section class="flex-grow pb-20 pt-0 min-h-[50vh]">
         <!-- 
            Full Width Container for "No Space" effect 
            columns-1 (mobile) -> columns-2 (sm) -> columns-3 (md) -> columns-4 (lg)
            gap-0 ensures no space between columns
         -->
         <div class="w-full">
-            <div id="gallery-grid" class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-0 space-y-0 w-full">
+            <div id="gallery-grid" class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-0 space-y-0 w-full transition-opacity duration-300 opacity-100">
                 <!-- Javascript will inject items here -->
             </div>
             
@@ -361,14 +369,25 @@
         function setupFilterButtons() {
             const btns = document.querySelectorAll('.filter-btn');
             btns.forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent default button behavior
+                    
                     // Visual update
                     btns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     
+                    // Center the clicked button in scroll view (Mobile)
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
                     // Logic update
                     const category = btn.getAttribute('data-filter');
-                    applyFilter(category);
+                    
+                    // Smooth transition
+                    galleryGrid.style.opacity = '0';
+                    setTimeout(() => {
+                        applyFilter(category);
+                        galleryGrid.style.opacity = '1';
+                    }, 200);
                 });
             });
         }
@@ -420,7 +439,7 @@
         function createGalleryItem(item) {
             // Note: mb-0 and block w-full are crucial for the "no space" layout
             return `
-            <div class="masonry-item group relative cursor-pointer hoverable overflow-hidden" onclick="openLightbox('${item.src}', '${item.title}')">
+            <div class="masonry-item group relative cursor-pointer hoverable overflow-hidden w-full" onclick="openLightbox('${item.src}', '${item.title}')">
                 <div class="image-placeholder absolute inset-0 z-0"></div>
                 
                 <img src="${item.src}" 
@@ -432,7 +451,7 @@
                      onload="this.previousElementSibling.style.display='none'"
                      onerror="this.src='https://placehold.co/600x400?text=Image+Not+Found'">
                 
-                <!-- Transparent Overlay to prevent Right Click/Save As -->
+                <!-- Transparent Overlay to prevent Right Click/Save As but allow clicks -->
                 <div class="absolute inset-0 z-30" oncontextmenu="return false;"></div>
 
                 <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-40 flex flex-col justify-end p-6 pointer-events-none">
