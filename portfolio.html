@@ -10,12 +10,15 @@
     <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
     <meta name="theme-color" content="#ffffff">
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
+    <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
@@ -59,15 +62,20 @@
     </script>
 
     <style>
-        /* Shared Styles */
-        body { cursor: none; overflow-x: hidden; }
-        @media (pointer: coarse) { body { cursor: auto; } .custom-cursor { display: none; } }
+        /* --- Core & Performance --- */
+        body { 
+            cursor: none; 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Disable custom cursor on touch devices */
+        @media (pointer: coarse) { 
+            body { cursor: auto; } 
+            .custom-cursor { display: none; } 
+        }
 
-        /* Hide Scrollbar for Filter Section */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Security: Prevent Selection and Dragging */
+        /* --- Security & Protection --- */
         .no-select {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -79,11 +87,17 @@
             -o-user-drag: none;
         }
         
-        /* Prevent Right Click Context Menu specifically on protected items */
+        /* The image itself ignores mouse events so clicks pass to the overlay/container */
         .protected-img {
-            pointer-events: none; /* Mouse clicks pass through to the container */
+            pointer-events: none;
+            -webkit-touch-callout: none;
         }
 
+        /* --- Scrollbar --- */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- Custom Cursor --- */
         .custom-cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
             border: 2px solid #424cf6; border-radius: 50%; pointer-events: none;
@@ -93,42 +107,44 @@
         }
         .custom-cursor.hovered { width: 40px; height: 40px; background-color: rgba(66, 76, 246, 0.3); border-color: transparent; }
 
+        /* --- Visual Effects --- */
         .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
         .dark .glass { background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
-        /* Snow Effect - Optimized */
+        /* Optimized Snow Effect */
         .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
-        .snowflake { position: absolute; background: white; border-radius: 50%; pointer-events: none; box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); animation: snowfall linear infinite; }
+        .snowflake { 
+            position: absolute; background: white; border-radius: 50%; 
+            pointer-events: none; box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); 
+            animation: snowfall linear infinite;
+            will-change: transform, opacity; 
+        }
         @keyframes snowfall {
-            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
-            5% { opacity: 0.8; } 
-            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; } 
+            0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+            10% { opacity: 0.8; } 
+            100% { transform: translateY(100vh) translateX(20px); opacity: 0; } 
         }
 
-        /* Filter Styles */
-        .filter-btn { white-space: nowrap; } /* Prevents text wrapping inside buttons */
+        /* --- Layout --- */
+        .filter-btn { white-space: nowrap; }
         .filter-btn.active { background-color: #424cf6; color: white; border-color: #424cf6; }
         
-        /* Masonry & Layout Optimization */
-        /* Forces images to fill columns without gaps */
+        /* Masonry Optimization */
         .masonry-item { 
             break-inside: avoid; 
             margin-bottom: 0; 
             display: block;
             width: 100%;
+            /* Performance: Skip rendering off-screen items */
+            content-visibility: auto; 
+            contain-intrinsic-size: 300px; 
         }
-        .masonry-item img {
-            display: block; 
-            width: 100%;
-            height: auto;
-        }
-
-        /* Lightbox */
+        
+        /* --- Loading State --- */
         #lightbox { transition: opacity 0.3s ease; }
         #lightbox.hidden { opacity: 0; pointer-events: none; }
         #lightbox:not(.hidden) { opacity: 1; pointer-events: auto; }
         
-        /* Loading Skeleton */
         .image-placeholder { 
             position: absolute; inset: 0; z-index: 0;
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); 
@@ -137,55 +153,26 @@
         .dark .image-placeholder { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); }
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Preloader Main Container */
-#preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 999999;
-  overflow: hidden;
-  background: #ffffff; /* Dark mode එකේදී මෙය වෙනස් කිරීමට පහත බලන්න */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.6s ease-out;
-}
+        /* --- Preloader --- */
+        #preloader {
+            position: fixed; inset: 0; z-index: 999999; overflow: hidden;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+        }
+        .dark #preloader { background: #0b1121; }
 
-/* Dark Mode Background for Preloader */
-.dark #preloader {
-  background: #0b1121;
-}
-
-/* Loader Animation */
-.loader {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: inline-block;
-  border-top: 4px solid #424cf6; /* ප්‍රධාන නිල් පැහැය */
-  border-right: 4px solid transparent;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-  position: relative;
-}
-
-.loader::after {
-  content: '';
-  box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border-left: 4px solid #03abec; /* ලා නිල් පැහැය */
-  border-bottom: 4px solid transparent;
-  animation: rotation 0.5s linear infinite reverse;
-}
-
-@keyframes rotation {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+        .loader {
+            width: 48px; height: 48px; border-radius: 50%; display: inline-block;
+            border-top: 4px solid #424cf6; border-right: 4px solid transparent;
+            box-sizing: border-box; animation: rotation 1s linear infinite; position: relative;
+        }
+        .loader::after {
+            content: ''; box-sizing: border-box; position: absolute; left: 0; top: 0;
+            width: 48px; height: 48px; border-radius: 50%;
+            border-left: 4px solid #03abec; border-bottom: 4px solid transparent;
+            animation: rotation 0.5s linear infinite reverse;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 min-h-screen flex flex-col" oncontextmenu="return false;">
@@ -234,7 +221,6 @@
             </div>
         </div>
 
-        <!-- Updated z-index to 49 to stay above filter bar -->
         <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-49">
             <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
                 <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
@@ -257,10 +243,9 @@
         </div>
     </section>
 
-    <!-- Filter Buttons (Updated z-index to 45 to be above gallery items but below nav) -->
+    <!-- Filter Buttons -->
     <section class="sticky top-[75px] md:top-20 z-45 bg-white/95 dark:bg-dark-bg/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 py-3 mb-0 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Used overflow-x-auto and flex-nowrap for mobile horizontal scrolling -->
             <div class="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-x-visible justify-start md:justify-center gap-2 pb-2 md:pb-0 no-scrollbar" id="filter-container">
                 <button class="filter-btn active px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="all">All</button>
                 <button class="filter-btn px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 flex-shrink-0 hoverable" data-filter="social">Social Media</button>
@@ -278,14 +263,9 @@
     </section>
 
     <!-- Gallery Grid -->
-    <!-- Added min-h-[50vh] to prevent layout collapse when filtering -->
     <section class="flex-grow pb-20 pt-0 min-h-[50vh]">
-        <!-- 
-           Full Width Container for "No Space" effect 
-           columns-1 (mobile) -> columns-2 (sm) -> columns-3 (md) -> columns-4 (lg)
-           gap-0 ensures no space between columns
-        -->
         <div class="w-full">
+            <!-- Masonry Grid with gap-0 for no-space layout -->
             <div id="gallery-grid" class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-0 space-y-0 w-full transition-opacity duration-300 opacity-100">
                 <!-- Javascript will inject items here -->
             </div>
@@ -315,7 +295,7 @@
         <div class="relative w-full max-w-5xl max-h-[90vh] flex flex-col items-center z-[1001]" oncontextmenu="return false;">
             <!-- Overlay to prevent drag/save on lightbox image -->
             <div class="absolute inset-0 z-50"></div>
-            <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl no-select" draggable="false">
+            <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl no-select protected-img" draggable="false">
             <div class="mt-4 text-center z-50 pointer-events-none">
                 <h3 id="lightbox-title" class="text-white text-xl font-bold drop-shadow-md"></h3>
             </div>
@@ -447,10 +427,8 @@
     <script>
         lucide.createIcons();
 
-        // --- 1. DATA CONFIGURATION (ADD YOUR 500 IMAGES HERE) ---
-        // New Categories Added: 'flyer', 'bookmark', 'label', 'card'
+        // --- 1. DATA CONFIGURATION (FIXED & OPTIMIZED) ---
         const portfolioData = [
-
             // Social Media Examples
             { src: "assets/img/Designs/smp/1.jpeg", category: "social", title: "Brand Identity" },
             { src: "assets/img/Designs/smp/2.jpg", category: "social", title: "Product Campaign" },
@@ -478,10 +456,7 @@
             { src: "assets/img/Designs/smp/24.jpeg", category: "social", title: "Social Media Post" },
             { src: "assets/img/Designs/smp/25.jpeg", category: "social", title: "Social Media Post" },
             { src: "assets/img/Designs/smp/26.jpeg", category: "social", title: "Social Media Post" },
-            
 
-
-            
             // Logo Examples
             { src: "assets/img/Designs/Logo/1.jpg", category: "logo", title: "Modern Minimalist" },
             { src: "assets/img/Designs/Logo/2.jpeg", category: "logo", title: "Brand Identity" },
@@ -523,7 +498,6 @@
             { src: "assets/img/Designs/Tute/27.jpeg", category: "tute", title: "Tute Cover" },
             { src: "assets/img/Designs/Tute/28.jpeg", category: "tute", title: "Tute Cover" },
             
-            
             // CV Examples
             { src: "assets/img/Designs/cv/1.jpeg", category: "cv", title: "Professional Resume" },
             { src: "assets/img/Designs/cv/2.jpeg", category: "cv", title: "Modern CV Design" },
@@ -545,9 +519,7 @@
             { src: "assets/img/Designs/cv/18.jpg", category: "cv", title: "Elegant CV" },
             { src: "assets/img/Designs/cv/19.jpg", category: "cv", title: "Professional Resume" },
             
-            // --- NEW CATEGORIES ---
-            
-            // Flyer & Brochure (Use 'flyer' as category)
+            // Flyer & Brochure
             { src: "assets/img/Designs/flyer/1.jpeg", category: "flyer", title: "Corporate Brochure" },
             { src: "assets/img/Designs/flyer/2.jpg", category: "flyer", title: "Event Flyer" },
             { src: "assets/img/Designs/flyer/3.jpg", category: "flyer", title: "Product Catalog" },
@@ -556,7 +528,7 @@
             { src: "assets/img/Designs/flyer/6.webp", category: "flyer", title: "Travel Brochure" },
             { src: "assets/img/Designs/flyer/7.jpeg", category: "flyer", title: "Health & Wellness Flyer" },
 
-            // Book-Mark (Use 'bookmark' as category)
+            // Book-Mark
             { src: "assets/img/Designs/bm/1.webp", category: "bookmark", title: "Custom Bookmark" },
             { src: "assets/img/Designs/bm/2.webp", category: "bookmark", title: "Custom Bookmark" },
             { src: "assets/img/Designs/bm/3.webp", category: "bookmark", title: "Custom Bookmark" },
@@ -565,7 +537,7 @@
             { src: "assets/img/Designs/bm/6.jpeg", category: "bookmark", title: "Custom Bookmark" },
             { src: "assets/img/Designs/bm/7.jpeg", category: "bookmark", title: "Custom Bookmark" },
             
-            // Label (Use 'label' as category)
+            // Label
             { src: "assets/img/Designs/Label/1.jpeg", category: "label", title: "Product Bottle Label" },
             { src: "assets/img/Designs/Label/2.jpeg", category: "label", title: "Packaging Sticker" },
             { src: "assets/img/Designs/Label/3.jpeg", category: "label", title: "Custom Label Design" },
@@ -577,7 +549,7 @@
             { src: "assets/img/Designs/Label/9.jpeg", category: "label", title: "Custom Label Design" },
             { src: "assets/img/Designs/Label/10.jpeg", category: "label", title: "Custom Label Design" },
             
-            // Card (Use 'card' as category)
+            // Card
             { src: "assets/img/Designs/card/1.jpg", category: "card", title: "Class Card" },
             { src: "assets/img/Designs/card/2.jpeg", category: "card", title: "Class Card" },
             { src: "assets/img/Designs/card/3.jpg", category: "card", title: "Business Card" },
@@ -590,8 +562,7 @@
             { src: "assets/img/Designs/card/10.jpeg", category: "card", title: "Custom Card Design" },
             
             // Other
-            { src: "assets/img/Designs/other/1.jpg", category: "other", title: "Miscellaneous Design" },
-            { 
+            { src: "assets/img/Designs/other/1.jpg", category: "other", title: "Miscellaneous Design" }
         ];
 
         // --- 2. LOGIC FOR RENDERING & LOADING ---
@@ -615,16 +586,11 @@
             const btns = document.querySelectorAll('.filter-btn');
             btns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent default button behavior
-                    
-                    // Visual update
+                    e.preventDefault(); 
                     btns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    
-                    // Center the clicked button in scroll view (Mobile)
                     btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
-                    // Logic update
                     const category = btn.getAttribute('data-filter');
                     
                     // Smooth transition
@@ -640,18 +606,14 @@
         function applyFilter(category) {
             currentFilter = category;
             
-            // 1. Filter the data source
             if (category === 'all') {
                 filteredData = portfolioData;
             } else {
                 filteredData = portfolioData.filter(item => item.category === category);
             }
 
-            // 2. Reset display counts
             renderedCount = 0;
-            galleryGrid.innerHTML = ''; // Clear grid
-            
-            // 3. Render first batch
+            galleryGrid.innerHTML = ''; 
             loadMoreImages();
         }
 
@@ -660,16 +622,21 @@
             const nextBatchSize = renderedCount + itemsIncrement;
             const limit = Math.min(total, nextBatchSize);
 
-            // Generate HTML for the next batch
+            // Using DocumentFragment for better performance
+            const fragment = document.createDocumentFragment();
+
             for (let i = renderedCount; i < limit; i++) {
                 const item = filteredData[i];
-                const html = createGalleryItem(item);
-                galleryGrid.insertAdjacentHTML('beforeend', html);
+                const div = document.createElement('div');
+                div.innerHTML = createGalleryItem(item);
+                // Unwrap the div to get the masonry item directly
+                fragment.appendChild(div.firstElementChild);
             }
+            
+            galleryGrid.appendChild(fragment);
 
             renderedCount = limit;
 
-            // Handle "Load More" button visibility
             if (renderedCount >= total) {
                 loadMoreBtn.classList.add('hidden');
                 loadMoreBtn.classList.remove('flex');
@@ -682,13 +649,14 @@
         }
 
         function createGalleryItem(item) {
-            // Note: mb-0 and block w-full are crucial for the "no space" layout
+            // Note: Added transparent overlay div to block right clicks on the image context
             return `
             <div class="masonry-item group relative cursor-pointer hoverable overflow-hidden w-full" onclick="openLightbox('${item.src}', '${item.title}')">
                 <div class="image-placeholder absolute inset-0 z-0"></div>
                 
                 <img src="${item.src}" 
                      loading="lazy" 
+                     decoding="async"
                      alt="${item.title}" 
                      draggable="false"
                      oncontextmenu="return false;"
@@ -696,7 +664,7 @@
                      onload="this.previousElementSibling.style.display='none'"
                      onerror="this.src='https://placehold.co/600x400?text=Image+Not+Found'">
                 
-                <!-- Transparent Overlay to prevent Right Click/Save As but allow clicks -->
+                <!-- Transparent Overlay: Prevents Right Click/Save As but allows OnClick -->
                 <div class="absolute inset-0 z-30" oncontextmenu="return false;"></div>
 
                 <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-40 flex flex-col justify-end p-6 pointer-events-none">
@@ -707,10 +675,16 @@
             `;
         }
 
-        // --- 3. UTILITIES & UI ---
+        // --- 3. UTILITIES & SECURITY ---
         
-        // Disable Right Click Globally for added protection
+        // Comprehensive protection against saving images
         document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            // Prevent Ctrl+S, Ctrl+U (Source), Ctrl+Shift+I (DevTools)
+            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
 
         // Dark Mode
         function toggleDarkMode() { 
@@ -725,12 +699,14 @@
         // Custom Cursor
         const cursor = document.getElementById('customCursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            if (cursor) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }
         });
         document.querySelectorAll('a, button, .hoverable').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            el.addEventListener('mouseenter', () => cursor?.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor?.classList.remove('hovered'));
         });
 
         // Lightbox
@@ -758,11 +734,11 @@
             if(e.key === "Escape") closeLightbox();
         });
 
-        // Optimized Snow
+        // Optimized Snow Logic
         const snowContainer = document.getElementById('snowContainer');
-        let snowCount = 0;
         function createSnowflake() {
-            if(snowCount > 30) return; 
+            // Limit concurrent flakes for performance
+            if(snowContainer.childElementCount > 25) return; 
             
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
@@ -775,42 +751,40 @@
             snowflake.style.animationDuration = `${duration}s`;
             
             snowContainer.appendChild(snowflake);
-            snowCount++;
             
+            // Clean up automatically
             setTimeout(() => { 
-                snowflake.remove(); 
-                snowCount--;
+                if (snowflake.parentNode) snowflake.parentNode.removeChild(snowflake);
             }, duration * 1000);
         }
-        setInterval(createSnowflake, 300);
-
-        document.addEventListener('DOMContentLoaded', initGallery);
-
-        // Hide Page Loader after DOM is ready
-        // පිටුවේ HTML ව්‍යුහය Load වූ වහාම Loader එක ඉවත් කිරීම
-document.addEventListener('DOMContentLoaded', () => {
-    const preloader = document.getElementById('preloader');
-    
-    if (preloader) {
-        // සුමටව අතුරුදහන් වීමට (Fade out)
-        preloader.style.opacity = '0';
-        preloader.style.visibility = 'hidden';
         
-        // CSS Transition කාලයෙන් පසු මූලද්‍රව්‍යය ඉවත් කිරීම
-        setTimeout(() => {
-            preloader.remove();
-        }, 600);
-    }
-});
+        // Start snow only if device allows high motion
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setInterval(createSnowflake, 400);
+        }
 
-// කිසියම් හේතුවකින් පින්තූරයක් පමා වුවහොත්, 
-// තත්පර 3කට පසු බලහත්කාරයෙන් Loader එක ඉවත් කිරීමේ ආරක්ෂිත පියවර
-setTimeout(() => {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        preloader.remove();
-    }
-}, 3000);
+        // --- 4. PRELOADER HANDLING ---
+        function removePreloader() {
+            const preloader = document.getElementById('preloader');
+            if (preloader && preloader.style.opacity !== '0') {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                setTimeout(() => preloader.remove(), 600);
+            }
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            initGallery();
+            
+            // Remove loader when basics are done, don't wait for all images
+            // This makes the site feel faster
+            setTimeout(removePreloader, 800);
+        });
+
+        // Fallback safety
+        window.addEventListener('load', removePreloader);
+        setTimeout(removePreloader, 3000);
 
     </script>
 </body>
