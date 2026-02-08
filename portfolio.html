@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Propix Lk</title>
-    <meta name="description" content="Explore our extensive portfolio of graphic design projects.">
+    <title>Our Portfolio | Propix Lk</title>
+    <meta name="description" content="Browse our creative portfolio including Social Media Posts, Logos, Banners, and more.">
     
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/Favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/Favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/Favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="shortcut icon" href="assets/img/Favicon/favicon.ico">
     <meta name="theme-color" content="#ffffff">
     
@@ -47,11 +45,11 @@
                         display: ['Space Grotesk', 'sans-serif'],
                     },
                     animation: {
-                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
                     },
                     keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
@@ -61,106 +59,69 @@
     </script>
 
     <style>
-        /* Shared Styles from Index */
-        body {
-            cursor: none;
-            overflow-x: hidden; /* Ensure consistent width */
-        }
-        @media (pointer: coarse) {
-            body { cursor: auto; }
-            .custom-cursor { display: none; }
-        }
+        /* Shared Styles */
+        body { cursor: none; overflow-x: hidden; }
+        @media (pointer: coarse) { body { cursor: auto; } .custom-cursor { display: none; } }
 
         .custom-cursor {
-            position: fixed;
-            top: 0; left: 0; width: 20px; height: 20px;
-            border: 2px solid #424cf6; border-radius: 50%;
-            pointer-events: none; transform: translate(-50%, -50%);
-            z-index: 9999; mix-blend-mode: difference;
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 2px solid #424cf6; border-radius: 50%; pointer-events: none;
+            transform: translate(-50%, -50%); z-index: 9999;
             transition: transform 0.1s ease, width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
         }
-        .custom-cursor.hovered {
-            width: 40px; height: 40px;
-            background-color: rgba(66, 76, 246, 0.3); border-color: transparent;
+        .custom-cursor.hovered { width: 40px; height: 40px; background-color: rgba(66, 76, 246, 0.3); border-color: transparent; }
+
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
+        .dark .glass { background: rgba(11, 17, 33, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+        /* Snow Effect - Optimized */
+        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
+        .snowflake { position: absolute; background: white; border-radius: 50%; pointer-events: none; box-shadow: 0 0 5px rgba(255, 255, 255, 0.7); animation: snowfall linear infinite; }
+        @keyframes snowfall {
+            0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+            5% { opacity: 0.8; } 
+            100% { transform: translateY(100vh) translateX(var(--wind-offset)); opacity: 0; } 
         }
 
-        .glass {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        .dark .glass {
-            background: rgba(11, 17, 33, 0.9);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* Portfolio Specific Styles */
-        .masonry-grid {
-            column-gap: 1.5rem; /* Match index page gap feel */
-        }
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
-        }
+        /* Filter Styles */
+        .filter-btn.active { background-color: #424cf6; color: white; border-color: #424cf6; }
         
-        /* Disable selection and download interactions */
-        .protected-image {
-            -webkit-user-drag: none;
-            user-select: none;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
+        /* Masonry & Layout Optimization */
+        /* Forces images to fill columns without gaps */
+        .masonry-item { 
+            break-inside: avoid; 
+            margin-bottom: 0; 
+            display: block;
+            width: 100%;
+        }
+        .masonry-item img {
+            display: block; 
+            width: 100%;
+            height: auto;
         }
 
-        /* Image Loading State */
-        .img-loading {
-            background: #e2e8f0;
-            animation: pulse 1.5s infinite;
-        }
-        .dark .img-loading {
-            background: #1e293b;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* Filter Button Active State */
-        .filter-btn.active {
-            background-color: #424cf6;
-            color: white;
-            border-color: #424cf6;
-        }
-
-        /* Smooth Mobile Menu */
-        #mobile-menu {
-            transition: all 0.3s ease-in-out;
-            transform-origin: top;
-        }
-        #mobile-menu.hidden {
-            opacity: 0; transform: scaleY(0); display: none;
-        }
-        #mobile-menu:not(.hidden) {
-            opacity: 1; transform: scaleY(1); display: block;
-        }
+        /* Lightbox */
+        #lightbox { transition: opacity 0.3s ease; }
+        #lightbox.hidden { opacity: 0; pointer-events: none; }
+        #lightbox:not(.hidden) { opacity: 1; pointer-events: auto; }
         
-        /* Hide scrollbar for filter container */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        /* Loading Skeleton */
+        .image-placeholder { 
+            position: absolute; inset: 0; z-index: 0;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); 
+            background-size: 200% 100%; animation: loading 1.5s infinite; 
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .dark .image-placeholder { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
-<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 overflow-x-hidden">
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 min-h-screen flex flex-col">
 
-    <!-- Cursor -->
+    <div class="snow-container" id="snowContainer"></div>
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
 
-    <!-- Navigation (Identical to Index) -->
+    <!-- Navigation -->
     <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -199,53 +160,83 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-card absolute w-full border-b border-gray-100 dark:border-gray-700 shadow-xl z-40">
             <div class="px-4 pt-4 pb-8 space-y-3 flex flex-col items-center text-center">
                 <a href="index.html" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Home</a>
-                <a href="portfolio.html" class="block w-full px-3 py-4 text-lg font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/10 rounded-xl">Work</a>
+                <a href="portfolio.html" class="block w-full px-3 py-4 text-lg font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/20 rounded-xl">Work</a>
                 <a href="index.html#services" class="block w-full px-3 py-4 text-lg font-medium text-gray-700 dark:text-gray-200 hover:text-brand-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl">Services</a>
                 <a href="index.html#contact" class="block w-full px-3 py-4 text-lg font-bold text-white bg-brand-600 rounded-xl shadow-lg shadow-brand-500/30">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section (Updated to match index.html spacing) -->
-    <section class="pt-32 pb-12 lg:pt-48 lg:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center relative overflow-hidden">
-        <div class="relative z-10">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-4">
-                PORTFOLIO
+    <!-- Header -->
+    <section class="pt-32 pb-6 lg:pt-40 lg:pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center relative overflow-hidden">
+        <div class="relative z-10 animate-fade-in">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-brand-400 to-brand-100">Work</span>
             </h1>
-            <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-dark-muted">
-                A collection of our Works.
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-dark-muted">
+                Explore our creative journey.
             </p>
         </div>
-        <!-- Background element -->
-        <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl -z-10"></div>
     </section>
 
-    <!-- Filter & Gallery Section -->
-    <section class="pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen">
-        
-        <!-- Filter Buttons (Scrollable on mobile) -->
-        <div class="sticky top-20 z-30 py-4 bg-white/95 dark:bg-dark-bg/95 backdrop-blur-sm mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
-            <div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar justify-start md:justify-center" id="filterContainer">
-                <!-- Filters will be injected here via JS -->
+    <!-- Filter Buttons -->
+    <section class="sticky top-20 z-30 bg-white/95 dark:bg-dark-bg/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 py-4 mb-0 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-2" id="filter-container">
+                <button class="filter-btn active px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="all">All</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="social">Social Media</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="logo">Logo</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="tute">Tute-cover</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="cv">CV</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="banner">Banner</button>
+                <button class="filter-btn px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-semibold transition-all hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 hoverable" data-filter="other">Other</button>
             </div>
         </div>
-
-        <!-- Masonry Grid -->
-        <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-3 xl:columns-4 masonry-grid space-y-4" id="galleryGrid">
-            <!-- Images will be injected here via JS -->
-        </div>
-
-        <!-- Load More / Status -->
-        <div class="mt-16 text-center">
-            <button id="loadMoreBtn" onclick="loadMoreImages()" class="hidden px-8 py-3 bg-white dark:bg-dark-card text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 rounded-full font-bold hover:border-brand-500 hover:text-brand-600 transition shadow-lg hoverable">
-                Load More Designs
-            </button>
-            <p id="endMessage" class="hidden text-gray-500 dark:text-gray-400 mt-4">You've reached the end of the gallery.</p>
-        </div>
-
     </section>
 
-    <!-- Footer (Identical to Index) -->
+    <!-- Gallery Grid -->
+    <section class="flex-grow pb-20 pt-0">
+        <!-- 
+           Full Width Container for "No Space" effect 
+           columns-1 (mobile) -> columns-2 (sm) -> columns-3 (md) -> columns-4 (lg)
+           gap-0 ensures no space between columns
+        -->
+        <div class="w-full">
+            <div id="gallery-grid" class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-0 space-y-0 w-full">
+                <!-- Javascript will inject items here -->
+            </div>
+            
+            <!-- Load More / Status -->
+            <div class="mt-12 text-center" id="load-more-container">
+                <button id="load-more-btn" onclick="loadMoreImages()" class="hidden items-center gap-2 px-8 py-3 bg-brand-600 text-white rounded-full font-bold hover:bg-brand-500 transition shadow-lg shadow-brand-600/30 hoverable mx-auto">
+                    Load More Work
+                </button>
+                <p id="all-loaded-text" class="hidden text-gray-500 dark:text-gray-400 mt-4 italic">You've reached the end of the list!</p>
+            </div>
+
+            <div class="mt-16 text-center px-4">
+                 <p class="text-gray-500 dark:text-gray-400 mb-6">Want to see something specific?</p>
+                <a href="index.html#contact" class="inline-flex items-center gap-2 px-8 py-3 border-2 border-brand-600 text-brand-600 dark:text-brand-400 rounded-full font-bold hover:bg-brand-600 hover:text-white transition hoverable">
+                    Request Custom Design
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[1000] bg-black/95 hidden flex items-center justify-center p-4">
+        <button class="absolute top-6 right-6 text-white hover:text-brand-400 transition hoverable" onclick="closeLightbox()">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <div class="relative w-full max-w-5xl max-h-[90vh] flex flex-col items-center">
+            <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
+            <div class="mt-4 text-center">
+                <h3 id="lightbox-title" class="text-white text-xl font-bold drop-shadow-md"></h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="relative bg-gray-900 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-gray-800">
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
@@ -258,39 +249,19 @@
                         <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-9 w-auto">
                     </a>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-xs">Smart Design. Sharp Pixels.</p>
-                    <div class="flex space-x-4">
-                        <a href="https://www.facebook.com/share/1Bj9wAdLRN/" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                        <a href="https://www.tiktok.com/@propix_lk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group"><i data-lucide="music-2" class="w-5 h-5"></i></a>
-                        <a href="https://t.me/propixlk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group"><i data-lucide="send" class="w-5 h-5"></i></a>
-                    </div>
                 </div>
                 <div>
                     <h3 class="text-lg font-display font-bold mb-6 text-white">Quick Links</h3>
                     <ul class="space-y-4">
-                        <li><a href="index.html" class="text-gray-400 hover:text-brand-400 transition hoverable">Home</a></li>
-                        <li><a href="index.html#about" class="text-gray-400 hover:text-brand-400 transition hoverable">About Us</a></li>
-                        <li><a href="portfolio.html" class="text-gray-400 hover:text-brand-400 transition hoverable">Work</a></li>
-                        <li><a href="index.html#services" class="text-gray-400 hover:text-brand-400 transition hoverable">Services</a></li>
+                        <li><a href="index.html" class="text-gray-400 hover:text-brand-400 transition-colors hoverable">Home</a></li>
+                        <li><a href="portfolio.html" class="text-brand-400 font-bold transition-colors hoverable">Work</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-lg font-display font-bold mb-6 text-white">Other Links</h3>
-                    <ul class="space-y-4">
-                        <li><a href="portfolio.html" class="text-gray-400 hover:text-brand-400 transition hoverable">Portfolio</a></li>
-                        <li><a href="index.html#faq" class="text-gray-400 hover:text-brand-400 transition hoverable">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-display font-bold mb-6 text-white">Get in Touch</h3>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Contact</h3>
                     <div class="space-y-4">
-                        <div class="flex items-start gap-4 hoverable">
-                            <i data-lucide="mail" class="w-5 h-5 text-brand-400 mt-1"></i>
-                            <a href="mailto:propixlk@gmail.com" class="text-gray-300 hover:text-white transition">propixlk@gmail.com</a>
-                        </div>
-                        <div class="flex items-start gap-4 hoverable">
-                            <i data-lucide="message-square" class="w-5 h-5 text-brand-400 mt-1"></i>
-                            <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="text-gray-300 hover:text-white transition">Chat with us</a>
-                        </div>
+                        <a href="mailto:propixlk@gmail.com" class="block text-gray-400 hover:text-white transition-colors">propixlk@gmail.com</a>
+                        <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="block text-gray-400 hover:text-white transition-colors">WhatsApp Us</a>
                     </div>
                 </div>
             </div>
@@ -304,12 +275,143 @@
     <script>
         lucide.createIcons();
 
-        // Dark Mode Logic
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
+        // --- 1. DATA CONFIGURATION (ADD YOUR 500 IMAGES HERE) ---
+        // Just copy/paste the lines inside the brackets []
+        const portfolioData = [
+            // Social Media Examples
+            { src: "assets/img/portfolio/1.webp", category: "social", title: "Product Campaign" },
+            { src: "assets/img/portfolio/7.webp", category: "social", title: "Instagram Post" },
+            { src: "assets/img/portfolio/social_3.webp", category: "social", title: "Facebook Ad" },
+            { src: "assets/img/portfolio/social_4.webp", category: "social", title: "Story Design" },
+            
+            // Logo Examples
+            { src: "assets/img/portfolio/2.webp", category: "logo", title: "Modern Minimalist" },
+            { src: "assets/img/portfolio/8.webp", category: "logo", title: "Brand Identity" },
+            { src: "assets/img/portfolio/logo_3.webp", category: "logo", title: "Tech Startup" },
+
+            // Banner Examples
+            { src: "assets/img/portfolio/4.webp", category: "banner", title: "Web Banner Ads" },
+            { src: "assets/img/portfolio/9.webp", category: "banner", title: "Large Format Print" },
+            
+            // Tute/Education Examples
+            { src: "assets/img/portfolio/5.webp", category: "tute", title: "Education Cover" },
+            { src: "assets/img/portfolio/10.webp", category: "tute", title: "Physics Cover" },
+            
+            // CV Examples
+            { src: "assets/img/portfolio/3.webp", category: "cv", title: "Professional Resume" },
+            
+            // Other
+            { src: "assets/img/portfolio/6.webp", category: "other", title: "Event Flyer" },
+            
+            // --- DUPLICATE TEST DATA (Remove this when adding real images) ---
+            { src: "assets/img/portfolio/1.webp", category: "social", title: "Test Item 1" },
+            { src: "assets/img/portfolio/2.webp", category: "logo", title: "Test Item 2" },
+            { src: "assets/img/portfolio/3.webp", category: "cv", title: "Test Item 3" },
+            { src: "assets/img/portfolio/4.webp", category: "banner", title: "Test Item 4" },
+            { src: "assets/img/portfolio/5.webp", category: "tute", title: "Test Item 5" },
+        ];
+
+        // --- 2. LOGIC FOR RENDERING & LOADING ---
+        let currentFilter = 'all';
+        let itemsToShow = 12; // Initial items to show
+        let itemsIncrement = 12; // How many to add when clicking "Load More"
+        let renderedCount = 0;
+        let filteredData = [];
+
+        const galleryGrid = document.getElementById('gallery-grid');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const allLoadedText = document.getElementById('all-loaded-text');
+        
+        // Initialize
+        function initGallery() {
+            applyFilter('all');
+            setupFilterButtons();
         }
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
+
+        function setupFilterButtons() {
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Visual update
+                    btns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Logic update
+                    const category = btn.getAttribute('data-filter');
+                    applyFilter(category);
+                });
+            });
+        }
+
+        function applyFilter(category) {
+            currentFilter = category;
+            
+            // 1. Filter the data source
+            if (category === 'all') {
+                filteredData = portfolioData;
+            } else {
+                filteredData = portfolioData.filter(item => item.category === category);
+            }
+
+            // 2. Reset display counts
+            renderedCount = 0;
+            galleryGrid.innerHTML = ''; // Clear grid
+            
+            // 3. Render first batch
+            loadMoreImages();
+        }
+
+        function loadMoreImages() {
+            const total = filteredData.length;
+            const nextBatchSize = renderedCount + itemsIncrement;
+            const limit = Math.min(total, nextBatchSize);
+
+            // Generate HTML for the next batch
+            for (let i = renderedCount; i < limit; i++) {
+                const item = filteredData[i];
+                const html = createGalleryItem(item);
+                galleryGrid.insertAdjacentHTML('beforeend', html);
+            }
+
+            renderedCount = limit;
+
+            // Handle "Load More" button visibility
+            if (renderedCount >= total) {
+                loadMoreBtn.classList.add('hidden');
+                loadMoreBtn.classList.remove('flex');
+                if(total > 0) allLoadedText.classList.remove('hidden');
+            } else {
+                loadMoreBtn.classList.remove('hidden');
+                loadMoreBtn.classList.add('flex');
+                allLoadedText.classList.add('hidden');
+            }
+        }
+
+        function createGalleryItem(item) {
+            // Note: mb-0 and block w-full are crucial for the "no space" layout
+            return `
+            <div class="masonry-item group relative cursor-pointer hoverable overflow-hidden" onclick="openLightbox('${item.src}', '${item.title}')">
+                <div class="image-placeholder absolute inset-0 z-0"></div>
+                <img src="${item.src}" 
+                     loading="lazy" 
+                     alt="${item.title}" 
+                     class="w-full h-auto block relative z-10 transition duration-500 group-hover:scale-105"
+                     onload="this.previousElementSibling.style.display='none'"
+                     onerror="this.src='https://placehold.co/600x400?text=Image+Not+Found'">
+                
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-end p-6">
+                    <span class="text-brand-400 text-xs font-bold uppercase tracking-wider mb-1">${item.category}</span>
+                    <h3 class="text-white font-bold text-lg">${item.title}</h3>
+                </div>
+            </div>
+            `;
+        }
+
+        // --- 3. UTILITIES & UI ---
+        
+        // Dark Mode
+        function toggleDarkMode() { 
+            document.documentElement.classList.toggle('dark'); 
         }
 
         // Mobile Menu
@@ -319,175 +421,70 @@
 
         // Custom Cursor
         const cursor = document.getElementById('customCursor');
-        const hoverables = document.querySelectorAll('.hoverable, a, button');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
-        hoverables.forEach(el => {
+        document.querySelectorAll('a, button, .hoverable').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        /* =========================================
-           PORTFOLIO LOGIC FOR 500+ IMAGES
-           ========================================= */
-        
-        // 1. Define your Categories
-        const categories = [
-            { id: 'all', name: 'All Work' },
-            { id: 'social', name: 'Social Media' },
-            { id: 'logos', name: 'Logos & Branding' },
-            { id: 'print', name: 'Print Media' },
-            { id: 'web', name: 'Web Assets' },
-            { id: 'illustration', name: 'Illustrations' }
-        ];
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
 
-        /* 2. EASY IMAGE GENERATOR 
-           
-           UPDATED PATH: assets/img/Designs/
-           UPDATED EXTENSION: .jpeg
-           
-           IMPORTANT: Name your files like this in your folder:
-           social-1.jpeg, social-2.jpeg ... social-50.jpeg
-           logos-1.jpeg, logos-2.jpeg ...
-        */
+        window.openLightbox = function(src, title) {
+            lightboxImg.src = src;
+            lightboxTitle.innerText = title;
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
 
-        const portfolioItems = [];
-        
-        // Configuration: How many images do you have for each category?
-        // Change these numbers based on your actual file count
-        const config = {
-            social: 5,      // Expects social-1.jpeg to social-50.jpeg
-            logos: 30,       // Expects logos-1.jpeg to logos-30.jpeg
-            print: 40,
-            web: 20,
-            illustration: 15
-        };
+        window.closeLightbox = function() {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            // Clear src to stop video/memory usage if we expand later
+            setTimeout(() => { lightboxImg.src = ''; }, 300); 
+        }
 
-        // Helper to generate the data array automatically
-        Object.keys(config).forEach(cat => {
-            for (let i = 1; i <= config[cat]; i++) {
-                portfolioItems.push({
-                    id: `${cat}-${i}`,
-                    category: cat,
-                    // UPDATED: Path and Extension
-                    src: `assets/img/Designs/${cat}-${i}.jpeg`, 
-                    alt: `${cat} Design Sample ${i}`
-                });
-            }
+        lightbox.addEventListener('click', (e) => {
+            if(e.target === lightbox) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape") closeLightbox();
         });
 
-        // Shuffle array so "All" view looks mixed
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-        // Initial shuffle
-        shuffle(portfolioItems);
-
-
-        // 3. Rendering Variables
-        let currentCategory = 'all';
-        let itemsToShow = 20; // How many to show initially per batch
-        let currentlyShownCount = 0;
-        let filteredItems = [];
-
-        const galleryGrid = document.getElementById('galleryGrid');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        const endMessage = document.getElementById('endMessage');
-        const filterContainer = document.getElementById('filterContainer');
-
-        // 4. Initialize Filters
-        function initFilters() {
-            categories.forEach(cat => {
-                const button = document.createElement('button');
-                button.className = `filter-btn whitespace-nowrap px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium text-sm transition-all hover:border-brand-500 hover:text-brand-500 hoverable ${cat.id === 'all' ? 'active' : ''}`;
-                button.textContent = cat.name;
-                button.onclick = () => setCategory(cat.id, button);
-                filterContainer.appendChild(button);
-            });
-        }
-
-        // 5. Filter Logic
-        function setCategory(catId, btnElement) {
-            currentCategory = catId;
+        // Optimized Snow
+        const snowContainer = document.getElementById('snowContainer');
+        let snowCount = 0;
+        function createSnowflake() {
+            if(snowCount > 30) return; // Limit snowflakes for performance
             
-            // Update UI
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            // Reset Rendering
-            currentlyShownCount = 0;
-            galleryGrid.innerHTML = ''; // Clear grid
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = Math.random() * 3 + 1; 
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${Math.random() * 100}vw`;
             
-            // Filter Data
-            if (catId === 'all') {
-                filteredItems = portfolioItems;
-            } else {
-                filteredItems = portfolioItems.filter(item => item.category === catId);
-            }
-
-            loadMoreImages();
-        }
-
-        // 6. Render Images (The "Load More" Engine)
-        function loadMoreImages() {
-            const nextBatch = filteredItems.slice(currentlyShownCount, currentlyShownCount + itemsToShow);
+            const duration = Math.random() * 5 + 5; 
+            snowflake.style.animationDuration = `${duration}s`;
             
-            if (nextBatch.length === 0) {
-                loadMoreBtn.classList.add('hidden');
-                if(currentlyShownCount > 0) endMessage.classList.remove('hidden');
-                return;
-            }
-
-            nextBatch.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'masonry-item break-inside-avoid mb-4 animate-fade-in-up';
-                
-                // HTML for the image card
-                // oncontextmenu="return false" disables right click
-                // Added better onerror handling
-                div.innerHTML = `
-                    <div class="group relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-                        <div class="img-loading absolute inset-0 z-0"></div>
-                        <img 
-                            src="${item.src}" 
-                            alt="${item.alt}" 
-                            loading="lazy"
-                            oncontextmenu="return false;"
-                            onload="this.previousElementSibling.style.display='none'"
-                            onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Design+Not+Found';"
-                            class="protected-image relative z-10 w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-105"
-                        >
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-end p-4 pointer-events-none">
-                            <span class="text-white font-medium text-sm capitalize badge bg-brand-600 px-3 py-1 rounded-full">${item.category}</span>
-                        </div>
-                    </div>
-                `;
-                galleryGrid.appendChild(div);
-            });
-
-            currentlyShownCount += nextBatch.length;
-
-            // Check if we need to hide the button
-            if (currentlyShownCount >= filteredItems.length) {
-                loadMoreBtn.classList.add('hidden');
-                endMessage.classList.remove('hidden');
-            } else {
-                loadMoreBtn.classList.remove('hidden');
-                endMessage.classList.add('hidden');
-            }
+            snowContainer.appendChild(snowflake);
+            snowCount++;
+            
+            setTimeout(() => { 
+                snowflake.remove(); 
+                snowCount--;
+            }, duration * 1000);
         }
+        // Reduced frequency for better performance
+        setInterval(createSnowflake, 300);
 
-        // Initialize Page
-        document.addEventListener('DOMContentLoaded', () => {
-            initFilters();
-            setCategory('all', document.querySelector('.filter-btn')); // Triggers initial load
-        });
+        // Start App
+        document.addEventListener('DOMContentLoaded', initGallery);
 
     </script>
 </body>
