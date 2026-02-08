@@ -21,6 +21,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+    // පිටුව load වීමට පෙර කලින් save කර ඇති theme එක පරීක්ෂා කිරීම
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+</script>
 
     <script>
         tailwind.config = {
@@ -430,8 +440,10 @@
 
         // Dark Mode
         function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
+    const isDark = document.documentElement.classList.toggle('dark');
+    // තෝරාගත් theme එක browser එකේ save කිරීම
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
 
         // Mobile Menu
         const btn = document.getElementById('mobile-menu-btn');

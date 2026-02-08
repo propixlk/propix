@@ -15,6 +15,16 @@
     <meta name="theme-color" content="#ffffff">
     
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+    // පිටුව load වීමට පෙර කලින් save කර ඇති theme එක පරීක්ෂා කිරීම
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+</script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -717,8 +727,10 @@
 
         // --- Dark Mode Logic (From Index) ---
         function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
+    const isDark = document.documentElement.classList.toggle('dark');
+    // තෝරාගත් theme එක browser එකේ save කිරීම
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
         
         // --- Cursor Logic (From Index) ---
         const cursor = document.getElementById('customCursor');

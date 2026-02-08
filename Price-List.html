@@ -18,6 +18,16 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
+    // පිටුව load වීමට පෙර කලින් save කර ඇති theme එක පරීක්ෂා කිරීම
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+</script>
+
+    <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -354,8 +364,10 @@
 
         // Dark Mode Logic
         function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
+    const isDark = document.documentElement.classList.toggle('dark');
+    // තෝරාගත් theme එක browser එකේ save කිරීම
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
 
         // --- Mobile Menu Logic (NEW) ---
         const menuBtn = document.getElementById('mobile-menu-btn');
