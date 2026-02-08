@@ -136,9 +136,64 @@
         }
         .dark .image-placeholder { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); }
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Preloader Main Container */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  overflow: hidden;
+  background: #ffffff; /* Dark mode එකේදී මෙය වෙනස් කිරීමට පහත බලන්න */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.6s ease-out;
+}
+
+/* Dark Mode Background for Preloader */
+.dark #preloader {
+  background: #0b1121;
+}
+
+/* Loader Animation */
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 4px solid #424cf6; /* ප්‍රධාන නිල් පැහැය */
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  position: relative;
+}
+
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border-left: 4px solid #03abec; /* ලා නිල් පැහැය */
+  border-bottom: 4px solid transparent;
+  animation: rotation 0.5s linear infinite reverse;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
     </style>
 </head>
 <body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 min-h-screen flex flex-col" oncontextmenu="return false;">
+
+    <!-- Page Loader -->    
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
 
     <div class="snow-container" id="snowContainer"></div>
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
@@ -273,31 +328,117 @@
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-400/10 rounded-full blur-3xl"></div>
         </div>
+
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
                 <div class="space-y-6">
                     <a href="index.html" class="inline-block hoverable">
                         <img src="assets/img/Sitelogow.png" alt="Propix Lk" class="h-9 w-auto">
                     </a>
-                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">Smart Design. Sharp Pixels.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+                    Smart Design. Sharp Pixels.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/1Bj9wAdLRN/" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="facebook" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@propix_lk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="music-2" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://t.me/propixlk" class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 transition-all duration-300 hoverable group">
+                            <i data-lucide="send" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
+
                 <div>
                     <h3 class="text-lg font-display font-bold mb-6 text-white">Quick Links</h3>
                     <ul class="space-y-4">
-                        <li><a href="index.html" class="text-gray-400 hover:text-brand-400 transition-colors hoverable">Home</a></li>
-                        <li><a href="portfolio.html" class="text-brand-400 font-bold transition-colors hoverable">Work</a></li>
+                        <li>
+                            <a href="index.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#about" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> About Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#portfolio" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Work
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#services" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Services
+                            </a>
+                        </li>
                     </ul>
                 </div>
+
                 <div>
-                    <h3 class="text-lg font-display font-bold mb-6 text-white">Contact</h3>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Other Links</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="portfolio.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Portfolio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.html#faq" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> FAQ
+                            </a>
+                        </li>
+                        <li>
+                            <a href='update.html'" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> Packages
+                            </a>
+                        </li>
+                        <li>
+                            <a href="cv.html" class="text-gray-400 hover:text-brand-400 transition-colors duration-200 flex items-center gap-2 hoverable group">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 group-hover:text-brand-500 transition-colors"></i> CV Design
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-display font-bold mb-6 text-white">Get in Touch</h3>
                     <div class="space-y-4">
-                        <a href="mailto:propixlk@gmail.com" class="block text-gray-400 hover:text-white transition-colors">propixlk@gmail.com</a>
-                        <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="block text-gray-400 hover:text-white transition-colors">WhatsApp Us</a>
+                        <div class="flex items-start gap-4 group hoverable">
+                            <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-900/50 transition-colors">
+                                <i data-lucide="mail" class="w-5 h-5 text-brand-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Email</p>
+                                <a href="mailto:propixlk@gmail.com" class="text-gray-300 hover:text-white transition-colors">propixlk@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 group hoverable">
+                            <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-900/50 transition-colors">
+                                <i data-lucide="message-square" class="w-5 h-5 text-brand-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">WhatsApp</p>
+                                <a href="https://wa.me/message/JGOBR5KKO5UAF1" class="text-gray-300 hover:text-white transition-colors">Chat with us</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
+
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-sm text-gray-500">&copy; 2024 - 2026 <span class="text-brand-400 font-bold">Propix LK</span>. All rights reserved.</p>
+                <p class="text-sm text-gray-500 text-center md:text-left">
+                    &copy; 2024 - 2026 <span class="text-brand-400 font-bold">Propix LK</span>. All rights reserved.
+                </p>
+                <div class="flex gap-6 text-sm">
+                    <a href="privacy-policy.html" class="text-gray-500 hover:text-white transition-colors hoverable">Privacy Policy</a>
+                    <a href="terms_and_conditions.html" class="text-gray-500 hover:text-white transition-colors hoverable">Terms of Service</a>
+                </div>
             </div>
         </div>
     </footer>
@@ -619,6 +760,32 @@
         setInterval(createSnowflake, 300);
 
         document.addEventListener('DOMContentLoaded', initGallery);
+
+        // Hide Page Loader after DOM is ready
+        // පිටුවේ HTML ව්‍යුහය Load වූ වහාම Loader එක ඉවත් කිරීම
+document.addEventListener('DOMContentLoaded', () => {
+    const preloader = document.getElementById('preloader');
+    
+    if (preloader) {
+        // සුමටව අතුරුදහන් වීමට (Fade out)
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+        
+        // CSS Transition කාලයෙන් පසු මූලද්‍රව්‍යය ඉවත් කිරීම
+        setTimeout(() => {
+            preloader.remove();
+        }, 600);
+    }
+});
+
+// කිසියම් හේතුවකින් පින්තූරයක් පමා වුවහොත්, 
+// තත්පර 3කට පසු බලහත්කාරයෙන් Loader එක ඉවත් කිරීමේ ආරක්ෂිත පියවර
+setTimeout(() => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.remove();
+    }
+}, 3000);
 
     </script>
 </body>

@@ -296,17 +296,18 @@
 
     </style>
 
-    <!-- Chatling & Analytics -->
+<!-- Page Loader -->    
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>    
+<!-- Chatling & Analytics -->
 <script> window.chtlConfig = { chatbotId: "8449492451" } </script>
 <script async data-id="8449492451" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
 
 </head>
 <body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 overflow-x-hidden">
 
-    <!-- Page Loader -->    
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
+    
 
     <div class="snow-container" id="snowContainer"></div>
 
@@ -1410,16 +1411,30 @@
     }
 
     //page loader
-    window.addEventListener('load', () => {
-  const preloader = document.getElementById('preloader');
-  if (preloader) {
-    preloader.style.opacity = '0';
-    preloader.style.visibility = 'hidden';
-    setTimeout(() => {
-      preloader.remove(); // සම්පූර්ණයෙන්ම ඉවත් කිරීමට
-    }, 600);
-  }
+    // පිටුවේ HTML ව්‍යුහය Load වූ වහාම Loader එක ඉවත් කිරීම
+document.addEventListener('DOMContentLoaded', () => {
+    const preloader = document.getElementById('preloader');
+    
+    if (preloader) {
+        // සුමටව අතුරුදහන් වීමට (Fade out)
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+        
+        // CSS Transition කාලයෙන් පසු මූලද්‍රව්‍යය ඉවත් කිරීම
+        setTimeout(() => {
+            preloader.remove();
+        }, 600);
+    }
 });
+
+// කිසියම් හේතුවකින් පින්තූරයක් පමා වුවහොත්, 
+// තත්පර 3කට පසු බලහත්කාරයෙන් Loader එක ඉවත් කිරීමේ ආරක්ෂිත පියවර
+setTimeout(() => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.remove();
+    }
+}, 3000);
 </script>
     
 </body>
