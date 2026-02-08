@@ -63,6 +63,23 @@
         body { cursor: none; overflow-x: hidden; }
         @media (pointer: coarse) { body { cursor: auto; } .custom-cursor { display: none; } }
 
+        /* Security: Prevent Selection and Dragging */
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+        }
+        
+        /* Prevent Right Click Context Menu specifically on protected items */
+        .protected-img {
+            pointer-events: none; /* Mouse clicks pass through to the container */
+        }
+
         .custom-cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
             border: 2px solid #424cf6; border-radius: 50%; pointer-events: none;
@@ -116,7 +133,7 @@
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
-<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 min-h-screen flex flex-col">
+<body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 min-h-screen flex flex-col" oncontextmenu="return false;">
 
     <div class="snow-container" id="snowContainer"></div>
     <div class="custom-cursor hidden md:block" id="customCursor"></div>
@@ -126,8 +143,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center cursor-pointer hoverable" onclick="window.location.href='index.html'">
-                    <img src="assets/img/Sitelogo.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all"> 
-                    <img src="assets/img/Sitelogow.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all"> 
+                    <img src="assets/img/Sitelogo.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain block dark:hidden transition-all protected-img"> 
+                    <img src="assets/img/Sitelogow.png" alt="Propix Logo" class="h-8 md:h-9 lg:h-10 w-auto object-contain hidden dark:block transition-all protected-img"> 
                 </div>
                 
                 <div class="hidden md:flex space-x-8 items-center">
@@ -225,12 +242,14 @@
 
     <!-- Lightbox -->
     <div id="lightbox" class="fixed inset-0 z-[1000] bg-black/95 hidden flex items-center justify-center p-4">
-        <button class="absolute top-6 right-6 text-white hover:text-brand-400 transition hoverable" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white hover:text-brand-400 transition hoverable z-[1002]" onclick="closeLightbox()">
             <i data-lucide="x" class="w-10 h-10"></i>
         </button>
-        <div class="relative w-full max-w-5xl max-h-[90vh] flex flex-col items-center">
-            <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
-            <div class="mt-4 text-center">
+        <div class="relative w-full max-w-5xl max-h-[90vh] flex flex-col items-center z-[1001]" oncontextmenu="return false;">
+            <!-- Overlay to prevent drag/save on lightbox image -->
+            <div class="absolute inset-0 z-50"></div>
+            <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl no-select" draggable="false">
+            <div class="mt-4 text-center z-50 pointer-events-none">
                 <h3 id="lightbox-title" class="text-white text-xl font-bold drop-shadow-md"></h3>
             </div>
         </div>
@@ -276,25 +295,26 @@
         lucide.createIcons();
 
         // --- 1. DATA CONFIGURATION (ADD YOUR 500 IMAGES HERE) ---
+        // Supports: .webp, .jpg, .jpeg, .png
         // Just copy/paste the lines inside the brackets []
         const portfolioData = [
             // Social Media Examples
             { src: "assets/img/portfolio/1.webp", category: "social", title: "Product Campaign" },
-            { src: "assets/img/portfolio/7.webp", category: "social", title: "Instagram Post" },
-            { src: "assets/img/portfolio/social_3.webp", category: "social", title: "Facebook Ad" },
+            { src: "assets/img/portfolio/7.jpg", category: "social", title: "Instagram Post (JPG)" }, // Example JPG
+            { src: "assets/img/portfolio/social_3.jpeg", category: "social", title: "Facebook Ad (JPEG)" }, // Example JPEG
             { src: "assets/img/portfolio/social_4.webp", category: "social", title: "Story Design" },
             
             // Logo Examples
             { src: "assets/img/portfolio/2.webp", category: "logo", title: "Modern Minimalist" },
             { src: "assets/img/portfolio/8.webp", category: "logo", title: "Brand Identity" },
-            { src: "assets/img/portfolio/logo_3.webp", category: "logo", title: "Tech Startup" },
+            { src: "assets/img/portfolio/logo_3.png", category: "logo", title: "Tech Startup (PNG)" }, // Example PNG
 
             // Banner Examples
             { src: "assets/img/portfolio/4.webp", category: "banner", title: "Web Banner Ads" },
             { src: "assets/img/portfolio/9.webp", category: "banner", title: "Large Format Print" },
             
             // Tute/Education Examples
-            { src: "assets/img/portfolio/5.webp", category: "tute", title: "Education Cover" },
+            { src: "assets/img/Designs/Tute/1.jpeg", category: "tute", title: "A3 Cover" },
             { src: "assets/img/portfolio/10.webp", category: "tute", title: "Physics Cover" },
             
             // CV Examples
@@ -389,17 +409,26 @@
 
         function createGalleryItem(item) {
             // Note: mb-0 and block w-full are crucial for the "no space" layout
+            // Added oncontextmenu="return false" and draggable="false"
+            // Added .no-select class
+            // Added absolute div overlay to capture long-press/right-click
             return `
             <div class="masonry-item group relative cursor-pointer hoverable overflow-hidden" onclick="openLightbox('${item.src}', '${item.title}')">
                 <div class="image-placeholder absolute inset-0 z-0"></div>
+                
                 <img src="${item.src}" 
                      loading="lazy" 
                      alt="${item.title}" 
-                     class="w-full h-auto block relative z-10 transition duration-500 group-hover:scale-105"
+                     draggable="false"
+                     oncontextmenu="return false;"
+                     class="w-full h-auto block relative z-10 transition duration-500 group-hover:scale-105 no-select protected-img"
                      onload="this.previousElementSibling.style.display='none'"
                      onerror="this.src='https://placehold.co/600x400?text=Image+Not+Found'">
                 
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-end p-6">
+                <!-- Transparent Overlay to prevent Right Click/Save As -->
+                <div class="absolute inset-0 z-30" oncontextmenu="return false;"></div>
+
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-40 flex flex-col justify-end p-6 pointer-events-none">
                     <span class="text-brand-400 text-xs font-bold uppercase tracking-wider mb-1">${item.category}</span>
                     <h3 class="text-white font-bold text-lg">${item.title}</h3>
                 </div>
@@ -409,6 +438,9 @@
 
         // --- 3. UTILITIES & UI ---
         
+        // Disable Right Click Globally for added protection
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
         // Dark Mode
         function toggleDarkMode() { 
             document.documentElement.classList.toggle('dark'); 
@@ -450,7 +482,8 @@
         }
 
         lightbox.addEventListener('click', (e) => {
-            if(e.target === lightbox) closeLightbox();
+            // Check if clicking the background or the close button
+            if(e.target === lightbox || e.target.closest('button')) closeLightbox();
         });
         document.addEventListener('keydown', (e) => {
             if(e.key === "Escape") closeLightbox();
