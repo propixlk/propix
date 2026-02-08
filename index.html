@@ -244,6 +244,56 @@
             display: block;
         }
 
+        /* Preloader Main Container */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  overflow: hidden;
+  background: #ffffff; /* Dark mode එකේදී මෙය වෙනස් කිරීමට පහත බලන්න */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.6s ease-out;
+}
+
+/* Dark Mode Background for Preloader */
+.dark #preloader {
+  background: #0b1121;
+}
+
+/* Loader Animation */
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 4px solid #424cf6; /* ප්‍රධාන නිල් පැහැය */
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  position: relative;
+}
+
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border-left: 4px solid #03abec; /* ලා නිල් පැහැය */
+  border-bottom: 4px solid transparent;
+  animation: rotation 0.5s linear infinite reverse;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
     </style>
 
     <!-- Chatling & Analytics -->
@@ -252,6 +302,11 @@
 
 </head>
 <body class="antialiased relative bg-white text-gray-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 overflow-x-hidden">
+
+    <!-- Page Loader -->    
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
 
     <div class="snow-container" id="snowContainer"></div>
 
@@ -1353,6 +1408,18 @@
             content.style.maxHeight = content.scrollHeight + "px";
         }
     }
+
+    //page loader
+    window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => {
+      preloader.remove(); // සම්පූර්ණයෙන්ම ඉවත් කිරීමට
+    }, 600);
+  }
+});
 </script>
     
 </body>
