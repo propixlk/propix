@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
@@ -36,6 +36,7 @@
         .exam-card:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.15);
         }
 
         @keyframes pulse-slow {
@@ -49,6 +50,71 @@
 
         .countdown-item {
             min-width: 80px;
+        }
+
+        /* Calendar Styles */
+        .cal-day {
+            transition: all 0.2s ease;
+        }
+        
+        .cal-day:hover:not(.empty) {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.3);
+            cursor: pointer;
+        }
+
+        .cal-day.active {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .cal-day.has-exam::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #38bdf8;
+            box-shadow: 0 0 8px #38bdf8;
+        }
+        
+        .cal-day.has-fdn::after {
+            background-color: #34d399;
+            box-shadow: 0 0 8px #34d399;
+        }
+
+        .cal-day.has-both::after {
+            width: 12px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #38bdf8 50%, #34d399 50%);
+        }
+
+        /* View transition */
+        .view-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .view-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toggle Button */
+        .toggle-btn {
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.4);
         }
     </style>
 </head>
@@ -92,8 +158,8 @@
 
         <!-- Next Exam Highlight -->
         <div id="next-exam-container" class="hidden mb-10">
-            <div class="bg-blue-600/20 border border-blue-500/30 rounded-2xl p-6 flex items-center gap-6">
-                <div class="bg-blue-500 p-4 rounded-xl hidden md:block">
+            <div class="bg-blue-600/20 border border-blue-500/30 rounded-2xl p-6 flex items-center gap-6 shadow-lg shadow-blue-900/20">
+                <div class="bg-blue-500 p-4 rounded-xl hidden md:block shadow-inner">
                     <i class="fas fa-calendar-check text-2xl text-white"></i>
                 </div>
                 <div class="flex-1">
@@ -102,29 +168,94 @@
                     <p id="next-exam-meta" class="text-slate-400 text-sm italic mt-1"></p>
                 </div>
                 <div class="text-right">
-                    <div id="next-exam-date" class="font-mono text-lg font-bold">--.--.----</div>
-                    <div id="next-exam-time" class="text-xs text-slate-500">--:--</div>
+                    <div id="next-exam-date" class="font-mono text-lg font-bold text-slate-100">--.--.----</div>
+                    <div id="next-exam-time" class="text-xs text-blue-300 font-semibold bg-blue-900/40 py-1 px-2 rounded mt-1 inline-block">--:--</div>
                 </div>
             </div>
         </div>
 
-        <!-- Timetable -->
-        <div class="space-y-4">
-            <div class="flex items-center justify-between px-2">
-                <h3 class="text-xl font-bold flex items-center gap-2">
-                    <i class="fas fa-list-ul text-blue-500 text-sm"></i> 
-                    Full Schedule
-                </h3>
-                <span class="text-xs text-slate-500 italic">ICT & FDN Courses</span>
+        <!-- Timetable Section -->
+        <div class="space-y-6">
+            <!-- Controls (Title + Toggle) -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
+                <div>
+                    <h3 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fas fa-calendar-alt text-blue-500"></i> 
+                        Examination Schedule
+                    </h3>
+                    <p class="text-xs text-slate-400 italic mt-1">ICT & FDN Courses</p>
+                </div>
+                
+                <!-- View Toggle -->
+                <div class="bg-slate-800/60 p-1.5 rounded-xl border border-slate-700/50 flex gap-1 shadow-inner">
+                    <button onclick="setView('list')" id="btn-list" class="toggle-btn active px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:text-white flex items-center gap-2">
+                        <i class="fas fa-list-ul"></i> List
+                    </button>
+                    <button onclick="setView('calendar')" id="btn-cal" class="toggle-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:text-white flex items-center gap-2 border border-transparent">
+                        <i class="far fa-calendar-grid-w"></i> Calendar
+                    </button>
+                </div>
             </div>
 
-            <div id="timetable-grid" class="grid grid-cols-1 gap-4">
-                <!-- Data will be injected here -->
+            <!-- View: LIST -->
+            <div id="view-list" class="view-content active">
+                <div id="timetable-grid" class="grid grid-cols-1 gap-4">
+                    <!-- Data will be injected here -->
+                </div>
+            </div>
+
+            <!-- View: CALENDAR -->
+            <div id="view-calendar" class="view-content">
+                <div class="glass p-6 md:p-8">
+                    <!-- Calendar Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <button onclick="changeMonth(-1)" class="w-10 h-10 rounded-full bg-slate-800/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors border border-slate-700">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h4 id="calendar-month-year" class="text-xl font-bold text-slate-100 tracking-wide">March 2026</h4>
+                        <button onclick="changeMonth(1)" class="w-10 h-10 rounded-full bg-slate-800/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors border border-slate-700">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Calendar Grid -->
+                    <div class="grid grid-cols-7 gap-2 md:gap-4 mb-2">
+                        <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Sun</div>
+                        <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Mon</div>
+                        <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Tue</div>
+                        <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Wed</div>
+                        <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Thu</div>
+                        <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Fri</div>
+                        <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Sat</div>
+                    </div>
+                    
+                    <div id="calendar-days" class="grid grid-cols-7 gap-2 md:gap-4">
+                        <!-- Calendar days injected here -->
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="flex items-center justify-center gap-6 mt-6 pt-6 border-t border-slate-700/50">
+                        <div class="flex items-center gap-2 text-xs text-slate-400">
+                            <div class="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_#38bdf8]"></div> ICT Exam
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-slate-400">
+                            <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> FDN Exam
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Date Details -->
+                <div id="calendar-details-container" class="mt-6 hidden">
+                    <h4 class="text-sm font-bold tracking-widest text-slate-400 uppercase mb-4 px-2">Exams on <span id="selected-date-label" class="text-white"></span></h4>
+                    <div id="calendar-details-grid" class="grid grid-cols-1 gap-4">
+                        <!-- Details injected here -->
+                    </div>
+                </div>
             </div>
         </div>
 
         <footer class="mt-16 text-center text-slate-500 text-sm border-t border-slate-800 pt-8 pb-4">
-            <p>&copy; Good Luck for your exams!</p>
+            <p>&copy; Good Luck for your exams! 🎓</p>
         </footer>
     </div>
 
@@ -142,45 +273,180 @@
             { date: "2026-05-15", time: "9.00 - 11.00", code: "ICT 1303", title: "Basic Electronics and Digital Logic Design", p: "124", r: "47" }
         ];
 
+        // Calendar State
+        let currentMonth = 2; // March (0-indexed)
+        let currentYear = 2026;
+        let selectedDateStr = null;
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
         function initApp() {
             renderTimetable();
             updateCountdown();
             setInterval(updateCountdown, 1000);
+            renderCalendar();
         }
 
+        // --- List View Logic ---
         function renderTimetable() {
             const container = document.getElementById('timetable-grid');
             const now = new Date();
 
-            container.innerHTML = examData.map(exam => {
-                const examDate = new Date(`${exam.date}T${exam.time.split(' ')[0]}`);
-                const isPast = examDate < now;
-                const isICT = exam.code.startsWith('ICT');
-
-                return `
-                    <div class="exam-card glass p-5 flex flex-col md:flex-row items-start md:items-center gap-4 ${isPast ? 'opacity-40 grayscale' : ''}">
-                        <div class="flex-shrink-0 w-full md:w-32">
-                            <div class="text-xs font-bold ${isICT ? 'text-blue-400' : 'text-emerald-400'} mb-1">${exam.code}</div>
-                            <div class="text-sm font-mono text-slate-300">${formatDisplayDate(exam.date)}</div>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-slate-100">${exam.title}</h4>
-                            <div class="flex items-center gap-3 mt-1 text-xs text-slate-500">
-                                <span><i class="far fa-clock mr-1"></i> ${exam.time}</span>
-                                ${exam.p ? `<span><i class="fas fa-users mr-1"></i> P: ${exam.p}</span>` : ''}
-                                ${exam.r ? `<span><i class="fas fa-door-open mr-1"></i> R: ${exam.r}</span>` : ''}
-                            </div>
-                        </div>
-                        <div class="hidden md:block">
-                            ${isPast ? 
-                                '<span class="text-[10px] bg-slate-800 text-slate-500 px-2 py-1 rounded uppercase">Completed</span>' : 
-                                '<i class="fas fa-chevron-right text-slate-700"></i>'}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            container.innerHTML = examData.map(exam => generateExamCard(exam, now)).join('');
         }
 
+        function generateExamCard(exam, now = new Date()) {
+            const examTimeStr = exam.time.split(' ')[0];
+            // Handle edge case where time is "9.00 AM Onwards"
+            const parsedTime = examTimeStr.includes('.') ? examTimeStr.replace('.', ':') : '09:00';
+            const examDate = new Date(`${exam.date}T${parsedTime}:00`);
+            
+            const isPast = examDate < now;
+            const isICT = exam.code.startsWith('ICT');
+
+            return `
+                <div class="exam-card glass p-5 flex flex-col md:flex-row items-start md:items-center gap-4 ${isPast ? 'opacity-40 grayscale' : ''}">
+                    <div class="flex-shrink-0 w-full md:w-32">
+                        <div class="text-xs font-bold ${isICT ? 'text-blue-400' : 'text-emerald-400'} mb-1 px-2 py-0.5 rounded-full bg-slate-800/80 inline-block">${exam.code}</div>
+                        <div class="text-sm font-mono text-slate-300 mt-2">${formatDisplayDate(exam.date)}</div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-slate-100 text-lg">${exam.title}</h4>
+                        <div class="flex flex-wrap items-center gap-3 mt-2 text-xs text-slate-400 font-medium">
+                            <span class="bg-slate-800/60 px-2 py-1 rounded"><i class="far fa-clock mr-1 text-blue-400"></i> ${exam.time}</span>
+                            ${exam.p ? `<span class="bg-slate-800/60 px-2 py-1 rounded"><i class="fas fa-users mr-1 text-emerald-400"></i> P: ${exam.p}</span>` : ''}
+                            ${exam.r ? `<span class="bg-slate-800/60 px-2 py-1 rounded"><i class="fas fa-door-open mr-1 text-amber-400"></i> R: ${exam.r}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center">
+                        ${isPast ? 
+                            '<span class="text-[10px] bg-slate-800 border border-slate-700 text-slate-400 px-3 py-1.5 rounded-full uppercase tracking-wider font-bold">Completed</span>' : 
+                            '<div class="w-8 h-8 rounded-full bg-slate-800/50 flex items-center justify-center border border-slate-700"><i class="fas fa-chevron-right text-slate-400"></i></div>'}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- View Toggling ---
+        function setView(view) {
+            // Update buttons
+            document.getElementById('btn-list').classList.remove('active', 'border-blue-400/40');
+            document.getElementById('btn-cal').classList.remove('active', 'border-blue-400/40');
+            
+            if (view === 'list') {
+                document.getElementById('btn-list').classList.add('active', 'border-blue-400/40');
+                document.getElementById('view-list').classList.add('active');
+                document.getElementById('view-calendar').classList.remove('active');
+            } else {
+                document.getElementById('btn-cal').classList.add('active', 'border-blue-400/40');
+                document.getElementById('view-calendar').classList.add('active');
+                document.getElementById('view-list').classList.remove('active');
+                renderCalendar(); // Re-render to ensure layout is perfect
+            }
+        }
+
+        // --- Calendar Logic ---
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+            // Hide details when changing month to avoid confusion
+            document.getElementById('calendar-details-container').classList.add('hidden');
+            selectedDateStr = null;
+        }
+
+        function getExamsForDate(dateStr) {
+            return examData.filter(e => e.date === dateStr);
+        }
+
+        function renderCalendar() {
+            document.getElementById('calendar-month-year').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            const calendarDays = document.getElementById('calendar-days');
+            calendarDays.innerHTML = '';
+
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+            // Empty slots for days before the 1st
+            for (let i = 0; i < firstDay; i++) {
+                calendarDays.innerHTML += `<div class="aspect-square rounded-xl empty border border-transparent"></div>`;
+            }
+
+            // Actual days
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const dayExams = getExamsForDate(dateStr);
+                
+                let classes = "cal-day relative aspect-square rounded-xl border border-slate-700/30 flex items-center justify-center text-sm font-medium bg-slate-800/20";
+                
+                // Today highlight
+                if (dateStr === todayStr) {
+                    classes += " ring-2 ring-indigo-500 bg-indigo-500/10 text-white font-bold";
+                } else if (dayExams.length > 0) {
+                    classes += " text-white font-bold bg-slate-700/40";
+                } else {
+                    classes += " text-slate-400";
+                }
+
+                // Selected highlight
+                if (dateStr === selectedDateStr) {
+                    classes += " active";
+                }
+
+                // Exam indicators
+                let hasICT = dayExams.some(e => e.code.startsWith('ICT'));
+                let hasFDN = dayExams.some(e => e.code.startsWith('FDN'));
+
+                if (hasICT && hasFDN) {
+                    classes += " has-both";
+                } else if (hasICT) {
+                    classes += " has-exam";
+                } else if (hasFDN) {
+                    classes += " has-fdn";
+                }
+
+                // Make clickable
+                calendarDays.innerHTML += `
+                    <div class="${classes}" onclick="selectDate('${dateStr}')">
+                        ${i}
+                    </div>
+                `;
+            }
+        }
+
+        function selectDate(dateStr) {
+            selectedDateStr = dateStr;
+            renderCalendar(); // Re-render to update 'active' class on selected day
+            
+            const dayExams = getExamsForDate(dateStr);
+            const detailsContainer = document.getElementById('calendar-details-container');
+            const detailsGrid = document.getElementById('calendar-details-grid');
+            
+            if (dayExams.length > 0) {
+                detailsContainer.classList.remove('hidden');
+                document.getElementById('selected-date-label').innerText = formatDisplayDate(dateStr);
+                
+                // Re-use card generation
+                const now = new Date();
+                detailsGrid.innerHTML = dayExams.map(exam => generateExamCard(exam, now)).join('');
+                
+                // Scroll slightly to show details
+                detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                detailsContainer.classList.add('hidden');
+            }
+        }
+
+        // --- Countdown & Utility ---
         function updateCountdown() {
             const now = new Date();
             const firstExam = new Date("2026-03-30T09:00:00");
@@ -197,13 +463,14 @@
                 document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
                 document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
             } else {
-                document.getElementById('main-countdown').innerHTML = "<div class='text-2xl font-bold text-green-400 uppercase tracking-widest animate-pulse'>Exams are in progress!</div>";
+                document.getElementById('main-countdown').innerHTML = "<div class='text-2xl font-bold text-emerald-400 uppercase tracking-widest animate-pulse'>Exams are currently in progress!</div>";
             }
 
             // Find Next Exam
             const next = examData.find(exam => {
-                const examTime = exam.time.split(' ')[0];
-                const examDateTime = new Date(`${exam.date}T${examTime.includes(':') ? examTime : '09:00'}`);
+                const examTimeStr = exam.time.split(' ')[0];
+                const parsedTime = examTimeStr.includes('.') ? examTimeStr.replace('.', ':') : '09:00';
+                const examDateTime = new Date(`${exam.date}T${parsedTime}:00`);
                 return examDateTime > now;
             });
 
@@ -213,12 +480,15 @@
                 document.getElementById('next-exam-meta').innerText = `${next.code} • Expected Participation: ${next.p || 'N/A'}`;
                 document.getElementById('next-exam-date').innerText = formatDisplayDate(next.date);
                 document.getElementById('next-exam-time').innerText = next.time;
+            } else {
+                 document.getElementById('next-exam-container').classList.add('hidden');
             }
         }
 
         function formatDisplayDate(dateStr) {
-            const options = { month: 'short', day: 'numeric', year: 'numeric' };
-            return new Date(dateStr).toLocaleDateString('en-US', options);
+            const dateObj = new Date(dateStr);
+            const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+            return dateObj.toLocaleDateString('en-US', options);
         }
 
         window.onload = initApp;
