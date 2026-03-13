@@ -121,14 +121,12 @@
 <body class="p-4 md:p-8">
 
     <div class="max-w-5xl mx-auto">
-        <!-- Header -->
         <header class="text-center mb-12 animate-fade-in">
             <h2 class="text-sm font-bold tracking-widest text-blue-400 uppercase mb-2">Faculty of Applied Sciences</h2>
             <h1 class="text-3xl md:text-5xl font-extrabold mb-4">First Year End Semester Exam <span class="gradient-text">2026</span></h1>
             <p class="text-slate-400 text-lg">Department of Computing | Intake 2023/2024</p>
         </header>
 
-        <!-- Main Countdown Section -->
         <div class="glass p-8 mb-10 text-center relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
             <h3 class="text-slate-400 font-semibold mb-6 uppercase tracking-wider">Countdown to First Paper</h3>
@@ -156,7 +154,6 @@
             </div>
         </div>
 
-        <!-- Next Exam Highlight -->
         <div id="next-exam-container" class="hidden mb-10">
             <div class="bg-blue-600/20 border border-blue-500/30 rounded-2xl p-6 flex items-center gap-6 shadow-lg shadow-blue-900/20">
                 <div class="bg-blue-500 p-4 rounded-xl hidden md:block shadow-inner">
@@ -174,9 +171,7 @@
             </div>
         </div>
 
-        <!-- Timetable Section -->
         <div class="space-y-6">
-            <!-- Controls (Title + Toggle) -->
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
                 <div>
                     <h3 class="text-xl font-bold flex items-center gap-2">
@@ -186,7 +181,6 @@
                     <p class="text-xs text-slate-400 italic mt-1">ICT & FDN Courses</p>
                 </div>
                 
-                <!-- View Toggle -->
                 <div class="bg-slate-800/60 p-1.5 rounded-xl border border-slate-700/50 flex gap-1 shadow-inner">
                     <button onclick="setView('list')" id="btn-list" class="toggle-btn active px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:text-white flex items-center gap-2">
                         <i class="fas fa-list-ul"></i> List
@@ -197,17 +191,13 @@
                 </div>
             </div>
 
-            <!-- View: LIST -->
             <div id="view-list" class="view-content active">
                 <div id="timetable-grid" class="grid grid-cols-1 gap-4">
-                    <!-- Data will be injected here -->
-                </div>
+                    </div>
             </div>
 
-            <!-- View: CALENDAR -->
             <div id="view-calendar" class="view-content">
                 <div class="glass p-6 md:p-8">
-                    <!-- Calendar Header -->
                     <div class="flex justify-between items-center mb-6">
                         <button onclick="changeMonth(-1)" class="w-10 h-10 rounded-full bg-slate-800/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors border border-slate-700">
                             <i class="fas fa-chevron-left"></i>
@@ -218,7 +208,6 @@
                         </button>
                     </div>
 
-                    <!-- Calendar Grid -->
                     <div class="grid grid-cols-7 gap-2 md:gap-4 mb-2">
                         <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Sun</div>
                         <div class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">Mon</div>
@@ -230,10 +219,8 @@
                     </div>
                     
                     <div id="calendar-days" class="grid grid-cols-7 gap-2 md:gap-4">
-                        <!-- Calendar days injected here -->
-                    </div>
+                        </div>
 
-                    <!-- Legend -->
                     <div class="flex items-center justify-center gap-6 mt-6 pt-6 border-t border-slate-700/50">
                         <div class="flex items-center gap-2 text-xs text-slate-400">
                             <div class="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_#38bdf8]"></div> ICT Exam
@@ -244,12 +231,10 @@
                     </div>
                 </div>
 
-                <!-- Selected Date Details -->
                 <div id="calendar-details-container" class="mt-6 hidden">
                     <h4 class="text-sm font-bold tracking-widest text-slate-400 uppercase mb-4 px-2">Exams on <span id="selected-date-label" class="text-white"></span></h4>
                     <div id="calendar-details-grid" class="grid grid-cols-1 gap-4">
-                        <!-- Details injected here -->
-                    </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -260,17 +245,20 @@
     </div>
 
     <script>
+        // Updated with parsed data strictly from your provided CSV
         const examData = [
-            { date: "2026-03-30", time: "9.00 - 12.00", code: "FDN 1306", title: "Basic Mathematics for Non Mathematics Students", p: "125", r: "7" },
-            { date: "2026-03-31", time: "9.00 - 11.00", code: "FDN 1201", title: "General English", p: "372", r: "39+9+16" },
-            { date: "2026-03-31", time: "13.00 - 15.00", code: "FDN 1205", title: "Basic Sciences for Non Sciences Students", p: "127", r: "59" },
-            { date: "2026-04-02", time: "9.00 AM Onwards", code: "FDN 1201", title: "General English Oral Test", p: "", r: "" },
-            { date: "2026-04-08", time: "9.00 - 12.00", code: "ICT 1402", title: "Principles of Programme Design and Programming", p: "124", r: "180" },
-            { date: "2026-04-09", time: "9.00 - 11.00", code: "ICT 1402", title: "Principles of Programme Design and Programming (Pra. Gr. I & II)", p: "124", r: "180" },
-            { date: "2026-04-09", time: "11.30 - 13.30", code: "ICT 1402", title: "Principles of Programme Design and Programming (Pra. Gr. III & IV)", p: "", r: "" },
-            { date: "2026-04-20", time: "13.00 - 16.00", code: "ICT 1404", title: "Mathematics & Statistics for Computing", p: "124", r: "7" },
-            { date: "2026-04-23", time: "9.00 - 11.00", code: "ICT 1201", title: "Fundamentals of Computer Systems", p: "124", r: "4" },
-            { date: "2026-05-15", time: "9.00 - 11.00", code: "ICT 1303", title: "Basic Electronics and Digital Logic Design", p: "124", r: "47" }
+            { date: "2026-03-31", time: "09.00 - 12.00", code: "FDN 1201", title: "General English", p: "", r: "" },
+            { date: "2026-03-31", time: "13.00 - 15.00", code: "FDN 1205", title: "Basic Sciences for Non-Sciences Students", p: "", r: "" },
+            { date: "2026-04-08", time: "09.00 - 12.00", code: "ICT 1402", title: "Principles of Programme Design and Programming", p: "", r: "" },
+            { date: "2026-04-09", time: "09.00 - 11.00", code: "ICT 1402", title: "Principles of Programme Design and Programming - Pra. Gr. I & II", p: "", r: "" },
+            { date: "2026-04-09", time: "11.30 - 13.30", code: "ICT 1402", title: "Principles of Programme Design and Programming - Pra. Gr. III & IV", p: "", r: "" },
+            { date: "2026-04-09", time: "14.00 - 16.00", code: "ICT 1402", title: "Principles of Programme Design and Programming - Pra. Gr. V & VI", p: "", r: "" },
+            { date: "2026-04-09", time: "16.30 - 18.30", code: "ICT 1402", title: "Principles of Programme Design and Programming - Pra. Gr. VII & VIII", p: "", r: "" },
+            { date: "2026-04-10", time: "09.00 - 12.00", code: "FDN 1306", title: "Basic Mathematics for Non Mathematics Students", p: "", r: "" },
+            { date: "2026-04-20", time: "13.00 - 16.00", code: "ICT 1404", title: "Mathematics & Statistics for Computing", p: "", r: "" },
+            { date: "2026-04-23", time: "09.00 - 11.00", code: "ICT 1201", title: "Fundamentals of Computer Systems", p: "", r: "" },
+            { date: "2026-05-04", time: "09.00 AM Onwards", code: "FDN 1201", title: "General English Oral Test", p: "", r: "" },
+            { date: "2026-05-15", time: "09.00 - 12.00", code: "ICT 1303", title: "Basic Electronics and Digital Logic Design", p: "", r: "" }
         ];
 
         // Calendar State
@@ -449,7 +437,8 @@
         // --- Countdown & Utility ---
         function updateCountdown() {
             const now = new Date();
-            const firstExam = new Date("2026-03-30T09:00:00");
+            // Updated target time to the first valid filtered exam
+            const firstExam = new Date("2026-03-31T09:00:00");
             const diff = firstExam - now;
 
             if (diff > 0) {
